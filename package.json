@@ -1,6 +1,9 @@
 {
   "name": "traversy_mern_stack_tutorial",
   "version": "1.0.0",
+  "engines":{
+    "npm": "5.7.1"
+  },
   "description": "shopping list build with MERN stack",
   "main": "server.js",
   "scripts": {
