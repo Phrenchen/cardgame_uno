@@ -1,8 +1,2 @@
-npm install:
-express
-body-parser
-mongoose
-concurrently
-
---dev:
-nodemon     // auto-restart server onChange
+to push git:
+git push heroku master

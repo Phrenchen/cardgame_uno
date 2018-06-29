@@ -26,8 +26,8 @@ export const addItem = (item) => dispatch =>{
 
 export const deleteItem = (id) => dispatch =>{
     axios
-        .delete('/api/items/${id}')         // 'api/items/${id} does not work. why?
-        //.delete('/api/items/' + id)         // 'api/items/${id} does not work. why?
+        //.delete('/api/items/${id}')         // 'api/items/${id} does not work. why?
+        .delete('/api/items/' + id)         // 'api/items/${id} does not work. why?
         .then(res => dispatch({
             type: DELETE_ITEM,
             payload: id
