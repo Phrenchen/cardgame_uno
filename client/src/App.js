@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import AppNavbar from './components/AppNavbar';
-import ShoppingList from './components/ShoppingList';
+import PlayerList from './components/PlayerList';
+import CardList from './components/CardList';
 import {Provider} from "react-redux";
 import store from "./store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import ItemModal from './components/ItemModal';
+import PlayerModal from './components/PlayerModal';
 import {Container} from "reactstrap";
 
 
@@ -20,14 +22,18 @@ class App extends Component {
         //console.log(store.getState());
     });
   }
+  
   render() {
     return (
       <Provider store={store}>
         <div className="App">
-          <AppNavbar />
+          <AppNavbar/>
           <Container>
+            <PlayerModal />
+            <PlayerList/>
+            <br/>
             <ItemModal />
-            <ShoppingList/>
+            <CardList/>
           </Container>
         </div>
       </Provider>

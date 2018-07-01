@@ -6,9 +6,11 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    Container
-} from "reactstrap"
+    Container,
+    Button
+} from "reactstrap";
+import {connect} from "react-redux";
+import {deleteAllPlayers} from "../actions/PlayerActions";
 
 
 class AppNavbar extends Component{
@@ -22,19 +24,25 @@ class AppNavbar extends Component{
         });
     }
 
+    onDeleteAllPlayers =() => {
+        // for each player: delete serverside
+        console.log(this.props.players);
+        this.props.deleteAllPlayers(this.props.players);
+    }
+
     render(){
         return (
             <div>
                 <Navbar color="dark" dark expand="sm" className="mb-5">
                     <Container>
-                        <NavbarBrand href="/">ShoppingList</NavbarBrand>
+                        <NavbarBrand href="/">Player List</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml_auto" navbar>
                                 <NavItem>
-                                        <NavLink href="https://github.com/bradtraversy">
-                                            Github
-                                        </NavLink>
+                                    <Button
+                                        onClick={this.onDeleteAllPlayers}
+                                    >delete all players</Button>
                                 </NavItem>
                             </Nav>
                         </Collapse>
@@ -45,5 +53,10 @@ class AppNavbar extends Component{
     }
 }
 
+const mapStateToProps = state =>({
+    item: state.item,
+    players: state.players
+});
 
-export default AppNavbar;
+export default connect(mapStateToProps, {deleteAllPlayers})(AppNavbar);
+//export default AppNavbar;

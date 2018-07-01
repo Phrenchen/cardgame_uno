@@ -13,6 +13,9 @@ app.use(bodyParser.json());
 // DB config
 const db = require("./config/keys").mongoURI;
 
+//mongoose.connection.dropCollection();
+//mongoose.connection.dropDatabase();
+
 // connect to db
 mongoose
     .connect(db)

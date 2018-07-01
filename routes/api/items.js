@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const itemRouter = express.Router();
 
 // item model
 const Item = require("../../model/Item");
@@ -7,7 +7,7 @@ const Item = require("../../model/Item");
 // @route   GET api/items
 // @desc    get all items
 // @access  public
-router.get("/", (req, res) => {
+itemRouter.get("/", (req, res) => {
     Item.find()                 // promise based
         .sort({date: -1})       // sort by date descendingly
         .then(items => res.json(items))
@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 // @route   POST api/items
 // @desc    create an item
 // @access  public
-router.post("/", (req, res) => {
+itemRouter.post("/", (req, res) => {
     const newItem = new Item({
         name: req.body.name
     });
@@ -28,9 +28,9 @@ router.post("/", (req, res) => {
 // @route   DELETE api/items/:id
 // @desc    delete an item
 // @access  public
-router.delete("/:id", (req, res) => {
+itemRouter.delete("/:id", (req, res) => {
     Item.findById(req.params.id)
-        .then(item => item.remove().then(() => res.json({success: true})))
+        .then( item => item.remove().then( () => res.json({success: true}) ) )
         .catch(err => {
             console.log(req);
             console.log(res);
@@ -39,4 +39,4 @@ router.delete("/:id", (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = itemRouter;

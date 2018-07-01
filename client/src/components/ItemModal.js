@@ -11,7 +11,6 @@ import {
 } from "reactstrap";
 import {connect} from "react-redux";
 import {addItem} from "../actions/ItemActions";
-import {addPlayer} from "../actions/PlayerActions";
 
 class ItemModal extends Component{
     state = {
@@ -40,12 +39,6 @@ class ItemModal extends Component{
 
         // add item via addItem action
         this.props.addItem(newItem);
-
-        const newPlayer = {
-            name: this.state.name
-        };
-        this.props.addPlayer(newPlayer);
-
         // close Modal
         this.toggle();
     }
@@ -58,7 +51,7 @@ class ItemModal extends Component{
                     style={{marginBottom: "2rem"}}
                     onClick={this.toggle}
                 >
-                    Add Player
+                    Add Item
                 </Button>
                 <Modal
                     isOpen={this.state.modal}
@@ -68,13 +61,13 @@ class ItemModal extends Component{
                         toggle={this.toggle}
 
                     >
-                        Add to player list
+                        Add to Item list
                     </ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
                                 <Label for="item">
-                                    Player
+                                Item
                                 </Label>
                                 <Input 
                                     type="text"
@@ -88,7 +81,7 @@ class ItemModal extends Component{
                                     style={{marginTop:"2rem"}}
                                     block
                                 >
-                                    Add player
+                                    Add Item
                                 </Button>
                             </FormGroup>
                         </Form>
@@ -101,7 +94,7 @@ class ItemModal extends Component{
 }
 
 const mapStateToProps = state =>({
-    item: state.item
+    //item: state.item
 });
 
-export default connect(mapStateToProps, {addItem, addPlayer})(ItemModal);
+export default connect(mapStateToProps, {addItem})(ItemModal);

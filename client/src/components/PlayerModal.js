@@ -10,7 +10,6 @@ import {
     Input
 } from "reactstrap";
 import {connect} from "react-redux";
-import {addCard} from "../actions/ItemActions";
 import {addPlayer} from "../actions/PlayerActions";
 
 class ItemModal extends Component{
@@ -34,13 +33,6 @@ class ItemModal extends Component{
     onSubmit = (e) =>{
         e.preventDefault();
 
-        //const newItem = {
-          //  name: this.state.name
-        //};
-
-        // add item via addItem action
-        //this.props.addItem(newItem);
-
         const newPlayer = {
             name: this.state.name
         };
@@ -58,7 +50,7 @@ class ItemModal extends Component{
                     style={{marginBottom: "2rem"}}
                     onClick={this.toggle}
                 >
-                    Add Card to Player
+                    Add Player
                 </Button>
                 <Modal
                     isOpen={this.state.modal}
@@ -68,19 +60,19 @@ class ItemModal extends Component{
                         toggle={this.toggle}
 
                     >
-                        Add to card list
+                        Add to player list
                     </ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
                                 <Label for="item">
-                                    Card
+                                    Player
                                 </Label>
                                 <Input 
                                     type="text"
                                     name="name"
                                     id="item"
-                                    placeholder="set card name"
+                                    placeholder="set player name"
                                     onChange={this.onChange}
                                 />
                                 <Button
@@ -88,7 +80,7 @@ class ItemModal extends Component{
                                     style={{marginTop:"2rem"}}
                                     block
                                 >
-                                    Add card
+                                    Add Player
                                 </Button>
                             </FormGroup>
                         </Form>
@@ -101,7 +93,7 @@ class ItemModal extends Component{
 }
 
 const mapStateToProps = state =>({
-    item: state.item
+   // item: state.item
 });
 
-export default connect(mapStateToProps, {addCard, addPlayer})(ItemModal);
+export default connect(mapStateToProps, {addPlayer})(ItemModal);

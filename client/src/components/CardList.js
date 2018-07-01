@@ -6,11 +6,11 @@ import {getItems, deleteItem} from "../actions/ItemActions";
 import {getPlayers} from "../actions/PlayerActions";
 import PropTypes from "prop-types";
 
-class ShoppingList extends Component{
+class CardList extends Component{
     
     componentDidMount(){
         this.props.getItems();
-        this.props.getPlayers();
+        //this.props.getPlayers();
     }
 
     onDeleteClick = (id) =>{
@@ -18,7 +18,7 @@ class ShoppingList extends Component{
     }
 
     render(){
-        const { items } = this.props.item;       // WIE WAS PASSIERT HIER??? CHECK IT!
+        const { items } = this.props.items;       // WIE WAS PASSIERT HIER??? CHECK IT!
         //console.log(items);
         return (
             <Container>
@@ -49,16 +49,16 @@ class ShoppingList extends Component{
     }
 }
 
-ShoppingList.propTypes = {
+CardList.propTypes = {
     getItems: PropTypes.func.isRequired,
-    getPlayers: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
+    //getPlayers: PropTypes.func.isRequired,
+    items: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>({
-    item: state.item
+    items: state.item
 });
 
 
 
-export default connect(mapStateToProps, {getItems, getPlayers, deleteItem} )(ShoppingList);
+export default connect(mapStateToProps, {getItems, getPlayers, deleteItem} )(CardList);

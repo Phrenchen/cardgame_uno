@@ -1,6 +1,7 @@
 import {GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING} from "../actions/types";
 import axios from "axios";
 
+
 export const getItems = () => dispatch =>{
     dispatch(setItemsLoading());
     axios
@@ -31,8 +32,7 @@ export const deleteItem = (id) => dispatch =>{
         .then(res => dispatch({
             type: DELETE_ITEM,
             payload: id
-        }))
-        .catch;
+        }));
 };
 
 
