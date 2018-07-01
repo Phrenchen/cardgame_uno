@@ -12,10 +12,10 @@ import {
 import {connect} from "react-redux";
 import {addPlayer} from "../actions/PlayerActions";
 
-class ItemModal extends Component{
+class PlayerModal extends Component{
     state = {
         modal: false,
-        name: ""
+        name: "empty player name"
     };
 
     toggle = () => {
@@ -96,4 +96,4 @@ const mapStateToProps = state =>({
    // item: state.item
 });
 
-export default connect(mapStateToProps, {addPlayer})(ItemModal);
+export default connect(mapStateToProps, {addPlayer})(PlayerModal);

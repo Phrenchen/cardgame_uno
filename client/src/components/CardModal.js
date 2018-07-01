@@ -15,7 +15,7 @@ import {addItem} from "../actions/ItemActions";
 class CardModal extends Component{
     state = {
         modal: false,
-        name: ""
+        name: "empty card name"
     };
 
     toggle = () => {
@@ -26,7 +26,7 @@ class CardModal extends Component{
 
     onChange = (e) =>{
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value != null ? e.target.value : "empty name"
         });
     }
 
