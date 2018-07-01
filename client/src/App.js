@@ -12,12 +12,12 @@ import {Container} from "reactstrap";
 
 class App extends Component {
   componentDidMount(){
-    console.log(store.getState());
+    //console.log(store.getState());
 
 
     store.subscribe(() =>{
-        console.log("************** STATE CHANGED ***************");
-        console.log(store.getState());
+        //console.log("************** STATE CHANGED ***************");
+        //console.log(store.getState());
     });
   }
   render() {
