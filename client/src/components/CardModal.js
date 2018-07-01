@@ -12,7 +12,7 @@ import {
 import {connect} from "react-redux";
 import {addItem} from "../actions/ItemActions";
 
-class ItemModal extends Component{
+class CardModal extends Component{
     state = {
         modal: false,
         name: ""
@@ -51,7 +51,7 @@ class ItemModal extends Component{
                     style={{marginBottom: "2rem"}}
                     onClick={this.toggle}
                 >
-                    Add Item
+                    Add Card
                 </Button>
                 <Modal
                     isOpen={this.state.modal}
@@ -61,19 +61,19 @@ class ItemModal extends Component{
                         toggle={this.toggle}
 
                     >
-                        Add to Item list
+                        Add to Card list
                     </ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
                                 <Label for="item">
-                                Item
+                                Card
                                 </Label>
                                 <Input 
                                     type="text"
                                     name="name"
                                     id="item"
-                                    placeholder="set player name"
+                                    placeholder="set card name"
                                     onChange={this.onChange}
                                 />
                                 <Button
@@ -81,7 +81,7 @@ class ItemModal extends Component{
                                     style={{marginTop:"2rem"}}
                                     block
                                 >
-                                    Add Item
+                                    Add Card
                                 </Button>
                             </FormGroup>
                         </Form>
@@ -97,4 +97,4 @@ const mapStateToProps = state =>({
     //item: state.item
 });
 
-export default connect(mapStateToProps, {addItem})(ItemModal);
+export default connect(mapStateToProps, {addItem})(CardModal);

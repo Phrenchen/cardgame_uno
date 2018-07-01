@@ -7,7 +7,7 @@ import store from "./store";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-import ItemModal from './components/ItemModal';
+import CardModal from './components/CardModal';
 import PlayerModal from './components/PlayerModal';
 import {Container} from "reactstrap";
 
@@ -32,7 +32,7 @@ class App extends Component {
             <PlayerModal />
             <PlayerList/>
             <br/>
-            <ItemModal />
+            <CardModal />
             <CardList/>
           </Container>
         </div>
