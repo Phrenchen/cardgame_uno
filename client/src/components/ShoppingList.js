@@ -3,12 +3,14 @@ import  { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {connect} from "react-redux";
 import {getItems, deleteItem} from "../actions/ItemActions";
+import {getPlayers} from "../actions/PlayerActions";
 import PropTypes from "prop-types";
 
 class ShoppingList extends Component{
     
     componentDidMount(){
         this.props.getItems();
+        this.props.getPlayers();
     }
 
     onDeleteClick = (id) =>{
@@ -17,7 +19,7 @@ class ShoppingList extends Component{
 
     render(){
         const { items } = this.props.item;       // WIE WAS PASSIERT HIER??? CHECK IT!
-        console.log(items);
+        //console.log(items);
         return (
             <Container>
                 <ListGroup>
@@ -49,6 +51,7 @@ class ShoppingList extends Component{
 
 ShoppingList.propTypes = {
     getItems: PropTypes.func.isRequired,
+    getPlayers: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
 };
 
@@ -58,4 +61,4 @@ const mapStateToProps = (state) =>({
 
 
 
-export default connect(mapStateToProps, {getItems, deleteItem} )(ShoppingList);
+export default connect(mapStateToProps, {getItems, getPlayers, deleteItem} )(ShoppingList);

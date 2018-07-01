@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 const items = require("./routes/api/items");
+const players = require("./routes/api/players");
 
 const app = express();
 
@@ -21,6 +22,7 @@ mongoose
 
 // use routes
 app.use("/api/items", items);
+app.use("/api/players", players);
 
 // serve static assets if we are in production
 if(process.env.NODE_ENV === "production"){

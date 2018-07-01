@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // create schema
+// TUTORIAL ITEM
 const ItemSchema = new Schema({
     name: {
         type: String,
@@ -12,5 +13,4 @@ const ItemSchema = new Schema({
         default: Date.now
     }
 });
-
 module.exports = Item = mongoose.model("item", ItemSchema);
