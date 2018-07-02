@@ -5,7 +5,7 @@ import axios from "axios";
 export const getItems = () => dispatch =>{
     dispatch(setItemsLoading());
     axios
-        .get("/api/items")
+        .get("/api/cards")
         .then(res => 
             dispatch({
                 type: GET_ITEMS,
@@ -17,7 +17,7 @@ export const getItems = () => dispatch =>{
 
 export const addItem = (item) => dispatch =>{
     axios
-        .post("/api/items", item)
+        .post("/api/cards", item)
         .then(res => 
             dispatch({
                 type: ADD_ITEM,
@@ -28,7 +28,7 @@ export const addItem = (item) => dispatch =>{
 export const deleteItem = (id) => dispatch =>{
     axios
         //.delete('/api/items/${id}')         // 'api/items/${id} does not work. why?
-        .delete('/api/items/' + id)         // 'api/items/${id} does not work. why?
+        .delete('/api/cards/' + id)         // 'api/items/${id} does not work. why?
         .then(res => dispatch({
             type: DELETE_ITEM,
             payload: id

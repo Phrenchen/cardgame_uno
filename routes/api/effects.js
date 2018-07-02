@@ -1,24 +1,26 @@
 const express = require("express");
-const itemRouter = express.Router();
-
+const effectRouter = express.Router();
+const uuid = require("uuid");
 // item model
-const Item = require("../../model/Item");
+const Effect = require("../../model/Effect");
 
 // @route   GET api/items
 // @desc    get all items
 // @access  public
-itemRouter.get("/", (req, res) => {
-    Item.find()                 // promise based
-        .sort({date: -1})       // sort by date descendingly
+effectRouter.get("/", (req, res) => {
+    Effect.find()                 // promise based
+        .sort({effectType: -1})       // sort by date descendingly
         .then(items => res.json(items))
 });
 
 // @route   POST api/items
 // @desc    create an item
 // @access  public
-itemRouter.post("/", (req, res) => {
-    const newItem = new Item({
-        name: req.body.name
+effectRouter.post("/", (req, res) => {
+    const newItem = new Effect({
+        name: req.body.name,                // param
+        id: uuid(),
+        effectType: req.body.effectType     // param
     });
 
     newItem.save()          // promise based
@@ -28,8 +30,8 @@ itemRouter.post("/", (req, res) => {
 // @route   DELETE api/items/:id
 // @desc    delete an item
 // @access  public
-itemRouter.delete("/:id", (req, res) => {
-    Item.findById(req.params.id)
+effectRouter.delete("/:id", (req, res) => {
+    Card.findById(req.params.id)
         .then( item => item.remove().then( () => res.json({success: true}) ) )
         .catch(err => {
             console.log(req);
@@ -39,4 +41,4 @@ itemRouter.delete("/:id", (req, res) => {
 });
 
 
-module.exports = itemRouter;
+module.exports = effectRouter;

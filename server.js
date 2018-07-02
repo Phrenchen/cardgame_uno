@@ -2,10 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
-const items = require("./routes/api/items");
+//const items = require("./routes/api/items");
+const cards = require("./routes/api/cards");
 const players = require("./routes/api/players");
+const effects = require("./routes/api/effects");
 
 const app = express();
+
+const Card = require("./model/Card");
+const Effect = require("./model/Effect");
+
+const {initDB} = require("./model/InitDB");
 
 // body parser middleware
 app.use(bodyParser.json());
@@ -14,7 +21,7 @@ app.use(bodyParser.json());
 const db = require("./config/keys").mongoURI;
 
 //mongoose.connection.dropCollection();
-//mongoose.connection.dropDatabase();
+mongoose.connection.dropDatabase(); // <---- DROP DATA!
 
 // connect to db
 mongoose
@@ -24,8 +31,10 @@ mongoose
 
 
 // use routes
-app.use("/api/items", items);
+//app.use("/api/items", items);
+app.use("/api/cards", cards);
 app.use("/api/players", players);
+app.use("/api/effects", effects);
 
 // serve static assets if we are in production
 if(process.env.NODE_ENV === "production"){
@@ -41,3 +50,4 @@ const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("server started on port " + port));
 
+initDB();
