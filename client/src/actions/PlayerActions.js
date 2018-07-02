@@ -44,7 +44,7 @@ export const getPlayers = () => dispatch =>{
                 type: GET_PLAYERS,
                 payload: res.data
             }) 
-        )
+        );
 
 };
 

@@ -6,6 +6,9 @@ const EffectValue = require("./EffectValue");
 const EffectSpecial = require("./EffectSpecial");
 
 
+cardDeck = [];            // id´s of all cards belonging to one deck. will be cloned to be used in a match
+module.exports.cardDeck = cardDeck;
+
 function initDB(){
     // 1. check if effects exist
     Effect.find()
@@ -30,14 +33,19 @@ function addCardsToDB() {
             // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
                 let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
-                createCard(EffectColor.RED + value, [getEffectIdByType(effects, EffectColor.RED), getEffectIdByType(effects, EffectValue[index])], amount);
-                createCard(EffectColor.GREEN + value, [getEffectIdByType(effects, EffectColor.GREEN), getEffectIdByType(effects, EffectValue[index])], amount);
-                createCard(EffectColor.BLUE + value, [getEffectIdByType(effects, EffectColor.BLUE), getEffectIdByType(effects, EffectValue[index])], amount);
-                createCard(EffectColor.YELLOW + value, [getEffectIdByType(effects, EffectColor.YELLOW), getEffectIdByType(effects, EffectValue[index])], amount);
+                createCard(EffectColor.RED + value, [getEffectIdByType(effects, EffectColor.RED), getEffectIdByType(effects, EffectValue[index])], amount, cardDeck);
+                createCard(EffectColor.GREEN + value, [getEffectIdByType(effects, EffectColor.GREEN), getEffectIdByType(effects, EffectValue[index])], amount, cardDeck);
+                createCard(EffectColor.BLUE + value, [getEffectIdByType(effects, EffectColor.BLUE), getEffectIdByType(effects, EffectValue[index])], amount, cardDeck);
+                createCard(EffectColor.YELLOW + value, [getEffectIdByType(effects, EffectColor.YELLOW), getEffectIdByType(effects, EffectValue[index])], amount, cardDeck);
             });
 
             // create specials
-
+            createCard(EffectSpecial.SKIP, [getEffectIdByType(effects, EffectSpecial.SKIP)], 8, cardDeck);
+            createCard(EffectSpecial.TAKE_2, [getEffectIdByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck);
+            createCard(EffectSpecial.CHANGE_COLOR, [getEffectIdByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck);
+            createCard(EffectSpecial.CHANGE_DIRECTION, [getEffectIdByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck);
+            createCard(EffectSpecial.TAKE_4 + EffectSpecial.CHANGE_COLOR, [getEffectIdByType(effects, EffectSpecial.TAKE_4), getEffectIdByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck);
+            
         })
 }
 
@@ -51,7 +59,7 @@ function getEffectIdByType(effects, effectType){
     return id;
 }
 
-createCard = (pName, pEffects, amount = 1) =>{
+createCard = (pName, pEffects, amount = 1, resultIDs = null) =>{
     for(let i=0; i<amount; i++){
         let card = new Card({
             name: pName,
@@ -62,6 +70,10 @@ createCard = (pName, pEffects, amount = 1) =>{
         card.save()
         .then( (card) => {
             //console.log("saved card: " + card.name);
+            if(resultIDs){
+                resultIDs.push(card.id);
+                //console.log("adding " + card.id + " to " + resultIDs.length);
+            }
         });
     }
 }

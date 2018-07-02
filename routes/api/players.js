@@ -21,6 +21,9 @@ playerRouter.get("/", (req, res) => {
         .then(players => res.json(players))
 });
 
+// @route   POST api/players
+// @desc    add player
+// @access  public
 playerRouter.post("/", (req, res) => {
     const newPlayer = new Player({
         name: req.body.name,

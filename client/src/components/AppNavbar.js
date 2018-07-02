@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import {connect} from "react-redux";
 import {deleteAllPlayers} from "../actions/PlayerActions";
+import {startMatch} from "../actions/MatchActions";
 
 
 class AppNavbar extends Component{
@@ -24,10 +25,19 @@ class AppNavbar extends Component{
         });
     }
 
-    onDeleteAllPlayers =() => {
+    onDeleteAllPlayers = () => {
         // for each player: delete serverside
         console.log(this.props.players);
         this.props.deleteAllPlayers(this.props.players);
+    }
+    
+    onStartMatch = () => {
+        let playerIDs = [];
+        this.props.player.players.map((player) => {
+            playerIDs.push(player.id);
+        });
+
+        this.props.startMatch(playerIDs);
     }
 
     render(){
@@ -43,7 +53,11 @@ class AppNavbar extends Component{
                                     <Button
                                         onClick={this.onDeleteAllPlayers}
                                     >delete all players</Button>
+                                    <Button
+                                        onClick={this.onStartMatch}
+                                    >start match</Button>
                                 </NavItem>
+
                             </Nav>
                         </Collapse>
                     </Container>
@@ -55,8 +69,8 @@ class AppNavbar extends Component{
 
 const mapStateToProps = state =>({
     item: state.item,
-    players: state.players
+    player: state.players
 });
 
-export default connect(mapStateToProps, {deleteAllPlayers})(AppNavbar);
+export default connect(mapStateToProps, {startMatch, deleteAllPlayers})(AppNavbar);
 //export default AppNavbar;

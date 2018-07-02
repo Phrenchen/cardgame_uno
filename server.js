@@ -6,6 +6,7 @@ const path = require("path");
 const cards = require("./routes/api/cards");
 const players = require("./routes/api/players");
 const effects = require("./routes/api/effects");
+const matches = require("./routes/api/matches");
 
 const app = express();
 
@@ -35,6 +36,7 @@ mongoose
 app.use("/api/cards", cards);
 app.use("/api/players", players);
 app.use("/api/effects", effects);
+app.use("/api/matches", matches);
 
 // serve static assets if we are in production
 if(process.env.NODE_ENV === "production"){
