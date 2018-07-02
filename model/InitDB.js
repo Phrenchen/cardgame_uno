@@ -60,6 +60,9 @@ function addCardsToDB() {
             EffectValue.map((value, index) => {
                 console.log("**--**");
                 createCard(EffectColor.RED + value, [getEffectIdByType(effects, EffectColor.RED), getEffectIdByType(effects, EffectValue[index])]);
+                createCard(EffectColor.GREEN + value, [getEffectIdByType(effects, EffectColor.GREEN), getEffectIdByType(effects, EffectValue[index])]);
+                createCard(EffectColor.BLUE + value, [getEffectIdByType(effects, EffectColor.BLUE), getEffectIdByType(effects, EffectValue[index])]);
+                createCard(EffectColor.YELLOW + value, [getEffectIdByType(effects, EffectColor.YELLOW), getEffectIdByType(effects, EffectValue[index])]);
                 
             });
 
