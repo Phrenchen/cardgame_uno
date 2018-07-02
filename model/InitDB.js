@@ -7,99 +7,66 @@ const EffectSpecial = require("./EffectSpecial");
 
 
 function initDB(){
-    // 1. create effects
-    // 2. create cards (they have effects)
+    // 1. check if effects exist
     Effect.find()
         .then( effects => {
-                console.log("1");
-                console.log("num effects in db: " + effects.length);
-                
                 if(effects.length == 0){
-                    // add effects
+                    // add effects, cards will be created after effects have been stored
                     addEffectsToDB(); 
                 }
             })
-
-/*
-// add cards to db if they dont exist
-Effect.find()
-.then( effects => {
-        console.log("1");
-        console.log("num effects in db: " + effects.length);
-        
-        if(effects.length == 0){
-            // add effects
-            addEffectsToDB(); 
-        }
-    })
-    .then( () =>{
-        console.log("2");
-        Card.find()
-            .then( cards => {
-                console.log("num cards in db: " + cards.length);
-        
-                if(cards.length == 0){
-                    // add cards
-                    addCardsToDB();
-                }
-            });
-    });
-*/
 }
 module.exports.initDB = initDB;
 
 
 // CARDS
 function addCardsToDB() {
-    // get AAAALL the effects
+    // get all effects from db 
     Effect.find()
         .then((effects) =>{
-            console.log("access to all effects: " + effects.length); 
+            //console.log("access to all effects: " + effects.length); 
             
             // for each value, use all colors
+            // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
-                console.log("**--**");
-                createCard(EffectColor.RED + value, [getEffectIdByType(effects, EffectColor.RED), getEffectIdByType(effects, EffectValue[index])]);
-                createCard(EffectColor.GREEN + value, [getEffectIdByType(effects, EffectColor.GREEN), getEffectIdByType(effects, EffectValue[index])]);
-                createCard(EffectColor.BLUE + value, [getEffectIdByType(effects, EffectColor.BLUE), getEffectIdByType(effects, EffectValue[index])]);
-                createCard(EffectColor.YELLOW + value, [getEffectIdByType(effects, EffectColor.YELLOW), getEffectIdByType(effects, EffectValue[index])]);
-                
+                let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
+                createCard(EffectColor.RED + value, [getEffectIdByType(effects, EffectColor.RED), getEffectIdByType(effects, EffectValue[index])], amount);
+                createCard(EffectColor.GREEN + value, [getEffectIdByType(effects, EffectColor.GREEN), getEffectIdByType(effects, EffectValue[index])], amount);
+                createCard(EffectColor.BLUE + value, [getEffectIdByType(effects, EffectColor.BLUE), getEffectIdByType(effects, EffectValue[index])], amount);
+                createCard(EffectColor.YELLOW + value, [getEffectIdByType(effects, EffectColor.YELLOW), getEffectIdByType(effects, EffectValue[index])], amount);
             });
 
+            // create specials
+
         })
-/*
-    let valueCount = EffectValue.length;
-    
-*/
 }
 
 function getEffectIdByType(effects, effectType){
     let id = -1;
     effects.map((effect) =>{
-        //console.log("---");
-        //console.log(effect.effectType);
         if(effect.effectType === effectType){
-            console.log("found effect");
             id = effect.id;
         }
     });
     return id;
 }
 
-createCard = (pName, pEffects) =>{
-    let card = new Card({
-        name: pName,
-        id: uuid(),
-        effects: pEffects
-    });
-    
-    card.save()
-        .then( (card) => {
-            console.log("saved card: " + card.name);
+createCard = (pName, pEffects, amount = 1) =>{
+    for(let i=0; i<amount; i++){
+        let card = new Card({
+            name: pName,
+            id: uuid(),
+            effects: pEffects
         });
+        
+        card.save()
+        .then( (card) => {
+            //console.log("saved card: " + card.name);
+        });
+    }
 }
 
-
+//------------------------------------------------------
 // EFFECTS
 let effectInProgressCounter = 0;
 
@@ -135,12 +102,8 @@ createEffect = (eType) => {
     
     effect.save()
         .then( (newEffect) => {
-            //console.log("saved effect: " + newEffect.name);
             effectInProgressCounter--;
-
             if(effectInProgressCounter <= 0){
-                //console.log("___ all effects have been stored ___")
-                //console.log("CHECKING CARDS");
                 Card.find()
                     .then( cards => {
                         if(cards.length == 0){
