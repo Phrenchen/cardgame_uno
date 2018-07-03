@@ -3,7 +3,6 @@ import {START_MATCH} from "../actions/types";
 
 export const startMatch = (playerIDs) => dispatch => {
     console.log("start match");
-    console.log(playerIDs);
 
     axios
         .post("api/matches", (playerIDs))

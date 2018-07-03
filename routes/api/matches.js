@@ -20,10 +20,11 @@ matchRouter.get("/", (req, res) => {
         .then(players => res.json(players))
 });
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
+/**
+ * CREATE A NEW MATCH.
+ * it´s supermessy right now. clean it up!
+ */
 matchRouter.post("/", (req, res) => {
     console.log("create new match");
     //console.log(req.body);
@@ -33,53 +34,53 @@ matchRouter.post("/", (req, res) => {
     let players = [];   // PlayerObjects. serialize? hmm
     let cards = [];
 
-    Player.find()
+    Player.find()                   // get all players from DB
         .then((allPlayers) =>{
             // find playerObjects matching to client request
-            allPlayers.map((player) =>{
-                if(playerIDs.indexOf(player.id) != -1){     // found one of the players
-                    players.push(player);
+            allPlayers.map((player) =>{                     // find player participating in match (list of playerIDs from client)
+                if(playerIDs.indexOf(player.id) != -1){     
+                    players.push(player);                   // add a participating player
                 }
             });
         })
         .then(() => {
-            Card.find()
+            Card.find()             // get all Cards (1 Deck)
                 .then((allCards) => {
                     // distribute cards to players
-                    // for each player
-                    let playerCardCount = 7;
+                    let playerCardCount = 7;                                    // amount of hand cards for each player
                     let index;
                     
-        
-                    players.map((player) =>{
-                        for(let i=0; i<playerCardCount; i++){
+                    players.map((player) =>{                                    // for ever player
+                        for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
                             index = getRandomInt(0, cardDeck.cardDeck.length-1);
-                            let cardID = cardDeck.cardDeck.splice(index, 1);
-                            let card = getCardByID(allCards, cardID);
-                            player.cards.push( card );  // move from deck to player hand
+                            let cardID = cardDeck.cardDeck.splice(index, 1);    // remove from deck
+                            let card = getCardByID(allCards, cardID);           // retrieve card
+                            player.cards.push( card );                          // move from deck to player hand
                         }
                     });
                     
                     let stackCards = [];
-                    console.log(cardDeck.cardDeck.length);
-                    cardDeck.cardDeck.map((cardID) => {
+                    cardDeck.cardDeck.map((cardID) => {                         // add remaining cards to stack
                         stackCards.push(getCardByID(allCards, cardID));
                     });
-                    console.log(stackCards);
-                    const match = new Match({
+
+                    const match = new Match({                                   // create new match
                         id: uuid(),
                         players: players,
-                        cards: stackCards
+                        cards: stackCards,
+                        firstPlayerID: players[0].id,                           // first player starts
+                        topCardID: stackCards[0].id                             // first card is top card
                     });
-                    //match.save...
-                    match.save()
+                   
+                    match.save()                                                 //match.save...
                         .then((pMatch) => {
-                            res.json(pMatch);
+                            res.json(pMatch);                                   // return match to client
                         });
                 })
         })
 });
 
+// helper
 function getCardByID(allCards, cardID){
     let result = null;
     allCards.map((card) => {
@@ -89,5 +90,10 @@ function getCardByID(allCards, cardID){
     });
     return result;
 }
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 module.exports = matchRouter;

@@ -27,7 +27,7 @@ class AppNavbar extends Component{
 
     onDeleteAllPlayers = () => {
         // for each player: delete serverside
-        console.log(this.props.players);
+        //console.log(this.props.players);
         this.props.deleteAllPlayers(this.props.players);
     }
     
