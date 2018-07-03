@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AppNavbar from './components/AppNavbar';
-import PlayerList from './components/PlayerList';
+
 import CardList from './components/CardList';
 import {Provider} from "react-redux";
 import store from "./store";
@@ -8,7 +8,7 @@ import store from "./store";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import CardModal from './components/CardModal';
-import PlayerModal from './components/PlayerModal';
+import AppStateMachine from "./appStates/AppStateMachine";
 import {Container} from "reactstrap";
 
 
@@ -26,19 +26,21 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          <AppNavbar/>
-          <Container>
-            <PlayerModal />
-            <PlayerList/>
-            <br/>
-            <CardModal />
-            <CardList/>
-          </Container>
-        </div>
+        <AppStateMachine />
       </Provider>
     );
   }
 }
-
+/*
+<div className="App">
+  <AppNavbar/>
+  <Container>
+    <PlayerModal />
+    <PlayerList/>
+    <br/>
+    <CardModal />
+    <CardList/>
+  </Container>
+</div>
+*/
 export default App;
