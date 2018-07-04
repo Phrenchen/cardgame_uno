@@ -1,8 +1,8 @@
-import { STATE_SETUP } from "../appStates/AppState";
+import { STATE_START } from "../appStates/AppState";
 import { SET_APP_STATE } from "./../actions/types";
 
 let initialState = {
-    current: STATE_SETUP
+    current: STATE_START
 }
 
 function appState(state = initialState, action){

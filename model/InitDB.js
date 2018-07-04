@@ -24,6 +24,7 @@ module.exports.initDB = initDB;
 
 // CARDS
 function addCardsToDB() {
+    let cards = [];
     // get all effects from db 
     Effect.find()
         .then((effects) =>{
@@ -33,20 +34,25 @@ function addCardsToDB() {
             // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
                 let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
-                createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck);
-                createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck);
-                createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck);
-                createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck);
+                cards = cards.concat( createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
             });
 
             // create specials
-            createCard(EffectSpecial.SKIP, [getEffectByType(effects, EffectSpecial.SKIP)], 8, cardDeck);
-            createCard(EffectSpecial.TAKE_2, [getEffectByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck);
-            createCard(EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck);
-            createCard(EffectSpecial.CHANGE_DIRECTION, [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck);
-            createCard(EffectSpecial.TAKE_4 + EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck);
+            cards = cards.concat( createCard(EffectSpecial.SKIP, [getEffectByType(effects, EffectSpecial.SKIP)], 8, cardDeck) );
+            cards = cards.concat( createCard(EffectSpecial.TAKE_2, [getEffectByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck) );
+            cards = cards.concat( createCard(EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
+            cards = cards.concat( createCard(EffectSpecial.CHANGE_DIRECTION, [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck) );
+            cards = cards.concat( createCard(EffectSpecial.TAKE_4 + EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
             
+            Card.insertMany(cards, (err, result) => {
+                console.log("inserted cards");
+            })
         })
+
+       
 }
 
 function getEffectByType(effects, effectType){
@@ -63,22 +69,28 @@ function getEffectByType(effects, effectType){
 }
 
 createCard = (pName, pEffects, amount = 1, resultIDs = null) =>{
+    let cards = [];
+
     for(let i=0; i<amount; i++){
         let card = new Card({
             name: pName,
             id: uuid(),
             effects: pEffects
         });
-        
+        resultIDs.push(card.id);
+        /*
         card.save()
         .then( (card) => {
             //console.log("saved card: " + card.name);
             if(resultIDs){
-                resultIDs.push(card.id);
                 //console.log("adding " + card.id + " to " + resultIDs.length);
             }
         });
+        */
+       cards.push(card);
     }
+    //console.log("created " + cards.length + " cards");
+    return cards;
 }
 
 //------------------------------------------------------

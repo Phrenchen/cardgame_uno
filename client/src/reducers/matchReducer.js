@@ -17,9 +17,11 @@ export default function(state = initialState, action){
                 playerCount: action.payload
             }        
         case START_MATCH:
+        console.log("Reducer: " + action.payload);
             return {
                 ...state,
                 id: action.payload.id,
+                playerCount: action.payload.playerCount,
                 players: action.payload.players,
                 cards: action.payload.cards,
                 firstPlayerID: action.payload.firstPlayerID,

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import {STATE_SETUP, STATE_MATCH} from "./AppState";
-import StateSetup from "./StateSetup";
+import {STATE_START, STATE_MATCH} from "./AppState";
+import StateStart from "./StateStart";
 import StateMatch from "./StateMatch";
 import {connect} from "react-redux";
 
 class AppStateMachine extends Component{
 
     // render functions
-    renderSetupState(){
-        return <StateSetup/>
+    renderStartState(){
+        return <StateStart/>
     }
 
     renderMatchState(){
@@ -22,9 +22,9 @@ class AppStateMachine extends Component{
             case STATE_MATCH:
                 renderFunction = this.renderMatchState;
                 break;
-            case STATE_SETUP:
+            case STATE_START:
             default:
-                renderFunction = () => { return this.renderSetupState() };
+                renderFunction = () => { return this.renderStartState() };
                 break;
         }
 

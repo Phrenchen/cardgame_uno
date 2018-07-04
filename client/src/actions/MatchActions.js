@@ -2,13 +2,15 @@ import axios from "axios";
 import {START_MATCH, SET_APP_STATE, SET_PLAYER_COUNT} from "../actions/types";
 import { STATE_MATCH } from "../appStates/AppState";
 
-export const startMatch = (playerIDs) => dispatch => {
-    //console.log("start match");
+export const startMatch = (playerCount) => dispatch => {
+    console.log("start match with " + playerCount + " players");
 
     // to server
     axios
-        .post("api/matches", (playerIDs))
+        .post("api/matches/?", (playerCount))
         .then( (res) => {
+            //console.log("matches response: ");
+            //console.log(res);
             dispatch({
                 type: START_MATCH,
                 payload: res.data

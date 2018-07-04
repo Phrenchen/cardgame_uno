@@ -8,10 +8,6 @@ import uuid from "uuid";
 
 class PlayerList extends Component{
     
-    componentDidMount(){
-        this.props.getPlayers();
-    }
-
     createPlayers(){
         let playerCount = this.props.match.playerCount;
         let players = new Array();
@@ -49,15 +45,13 @@ class PlayerList extends Component{
 }
 
 PlayerList.propTypes = {
-    getPlayers: PropTypes.func.isRequired,
-    players: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>({
-    players: state.players,
     match: state.match
 });
 
 
 
-export default connect(mapStateToProps, {getPlayers, deletePlayer} )(PlayerList);
+export default connect(mapStateToProps )(PlayerList);
