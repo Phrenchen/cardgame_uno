@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-import {PLAYER_SETUP} from "./AppState";
-import PlayerSetupState from "./PlayerSetupState";
+import {STATE_SETUP, STATE_MATCH} from "./AppState";
+import StateSetup from "./StateSetup";
+import StateMatch from "./StateMatch";
 import {connect} from "react-redux";
 
 class AppStateMachine extends Component{
 
     // render functions
-    renderPlayerSetup(){
-        return <PlayerSetupState/>
+    renderSetupState(){
+        return <StateSetup/>
     }
 
+    renderMatchState(){
+        return <StateMatch />
+    }
 
     render(){
         let renderFunction;
 
         switch(this.props.appState){
-            case PLAYER_SETUP:
+            case STATE_MATCH:
+                renderFunction = this.renderMatchState;
+                break;
+            case STATE_SETUP:
             default:
                 //renderFunction = this.renderPlayerSetup;
-                renderFunction = () => { return this.renderPlayerSetup() };
+                renderFunction = () => { return this.renderSetupState() };
                 break;
         }
 

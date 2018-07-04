@@ -74,6 +74,7 @@ matchRouter.post("/", (req, res) => {
                    
                     match.save()                                                 //match.save...
                         .then((pMatch) => {
+                            console.log("saved match: " + pMatch.id);
                             res.json(pMatch);                                   // return match to client
                         });
                 })

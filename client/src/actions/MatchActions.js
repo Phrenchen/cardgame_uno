@@ -1,5 +1,6 @@
 import axios from "axios";
-import {START_MATCH} from "../actions/types";
+import {START_MATCH, SET_APP_STATE} from "../actions/types";
+import { STATE_MATCH } from "../appStates/AppState";
 
 export const startMatch = (playerIDs) => dispatch => {
     console.log("start match");
@@ -10,6 +11,10 @@ export const startMatch = (playerIDs) => dispatch => {
             dispatch({
                 type: START_MATCH,
                 payload: res.data
-            })
+            });
+            dispatch({
+                type: SET_APP_STATE,
+                payload: STATE_MATCH
+            });
         });
 };
