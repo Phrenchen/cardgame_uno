@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PlayerList from '../components/PlayerList';
 import AmountOfPlayerSelector from '../components/AmountOfPlayerSelector';
-//import PlayerModal from '../components/PlayerModal';
 import {connect} from "react-redux";
 import  { Button } from "reactstrap";
 import {startMatch, setPlayerCount} from "../actions/MatchActions";
-import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 
 class StateSetup extends Component{
 
@@ -30,7 +28,9 @@ class StateSetup extends Component{
                 <AmountOfPlayerSelector 
                     onChange={ this.onPlayerCountChange } 
                 />
-                <PlayerList/>
+                <PlayerList
+                    players= {this.props.player.players}
+                />
                 <Button
                     onClick= {this.onStartMatch}
                 >
@@ -38,10 +38,6 @@ class StateSetup extends Component{
                 </Button>
             </div>
         );
-                /*
-                <PlayerModal/>
-                <PlayerList/>
-                */
     }
 }
 
@@ -49,8 +45,8 @@ class StateSetup extends Component{
 
 const mapStateToProps = function(state){
     return {
-        player: state.players,
-        match: state.match
+        player: state.players//,
+        //match: state.match
     }
 }
 export default connect(mapStateToProps, {startMatch, setPlayerCount})(StateSetup);
