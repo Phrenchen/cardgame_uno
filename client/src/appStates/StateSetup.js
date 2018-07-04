@@ -23,6 +23,8 @@ class StateSetup extends Component{
     }
 
     render(){
+        //console.log("render StateSetup");
+        //console.log(this.props);
         return (
             <div>
                 <AmountOfPlayerSelector 
@@ -47,7 +49,8 @@ class StateSetup extends Component{
 
 const mapStateToProps = function(state){
     return {
-        player: state.players
+        player: state.players,
+        match: state.match
     }
 }
 export default connect(mapStateToProps, {startMatch, setPlayerCount})(StateSetup);

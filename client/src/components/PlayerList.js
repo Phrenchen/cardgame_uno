@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {connect} from "react-redux";
 import {getPlayers, deletePlayer} from "../actions/PlayerActions";
 import PropTypes from "prop-types";
+import uuid from "uuid";
 
 class PlayerList extends Component{
     
@@ -15,30 +16,57 @@ class PlayerList extends Component{
         this.props.deletePlayer(id);
     }
 
+    /*
+    createPlayer(name){
+        let id = uuid();
+
+        return(
+            <CSSTransition key={id} timeout={500} classNames="fade">
+                <ListGroupItem>
+                    <Button
+                        className="remove-btn"
+                        color="danger"
+                        size="sm"
+                        onClick={this.onDeleteClick.bind(this, id)}
+                    >
+                    &times;
+                    </Button>
+                    {name}
+                </ListGroupItem>
+            </CSSTransition>
+        );
+    }
+*/
+    
+
+    createPlayers(){
+        let playerCount = this.props.match.playerCount;
+        let players = new Array();
+        let id;
+
+        // looks stupid. probably is. doesn´t worry me, though :)
+        for(let j=0; j<playerCount; j++){
+            players.push(j);
+        }
+
+        return players.map((playerIndex, index) => {                // WAT IS LOS? CEHCK!
+            id = uuid();
+            return(
+                <CSSTransition key={id} timeout={500} classNames="fade">
+                    <ListGroupItem>
+                        {"AI " + (index + 1)}
+                    </ListGroupItem>
+                </CSSTransition>
+            )});
+    }
+
     render(){
-        const { players } = this.props.items;       // WIE WAS PASSIERT HIER??? CHECK IT!
-        //console.log(items);
         return (
             <Container>
                 <ListGroup>
                     <TransitionGroup className="shopping-list">
                         {
-                            players.map(({_id, name}) => {                // WAT IS LOS? CEHCK!
-                                return(
-                                <CSSTransition key={_id} timeout={500} classNames="fade">
-                                    <ListGroupItem>
-                                        <Button
-                                            className="remove-btn"
-                                            color="danger"
-                                            size="sm"
-                                            onClick={this.onDeleteClick.bind(this, _id)}
-                                        >
-                                        &times;
-                                        </Button>
-                                        {name}
-                                    </ListGroupItem>
-                                </CSSTransition>
-                            )})
+                            this.createPlayers()
                         }
                     </TransitionGroup>
                 </ListGroup>
@@ -49,11 +77,12 @@ class PlayerList extends Component{
 
 PlayerList.propTypes = {
     getPlayers: PropTypes.func.isRequired,
-    items: PropTypes.object.isRequired
+    players: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>({
-    items: state.players
+    players: state.players,
+    match: state.match
 });
 
 
