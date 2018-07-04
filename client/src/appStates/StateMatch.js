@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 class StateMatch extends Component{
 
     render(){
-        console.log(this.props.appState);
+        console.log(this.props);
         return (
             <div>
                  match

@@ -3,7 +3,7 @@ import {START_MATCH, SET_APP_STATE, SET_PLAYER_COUNT} from "../actions/types";
 import { STATE_MATCH } from "../appStates/AppState";
 
 export const startMatch = (playerIDs) => dispatch => {
-    console.log("start match");
+    //console.log("start match");
 
     // to server
     axios
@@ -23,7 +23,7 @@ export const startMatch = (playerIDs) => dispatch => {
 
 
 export const setPlayerCount = (count) => dispatch => {
-    console.log("matchActions: send player count " + count + "to server");
+    //console.log("matchActions: save player count " + count);
     dispatch({
         type: SET_PLAYER_COUNT,
         payload: count
