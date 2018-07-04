@@ -1,7 +1,8 @@
-import {START_MATCH} from "../actions/types";
+import {START_MATCH, SET_PLAYER_COUNT} from "../actions/types";
 
 const initialState = {
     id: "",
+    playerCount: 1,
     players: [],
     cards: [],
     firstPlayerID: "",
@@ -10,8 +11,14 @@ const initialState = {
 
 export default function(state = initialState, action){
     switch(action.type){
+        case SET_PLAYER_COUNT:
+            return {
+                ...state,
+                playerCount: action.payload
+            }        
         case START_MATCH:
             return {
+                ...state,
                 id: action.payload.id,
                 players: action.payload.players,
                 cards: action.payload.cards,

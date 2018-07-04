@@ -10,6 +10,7 @@ export const ADD_PLAYER = "ADD_PLAYER";
 
 // MATCH
 export const START_MATCH = "START_MATCH";
+export const SET_PLAYER_COUNT = "SET_PLAYER_COUNT";
 
 // APP
 export const SET_APP_STATE = "SET_APP_STATE";

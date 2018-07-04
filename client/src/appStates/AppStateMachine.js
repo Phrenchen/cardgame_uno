@@ -16,15 +16,14 @@ class AppStateMachine extends Component{
     }
 
     render(){
-        let renderFunction;
+        let renderFunction = null;
 
-        switch(this.props.appState){
+        switch(this.props.appState.current){
             case STATE_MATCH:
                 renderFunction = this.renderMatchState;
                 break;
             case STATE_SETUP:
             default:
-                //renderFunction = this.renderPlayerSetup;
                 renderFunction = () => { return this.renderSetupState() };
                 break;
         }

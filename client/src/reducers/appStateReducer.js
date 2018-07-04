@@ -6,13 +6,14 @@ let initialState = {
 }
 
 function appState(state = initialState, action){
-    let newState = {
-        current: state.current
-    };
-    if(action.type == SET_APP_STATE){
-        newState.current = (action.payload != undefined) ? action.payload : "no valid state for reducer";
+    switch(action.type){
+        case SET_APP_STATE:
+            return {
+                ...state,
+                current: (action.payload !== undefined) ? action.payload : "no valid state for reducer"
+            };
+        default: return state;
     }
-    return newState;
 }
 
 

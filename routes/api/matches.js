@@ -26,7 +26,7 @@ matchRouter.get("/", (req, res) => {
  * it´s supermessy right now. clean it up!
  */
 matchRouter.post("/", (req, res) => {
-    console.log("create new match");
+    //console.log("create new match");
     //console.log(req.body);
     //console.log(cardDeck);
     
@@ -63,12 +63,16 @@ matchRouter.post("/", (req, res) => {
                     cardDeck.cardDeck.map((cardID) => {                         // add remaining cards to stack
                         stackCards.push(getCardByID(allCards, cardID));
                     });
+                    
+                    //console.log("route matches: creating match");
+                    //console.log(req.body);
 
                     const match = new Match({                                   // create new match
                         id: uuid(),
+                        playerCount: -1,
                         players: players,
                         cards: stackCards,
-                        firstPlayerID: players[0].id,                           // first player starts
+                        firstPlayerID: players.length > 0 ? players[0].id : "no human players",                           // first player starts
                         topCardID: stackCards[0].id                             // first card is top card
                     });
                    

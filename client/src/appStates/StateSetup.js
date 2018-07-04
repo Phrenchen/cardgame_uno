@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PlayerList from '../components/PlayerList';
-import PlayerModal from '../components/PlayerModal';
+import AmountOfPlayerSelector from '../components/AmountOfPlayerSelector';
+//import PlayerModal from '../components/PlayerModal';
 import {connect} from "react-redux";
-import  { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
-import {startMatch} from "../actions/MatchActions";
+import  { Button } from "reactstrap";
+import {startMatch, setPlayerCount} from "../actions/MatchActions";
+import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 
 class StateSetup extends Component{
 
@@ -16,11 +18,16 @@ class StateSetup extends Component{
         this.props.startMatch(playerIDs);
     }
 
+    onPlayerCountChange = (amount) => {
+        this.props.setPlayerCount(amount);
+    }
 
     render(){
         return (
             <div>
-                <PlayerModal/>
+                <AmountOfPlayerSelector 
+                    onChange={ this.onPlayerCountChange } 
+                />
                 <PlayerList/>
                 <Button
                     onClick= {this.onStartMatch}
@@ -29,12 +36,18 @@ class StateSetup extends Component{
                 </Button>
             </div>
         );
+                /*
+                <PlayerModal/>
+                <PlayerList/>
+                */
     }
 }
+
+
 
 const mapStateToProps = function(state){
     return {
         player: state.players
     }
 }
-export default connect(mapStateToProps, {startMatch})(StateSetup);
+export default connect(mapStateToProps, {startMatch, setPlayerCount})(StateSetup);
