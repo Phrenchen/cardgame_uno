@@ -12,33 +12,6 @@ class PlayerList extends Component{
         this.props.getPlayers();
     }
 
-    onDeleteClick = (id) =>{
-        this.props.deletePlayer(id);
-    }
-
-    /*
-    createPlayer(name){
-        let id = uuid();
-
-        return(
-            <CSSTransition key={id} timeout={500} classNames="fade">
-                <ListGroupItem>
-                    <Button
-                        className="remove-btn"
-                        color="danger"
-                        size="sm"
-                        onClick={this.onDeleteClick.bind(this, id)}
-                    >
-                    &times;
-                    </Button>
-                    {name}
-                </ListGroupItem>
-            </CSSTransition>
-        );
-    }
-*/
-    
-
     createPlayers(){
         let playerCount = this.props.match.playerCount;
         let players = new Array();
