@@ -27,7 +27,7 @@ class PlayerList extends Component{
             return(
                 <CSSTransition key={id} timeout={500} classNames="fade">
                     <ListGroupItem>
-                        {"AI " + (index + 1)}
+                        {"Player " + (index + 1)}
                     </ListGroupItem>
                 </CSSTransition>
             )});
