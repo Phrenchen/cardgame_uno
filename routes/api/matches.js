@@ -7,18 +7,13 @@ const Card = require("../../model/Card")
 const {cardDeck} = require("../../model/InitDB");
 
 matchRouter.get("/", (req, res) => {
-    /*console.log("------aadding player ---------");
-    console.log("req: " + req);
-    console.log("------------------------------");
-    console.log(res);
-    console.log("------------------------------");
-    */
-   
-   // find all match
+   // find all matches
     Match.find()                 // promise based
         //.sort({id: -1})       // sort by date descendingly
         .then(players => res.json(players))
 });
+
+
 
 
 /**
@@ -27,7 +22,6 @@ matchRouter.get("/", (req, res) => {
  */
 matchRouter.post("/", (req, res) => {
     //console.log("create new match");
-    //console.log(req.body);
     //console.log(cardDeck);
     
     let playerCount = req.body.playerCount;
@@ -36,10 +30,6 @@ matchRouter.post("/", (req, res) => {
     let cards = [];
     let playerCardCount = 7;                                    // amount of hand cards for each player
     let index;
-
-    //console.log("match router. post: ");
-    //console.log(req);
-    //console.log(playerCount);
 
     Card.find()             // get all Cards (1 Deck)
         .then((allCards) => {
@@ -82,13 +72,14 @@ matchRouter.post("/", (req, res) => {
                 playerCount: -1,
                 players: players,
                 cards: stackCards,
-                firstPlayerID: players.length > 0 ? players[0].id : "no human players",                           // first player starts
+                playedCards: [pickFirstCard(stackCards)],                           // add first card to stack
+                activePlayerID: players.length > 0 ? players[0].id : "no human players",                           // first player starts
                 topCardID: stackCards[0].id                             // first card is top card
             });
             
             match.save()                                                 //match.save...
                 .then((pMatch) => {
-                    //console.log("saved match: " + pMatch.id);
+                    //console.log("saved match");
                     res.json(pMatch);                                   // return match to client
                 });
         })
@@ -96,6 +87,30 @@ matchRouter.post("/", (req, res) => {
    
 
 // helper
+function pickFirstCard(cards){
+    let firstCard = null;
+
+    cards.map((card) =>{
+        if(!firstCard && card){
+            if(isColor(card)){
+                firstCard = card;
+            }
+        }
+    });
+    return firstCard;
+}
+
+function isColor(card){
+    let effect;
+    for(let i=0; i<card.effects.length; i++){
+        effect = card.effects[i];
+        if(effect.effectType.indexOf("color") != null ){
+            return true;
+        }
+    }
+    return false;
+}
+
 function getCardByID(allCards, cardID){
     let result = null;
     allCards.map((card) => {

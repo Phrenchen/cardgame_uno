@@ -1,5 +1,5 @@
 import axios from "axios";
-import {START_MATCH, SET_APP_STATE, SET_PLAYER_COUNT} from "../actions/types";
+import {START_MATCH, SET_APP_STATE, SET_PLAYER_COUNT, CARD_PLAYED} from "../actions/types";
 import { STATE_MATCH } from "../appStates/AppState";
 
 export const startMatch = () => dispatch => {
@@ -9,8 +9,6 @@ export const startMatch = () => dispatch => {
     axios
         .post("api/matches")
         .then( (res) => {
-            //console.log("matches response: ");
-            //console.log(res);
             dispatch({
                 type: START_MATCH,
                 payload: res.data
@@ -23,22 +21,19 @@ export const startMatch = () => dispatch => {
         });
 };
 
-
-export const setPlayerCount = (count) => dispatch => {
-    //console.log("matchActions: save player count " + count);
-    dispatch({
-        type: SET_PLAYER_COUNT,
-        payload: count
-    });
-    /*
-    // to server
-    axios
-        .post("api/matches", (count))
-        .then( (res) => {
+export const selectCard = (pPlayerID, pCardID) => dispatch => {
+    console.log("send played card to server");
+    console.log(pPlayerID);
+    console.log(pCardID);
+    axios.post("api/playcard/", {
+            playerID: pPlayerID,
+            cardID: pCardID
+        })
+        .then((res) =>{
+            console.log("server responded to played card");
             dispatch({
-                type: SET_PLAYER_COUNT,
+                type: CARD_PLAYED,
                 payload: res.data
             });
         });
-    */
 };

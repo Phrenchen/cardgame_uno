@@ -2,12 +2,8 @@ import React, {Component} from "react";
 import  { Container, 
     ListGroup, 
     ListGroupItem, 
-    Collapse,
     Navbar, 
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem
+    Button
 } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {connect} from "react-redux";
@@ -29,58 +25,43 @@ class PlayerList extends Component{
     }
     */
 
-    createPlayers(){
-        let playerCount = this.props.match.players.length;
-        let players = new Array();
-        let id;
-
-        // looks stupid. probably is. doesn´t worry me, though :)
-        for(let j=0; j<playerCount; j++){
-            players.push(j);
+    createCardList(player){
+        if(player.id === this.props.match.activePlayerID){
+            return (
+                <div className="cardlist">
+                    <CardList 
+                        cards={player.cards} 
+                        owner={player.id}
+                    />
+                </div>
+            );
         }
+        return null;
+    }
 
-        return players.map((playerIndex, index) => {                // WAT IS LOS? CEHCK!
+    createPlayers(){
+        let id;
+        let counter = 0;
+
+        return  this.props.match.players.map((player) => {                // WAT IS LOS? CEHCK!
             id = uuid();
+            counter++;
+
             return(
                 <CSSTransition className="playerPanel" key={id} timeout={500} classNames="fade">
                     <ListGroupItem>
                         <Navbar color="dark" dark expand="sm" className="mb-5">
                             <Container>
-                                <NavbarBrand href="/">Player {index + 1}</NavbarBrand>
-                                <NavbarToggler onClick={ () =>{
-                                        let toggles = this.state.toggles.slice();
-
-                                        toggles.map((t, id) => {
-                                            toggles[id] = index === id;
-                                        });
-                                        
-                                        this.setState({
-                                            toggles: toggles
-                                        });
-                                    }} />
-                                <Collapse isOpen={this.state.toggles[index]} navbar>
-                                    <Nav className="ml_auto" navbar>
-                                        <NavItem>
-                                            <CardList cards={this.props.match.players[index].cards} />
-                                        </NavItem>
-                                    </Nav>
-                                </Collapse>
+                                <Button>Player {counter}</Button>
+                                    {
+                                        this.createCardList(player) // will only render something if the player is active
+                                    }
                             </Container>
                         </Navbar>
                     </ListGroupItem>
                 </CSSTransition>
             )});
     }
-
-    /*
-    
-    <Button
-                                                onClick={this.onDeleteAllPlayers}
-                                            >delete all players</Button>
-                                            <Button
-                                                onClick={this.onStartMatch}
-                                            >start match</Button>
-    */
 
     render(){
         return (

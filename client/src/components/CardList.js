@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import  { Container, Row, Col } from "reactstrap";
 import {connect} from "react-redux";
-import {getItems, deleteItem} from "../actions/ItemActions";
-import {getPlayers} from "../actions/PlayerActions";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 import CardView from "./CardView";
@@ -17,7 +15,7 @@ class CardList extends Component{
     }
 
     render(){
-        //console.log(items);
+        console.log("rendering CardList for player: " + this.props.cards.length);
         return (
             <Container>
                 <Row>
@@ -27,8 +25,10 @@ class CardList extends Component{
                                 <CardView
                                     key={card.id}
                                     id={card.id}
+                                    owner={this.props.owner}
                                     name={card.name}
                                     effects={card.effects}
+
                                 />
                             </Col>
                         })
@@ -40,8 +40,11 @@ class CardList extends Component{
 }
 
 CardList.propTypes = {
+    owner: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired
 };
+
+
 
 const mapStateToProps = (state) =>({
     
