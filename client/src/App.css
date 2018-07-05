@@ -7,13 +7,24 @@
     --card_black: #000000;
 }
 
-/* card */
+/* player panel */
+.playerPanel{
+    width: 30rem;
+    overflow: hidden;
+}
 
+/* card */
 .card{
     border: 1px solid white;
     background: #000000;
     user-select: none;
     cursor: "grab";
+    width: 100px;
+    height: 150px;
+}
+
+.card:hover {
+    border: 5px solid black;
 }
 
 /*------------------------------------------*/

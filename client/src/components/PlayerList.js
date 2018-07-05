@@ -42,7 +42,7 @@ class PlayerList extends Component{
         return players.map((playerIndex, index) => {                // WAT IS LOS? CEHCK!
             id = uuid();
             return(
-                <CSSTransition key={id} timeout={500} classNames="fade">
+                <CSSTransition className="playerPanel" key={id} timeout={500} classNames="fade">
                     <ListGroupItem>
                         <Navbar color="dark" dark expand="sm" className="mb-5">
                             <Container>
