@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
+import PlayerList from '../components/PlayerList';
 
 class StateMatch extends Component{
 
@@ -7,7 +8,7 @@ class StateMatch extends Component{
         console.log(this.props);
         return (
             <div>
-                 match
+                 <PlayerList />
             </div>
         );
     }
