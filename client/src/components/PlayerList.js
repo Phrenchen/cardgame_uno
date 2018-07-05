@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import  { Container, 
     ListGroup, 
     ListGroupItem, 
-    Button, 
     Collapse,
     Navbar, 
     NavbarToggler,
@@ -14,6 +13,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import uuid from "uuid";
+import CardList from "./CardList";
 
 class PlayerList extends Component{
 
@@ -61,9 +61,8 @@ class PlayerList extends Component{
                                 <Collapse isOpen={this.state.toggles[index]} navbar>
                                     <Nav className="ml_auto" navbar>
                                         <NavItem>
-                                            list of hand cards
+                                            <CardList cards={this.props.match.players[index].cards} />
                                         </NavItem>
-
                                     </Nav>
                                 </Collapse>
                             </Container>

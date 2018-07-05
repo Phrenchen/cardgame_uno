@@ -1,3 +1,22 @@
+/* variables */
+:root{
+    --card_red: #ff0000;
+    --card_green: rgb(13, 138, 13);
+    --card_blue: rgb(12, 12, 204);
+    --card_yellow: #d9ff00;
+    --card_black: #000000;
+}
+
+/* card */
+
+.card{
+    border: 1px solid white;
+    background: #000000;
+    user-select: none;
+    cursor: "grab";
+}
+
+/*------------------------------------------*/
 .remove-btn{
     margin-right: .5rem;
 }

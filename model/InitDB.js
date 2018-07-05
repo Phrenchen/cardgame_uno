@@ -34,18 +34,18 @@ function addCardsToDB() {
             // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
                 let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
-                cards = cards.concat( createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
             });
 
             // create specials
-            cards = cards.concat( createCard(EffectSpecial.SKIP, [getEffectByType(effects, EffectSpecial.SKIP)], 8, cardDeck) );
-            cards = cards.concat( createCard(EffectSpecial.TAKE_2, [getEffectByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck) );
-            cards = cards.concat( createCard(EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
-            cards = cards.concat( createCard(EffectSpecial.CHANGE_DIRECTION, [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck) );
-            cards = cards.concat( createCard(EffectSpecial.TAKE_4 + EffectSpecial.CHANGE_COLOR, [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectSpecial.SKIP)], 8, cardDeck) );
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck) );
+            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
+            cards = cards.concat( createCard("change direction", [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck) );
+            cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
             
             Card.insertMany(cards, (err, result) => {
                 console.log("inserted cards");

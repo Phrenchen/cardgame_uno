@@ -1,7 +1,7 @@
 const EffectColor = {
-    RED: "red",
-    GREEN: "green",
-    BLUE: "blue",
-    YELLOW: "yellow"
+    RED: "color_red",
+    GREEN: "color_green",
+    BLUE: "color_blue",
+    YELLOW: "color_yellow"
 }
 module.exports = EffectColor;
