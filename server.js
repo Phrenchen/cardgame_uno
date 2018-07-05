@@ -2,16 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
-//const items = require("./routes/api/items");
-const cards = require("./routes/api/cards");
-const players = require("./routes/api/players");
-const effects = require("./routes/api/effects");
 const matches = require("./routes/api/matches");
+const playcard = require("./routes/api/playcard");
 
 const app = express();
-
-const Card = require("./model/Card");
-const Effect = require("./model/Effect");
 
 const {initDB} = require("./model/InitDB");
 
@@ -33,10 +27,11 @@ mongoose
 
 // use routes
 //app.use("/api/items", items);
-app.use("/api/cards", cards);
-app.use("/api/players", players);
-app.use("/api/effects", effects);
+//app.use("/api/cards", cards);
+//app.use("/api/players", players);
+//app.use("/api/effects", effects);
 app.use("/api/matches", matches);
+app.use("/api/playcard", playcard);
 
 // serve static assets if we are in production
 if(process.env.NODE_ENV === "production"){
