@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import  { Button } from "reactstrap";
-import {startMatch, setPlayerCount} from "../actions/MatchActions";
+import {startMatch} from "../actions/MatchActions";
 
 class StateStart extends Component{
 
@@ -32,4 +32,4 @@ const mapStateToProps = function(state){
         match: state.match
     }
 }
-export default connect(mapStateToProps, {startMatch, setPlayerCount})(StateStart);
+export default connect(mapStateToProps, {startMatch})(StateStart);

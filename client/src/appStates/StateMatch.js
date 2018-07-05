@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import PlayerList from '../components/PlayerList';
+import PlayedCardStack from '../components/PlayedCardStack';
 
 class StateMatch extends Component{
 
     render(){
         return (
-            <div>
+            <div className="match_grid">
                  <PlayerList />
+                 <PlayedCardStack playedCards= {this.props.match.playedCards} />
             </div>
         );
     }
@@ -15,6 +17,7 @@ class StateMatch extends Component{
 
 const mapStateToProps = function(state){
     return {
+        match: state.match
     }
 }
 export default connect(mapStateToProps)(StateMatch);

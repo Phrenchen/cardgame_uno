@@ -6,11 +6,25 @@
     --card_yellow: #d9ff00;
     --card_black: #000000;
 }
+/* -------- */
+.match_grid{
+    display: grid;
+    grid-template-columns: 70% 1fr;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}
 
 /* player panel */
 .playerPanel{
-    width: 30rem;
+    width:100%;
+    height:100%;
+    
     overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 /* card */

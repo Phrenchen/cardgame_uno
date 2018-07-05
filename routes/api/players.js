@@ -10,6 +10,7 @@ const Player = require("../../model/Player");
 // @desc    get all players
 // @access  public
 playerRouter.get("/", (req, res) => {
+    console.log("GET: get players");
     /*console.log("------aadding player ---------");
     console.log("req: " + req);
     console.log("------------------------------");
@@ -25,6 +26,7 @@ playerRouter.get("/", (req, res) => {
 // @desc    add player
 // @access  public
 playerRouter.post("/", (req, res) => {
+    console.log("POST: add player");
     const newPlayer = new Player({
         name: req.body.name,
         id: uuid(),
