@@ -5,7 +5,6 @@ import PlayerList from '../components/PlayerList';
 class StateMatch extends Component{
 
     render(){
-        console.log(this.props);
         return (
             <div>
                  <PlayerList />

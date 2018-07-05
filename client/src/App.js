@@ -27,16 +27,5 @@ class App extends Component {
     );
   }
 }
-/*
-<div className="App">
-  <AppNavbar/>
-  <Container>
-    <PlayerModal />
-    <PlayerList/>
-    <br/>
-    <CardModal />
-    <CardList/>
-  </Container>
-</div>
-*/
+
 export default App;
