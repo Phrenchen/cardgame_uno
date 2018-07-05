@@ -37,9 +37,9 @@ matchRouter.post("/", (req, res) => {
     let playerCardCount = 7;                                    // amount of hand cards for each player
     let index;
 
-    console.log("match router. post: ");
-    console.log(req);
-    console.log(playerCount);
+    //console.log("match router. post: ");
+    //console.log(req);
+    //console.log(playerCount);
 
     Card.find()             // get all Cards (1 Deck)
         .then((allCards) => {
