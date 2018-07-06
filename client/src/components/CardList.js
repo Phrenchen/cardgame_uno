@@ -16,11 +16,17 @@ class CardList extends Component{
 
     render(){
         console.log("rendering CardList for player: " + this.props.cards.length);
+        //console.log(this.props.cards);
+        let card;
+
         return (
             <Container>
                 <Row>
                     {
-                        this.props.cards.map((card) => {
+                        this.props.cards.map((cardsTempShitCheckItOut) => {
+                            console.log("card");
+                            card = cardsTempShitCheckItOut;
+                            console.log(card);
                             return <Col key={uuid()}>
                                 <CardView
                                     key={card.id}

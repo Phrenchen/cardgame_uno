@@ -4,7 +4,7 @@ const matchRouter = express.Router();
 const Match = require("../../model/Match")
 const Player = require("../../model/Player")
 const Card = require("../../model/Card")
-const {cardDeck} = require("../../model/InitDB");
+const isColor = require("../../shared/PlayCardValidator");
 
 matchRouter.get("/", (req, res) => {
    // find all matches
@@ -30,11 +30,12 @@ matchRouter.post("/", (req, res) => {
     let cards = [];
     let playerCardCount = 7;                                    // amount of hand cards for each player
     let index;
+    let card;
 
     Card.find()             // get all Cards (1 Deck)
         .then((allCards) => {
             cards = allCards;
-            // distribute cards to players
+            // create new players
             for(let i = 0; i<playerCount; i++){
                 const newPlayer = new Player({
                     name: "Player " + (i+1),
@@ -43,81 +44,66 @@ matchRouter.post("/", (req, res) => {
                 });
                 players.push(newPlayer);
             }
-
-            Player.insertMany(players, (err, result) => {
-                //console.log("saved players");
-            })
-        })
-        .then(() =>{                        // distribute cards
+            
+            // distribute cards for each player
             players.map((player) =>{                                    // for ever player
                 for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
-                    index = getRandomInt(0, cardDeck.length-1);
-                    let cardID = cardDeck.splice(index, 1);    // remove from deck
-                    let card = getCardByID(cards, cardID);           // retrieve card
+                    index = getRandomInt(0, allCards.length-1);
+                    card = allCards.splice(index, 1)[0];    // retrieve card
+                    console.log(card);
                     player.cards.push( card );                          // move from deck to player hand
                 }
-                
-                player.save((err, result) => {
-                    //console.log("saved player");
+            });
+            
+            
+            
+            Player.insertMany(players, (err, result) => {
+                console.log("inserted all players.");
+                //console.log("allcards: " + allCards);
+                let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
+                //console.log("firstcard: " + firstCard);
+                const match = new Match({                                   // create new match
+                    id: uuid(),
+                    players: result,
+                    playedCards: [firstCard],                           // add first card to stack
+                    cards: allCards,
+                    activePlayerID: players.length > 0 ? players[0].id : "no human players" // first player starts
                 });
-            });
-            
-            let stackCards = [];
-            cardDeck.map((cardID) => {                         // add remaining cards to stack
-                stackCards.push(getCardByID(cards, cardID));
-            });
-            
-            const match = new Match({                                   // create new match
-                id: uuid(),
-                playerCount: -1,
-                players: players,
-                cards: stackCards,
-                playedCards: [pickFirstCard(stackCards)],                           // add first card to stack
-                activePlayerID: players.length > 0 ? players[0].id : "no human players",                           // first player starts
-                topCardID: stackCards[0].id                             // first card is top card
-            });
-            
-            match.save()                                                 //match.save...
-                .then((pMatch) => {
-                    //console.log("saved match");
-                    res.json(pMatch);                                   // return match to client
-                });
+    
+                match.save()                                                 //match.save...
+                    .then((pMatch) => {
+                        console.log("saved match");
+                        res.json(pMatch);                                   // return match to client
+                    });
+            })
         })
     });
    
 
 // helper
 function pickFirstCard(cards){
-    let firstCard = null;
+    let card;
 
-    cards.map((card) =>{
-        if(!firstCard && card){
-            if(isColor(card)){
-                firstCard = card;
-            }
-        }
-    });
-    return firstCard;
-}
-
-function isColor(card){
-    let effect;
-    for(let i=0; i<card.effects.length; i++){
-        effect = card.effects[i];
-        if(effect.effectType.indexOf("color") != null ){
-            return true;
+    for(let i=0; i<cards.length; i++){
+        card = cards[i];
+        if(isColor(card)){
+            return cards.splice(i, 1)[0];
         }
     }
-    return false;
 }
 
 function getCardByID(allCards, cardID){
     let result = null;
     allCards.map((card) => {
         if(card.id == cardID){
+            //console.log("found card by id");
             result = card;
         }
     });
+
+    if(!result){
+        console.log("found no card for id: " + cardID);
+    }
     return result;
 }
 

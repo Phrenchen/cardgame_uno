@@ -6,8 +6,7 @@ const initialState = {
     players: [],
     cards: [],
     playedCards: [],
-    activePlayerID: "",
-    topCardID: ""
+    activePlayerID: ""
 }
 
 export default function(state = initialState, action){
@@ -21,6 +20,8 @@ export default function(state = initialState, action){
         case CARD_PLAYED:
             console.log("reducing card played: " + action.payload.players[0].cards.length);
         case START_MATCH:
+        console.log("reducing match start: ");
+        console.log(action.payload.players);
             return {
                 ...state,
                 id: action.payload.id,
@@ -28,8 +29,7 @@ export default function(state = initialState, action){
                 players: action.payload.players,
                 cards: action.payload.cards,
                 playedCards: action.payload.playedCards,
-                activePlayerID: action.payload.activePlayerID,
-                topCardID: action.payload.topCardID
+                activePlayerID: action.payload.activePlayerID
             };
         default:
             return state;

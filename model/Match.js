@@ -15,17 +15,13 @@ const MatchSchema = new Schema({
         type: Array,
         required: true
     },
+    playedCards: {
+        type: Array,
+        required: true
+    },
     activePlayerID: {
         type: String,
         required: true
     },
-    topCardID: {
-        type: String,
-        required: true
-    },
-    playedCards: {
-        type: Array,
-        required: true
-    }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);

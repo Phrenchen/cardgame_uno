@@ -5,10 +5,6 @@ const EffectColor = require("./EffectColor");
 const EffectValue = require("./EffectValue");
 const EffectSpecial = require("./EffectSpecial");
 
-
-cardDeck = [];            // id´s of all cards belonging to one deck. will be cloned to be used in a match
-module.exports.cardDeck = cardDeck;
-
 function initDB(){
     // 1. check if effects exist
     Effect.find()
@@ -34,18 +30,18 @@ function addCardsToDB() {
             // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
                 let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
-                cards = cards.concat( createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
-                cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount, cardDeck) );
+                cards = cards.concat( createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount) );
+                cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount) );
+                cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount) );
+                cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount) );
             });
 
             // create specials
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectSpecial.SKIP)], 8, cardDeck) );
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectSpecial.TAKE_2)], 8, cardDeck) );
-            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
-            cards = cards.concat( createCard("change direction", [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8, cardDeck) );
-            cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4, cardDeck) );
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectSpecial.SKIP)], 8) );
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectSpecial.TAKE_2)], 8) );
+            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            cards = cards.concat( createCard("change direction", [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8) );
+            cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
                 //console.log("inserted cards");
@@ -68,7 +64,7 @@ function getEffectByType(effects, effectType){
     return result;
 }
 
-createCard = (pName, pEffects, amount = 1, resultIDs = null) =>{
+createCard = (pName, pEffects, amount = 1) =>{
     let cards = [];
 
     for(let i=0; i<amount; i++){
@@ -77,16 +73,6 @@ createCard = (pName, pEffects, amount = 1, resultIDs = null) =>{
             id: uuid(),
             effects: pEffects
         });
-        resultIDs.push(card.id);
-        /*
-        card.save()
-        .then( (card) => {
-            //console.log("saved card: " + card.name);
-            if(resultIDs){
-                //console.log("adding " + card.id + " to " + resultIDs.length);
-            }
-        });
-        */
        cards.push(card);
     }
     //console.log("created " + cards.length + " cards");

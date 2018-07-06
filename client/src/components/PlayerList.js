@@ -26,7 +26,11 @@ class PlayerList extends Component{
     */
 
     createCardList(player){
+        console.log("****");
+        //console.log(player);
         if(player.id === this.props.match.activePlayerID){
+            console.log("creating card list: ");
+            console.log(player);
             return (
                 <div className="cardlist">
                     <CardList 

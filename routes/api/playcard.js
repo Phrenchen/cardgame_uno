@@ -29,11 +29,11 @@ playcardRouter.post("/", (req, res) =>{
                             const topCard = match.playedCards[match.playedCards.length-1]
                             
                             // find handcard from player
-                            console.log(activePlayer.cards.length);
+                            console.log("active player card count: " + activePlayer.cards.length);
                             const playCard = extractCardFromPlayer(activePlayer, cardID);
                             console.log(activePlayer.cards.length);
-                            //console.log("found topcard: " + topCard.name);
-                            //console.log("found playcard: " + playCard.name);
+                            console.log("found topcard: " + topCard);
+                            console.log("found playcard: " + playCard);
                             if(validateCard(playCard, topCard)){
                                 //removeCardFromPlayer(match, playerID, )
                                 match.playedCards.push(playCard);
@@ -85,10 +85,11 @@ playcardRouter.post("/", (req, res) =>{
 // helper
 function extractCardFromPlayer(player, cardID){
     let card;
-    
+    console.log("extractCardFromPlayer: " + player.cards.length);
+
     for(let j=0; j<player.cards.length; j++){
         card = player.cards[j];
-        
+        console.log(card.id);
         if(card.id === cardID){
             console.log("************* extracting card ************* " + player.cards.length);
             
