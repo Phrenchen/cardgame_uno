@@ -40,7 +40,7 @@ playcardRouter.post("/", (req, res) =>{
                                 here we are to react to a validation error
                                 */
                                console.log("PLAY CARD VALIDATION!!!! out of sync with client and server");
-                               player.cards.push(playCard);     // re-add card to hand deck
+                               activePlayer.cards.push(playCard);     // re-add card to hand deck
                             }
                             
                             activePlayer.save()
@@ -48,15 +48,21 @@ playcardRouter.post("/", (req, res) =>{
                                     //saved active player
                                     
                                     let oldPlayer;
+                                    let clonedPlayers = match.players.slice();
+
                                     // replace new player in match. THIS LOOKS WEIRD? check mongo doc...
                                     for(var x=0; x<match.players.length; x++){
-                                        oldPlayer = match.players[x];
+                                        oldPlayer = clonedPlayers[x];
+                                        
 
                                         if(oldPlayer.id === savedPlayer.id){
-                                            match.players[x] = savedPlayer;
+                                            clonedPlayers[x] = savedPlayer;
+
+                                            console.log("saved player card count: " + savedPlayer.cards.length);
                                         }
                                     }
                                     
+                                    match.players = clonedPlayers;
                                     // *****
                                     // TODO:
                                     // apply played card effect: 
@@ -65,13 +71,13 @@ playcardRouter.post("/", (req, res) =>{
 
                                     // *****
                                     let playerPointerIsMovingForward = true;      // 0, 1, ..., 4, 0, 1
-                                    
+                                    match.players = clonedPlayers;
                                     // set next player
                                     match.activePlayerID = getNextPlayerID(match.players, match.activePlayerID, playerPointerIsMovingForward);
 
                                     match.save()
                                     .then((savedMatch) => {
-                                        res.json(savedMatch)                // match saved
+                                        res.json(savedMatch);                // match saved
                                     });
                                 });
                         })
