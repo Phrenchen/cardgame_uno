@@ -17,20 +17,9 @@ class PlayerList extends Component{
         toggles: [true, false, false, false, false]         // TODO: using static 5 player setup
         };           
     
-    /*
-    toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
-    */
 
     createCardList(player){
-        console.log("****");
-        //console.log(player);
         if(player.id === this.props.match.activePlayerID){
-            console.log("creating card list: ");
-            console.log(player);
             return (
                 <div className="cardlist">
                     <CardList 

@@ -34,12 +34,8 @@ class CardView extends Component {
     }
 
     render(){
-        console.log("rendering cardView");
-        //console.log(this.props);
-
         return (
             <Card className="card" id={this.state.id} onClick={() =>{
-                console.log("clicked card:" + this.props.name);
                 this.props.selectCard(this.props.owner, this.props.id);
             }} >
                 <CardBody>

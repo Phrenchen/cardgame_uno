@@ -18,10 +18,9 @@ export default function(state = initialState, action){
                 playerCount: action.payload
             }        
         case CARD_PLAYED:
-            console.log("reducing card played: " + action.payload.players[0].cards.length);
+            //console.log("reducing card played: " + action.payload.players[0].cards.length);
         case START_MATCH:
-        console.log("reducing match start: ");
-        console.log(action.payload.players);
+            //console.log("reducing match start: ");
             return {
                 ...state,
                 id: action.payload.id,

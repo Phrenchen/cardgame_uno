@@ -22,15 +22,12 @@ export const startMatch = () => dispatch => {
 };
 
 export const selectCard = (pPlayerID, pCardID) => dispatch => {
-    console.log("send played card to server");
-    console.log(pPlayerID);
-    console.log(pCardID);
     axios.post("api/playcard/", {
             playerID: pPlayerID,
             cardID: pCardID
         })
         .then((res) =>{
-            console.log("server responded to played card");
+            //console.log("server responded to played card");
             dispatch({
                 type: CARD_PLAYED,
                 payload: res.data
