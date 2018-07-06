@@ -17,9 +17,9 @@ class PlayedCardStack extends Component{
         return (
             <div>
                 <CardView
-                    key={uuid()}
-                    id={uuid()}
-                    owner={-1}      // has been played. no matter who played it
+                    key={topCard.id}
+                    id={topCard.id}
+                    owner={"-1"}      // has been played. no matter who played it
                     name={topCard.name}
                     effects={topCard.effects}
                 />
