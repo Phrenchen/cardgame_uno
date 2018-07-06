@@ -46,7 +46,7 @@ class PlayerList extends Component{
                     <ListGroupItem>
                         <Navbar color="dark" dark expand="sm" className="mb-5">
                             <Container>
-                                <Button>Player {counter}</Button>
+                                <Button>Player {counter + " (" + player.cards.length + " )"}</Button>
                                     {
                                         this.createCardList(player) // will only render something if the player is active
                                     }
