@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import CardView from "./CardView";
-
-import uuid from "uuid";
-
+import {Container} from "reactstrap";
 class PlayedCardStack extends Component{
 
 
@@ -15,7 +13,8 @@ class PlayedCardStack extends Component{
         //console.log("top card: " + topCard.name);
 
         return (
-            <div>
+            <Container>
+                played cards
                 <CardView
                     key={topCard.id}
                     id={topCard.id}
@@ -23,7 +22,7 @@ class PlayedCardStack extends Component{
                     name={topCard.name}
                     effects={topCard.effects}
                 />
-            </div>
+            </Container>
         );  
     }
 }

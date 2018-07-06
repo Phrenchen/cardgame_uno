@@ -33,13 +33,29 @@ function addCardsToDB() {
                 cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount) );
                 cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount) );
                 cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount) );
+                
             });
-
+            
             // create specials
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectSpecial.SKIP)], 8) );
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectSpecial.TAKE_2)], 8) );
-            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            // TAKE 2
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            
+            // SKIP
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+
+            // CHANGE DIRECTION has no color?
             cards = cards.concat( createCard("change direction", [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8) );
+
+            // SELECT COLOR
+            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+
+            // SELECT COLOR + TAKE 4
             cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
