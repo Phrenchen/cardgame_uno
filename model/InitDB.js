@@ -24,7 +24,6 @@ function addCardsToDB() {
     // get all effects from db 
     Effect.find()
         .then((effects) =>{
-            //console.log("access to all effects: " + effects.length); 
             
             // for each value, use all colors
             // every color + value combination has 2 cards, exception: 0
@@ -44,7 +43,7 @@ function addCardsToDB() {
             cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
-                //console.log("inserted cards");
+                //inserted cards
             })
         })
 

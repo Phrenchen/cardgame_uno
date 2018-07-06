@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 import CardView from "./CardView";
+const PlayCardValidator = require("../../../client/src/PlayCardValidator");
 
 class CardList extends Component{
     
@@ -15,22 +16,29 @@ class CardList extends Component{
     }
 
     render(){
-
+        console.log("rendering card list: " + PlayCardValidator);
         return (
             <Container>
                 <Row>
                     {
                         this.props.cards.map((card) => {
-                            return <Col key={uuid()}>
-                                <CardView
-                                    key={card.id}
-                                    id={card.id}
-                                    owner={this.props.owner}
-                                    name={card.name}
-                                    effects={card.effects}
-
-                                />
-                            </Col>
+                            let isValid = PlayCardValidator.validateCard(card, this.props.topCard);
+                            console.log("topcard: " + this.props.topCard.name);
+                            console.log("candidate: " + card.name)
+                            console.log(isValid);
+                            console.log("---");
+                            if(isValid){
+                                return <Col key={uuid()}>
+                                    <CardView
+                                        key={card.id}
+                                        id={card.id}
+                                        owner={this.props.owner}
+                                        name={card.name}
+                                        effects={card.effects}
+                                        disabled={ isValid }
+                                    />
+                                </Col>
+                            }
                         })
                     }
                 </Row>
@@ -41,7 +49,8 @@ class CardList extends Component{
 
 CardList.propTypes = {
     owner: PropTypes.string.isRequired,
-    cards: PropTypes.array.isRequired
+    cards: PropTypes.array.isRequired,
+    topCard: PropTypes.object.isRequired
 };
 
 

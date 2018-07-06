@@ -1,5 +1,5 @@
 import axios from "axios";
-import {START_MATCH, SET_APP_STATE, SET_PLAYER_COUNT, CARD_PLAYED} from "../actions/types";
+import {START_MATCH, SET_APP_STATE, CARD_PLAYED} from "../actions/types";
 import { STATE_MATCH } from "../appStates/AppState";
 
 export const startMatch = () => dispatch => {

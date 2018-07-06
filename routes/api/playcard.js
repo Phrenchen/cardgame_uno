@@ -2,7 +2,7 @@ const express = require("express");
 const playcardRouter = express.Router();
 const Match = require("../../model/Match")
 const Card = require("../../model/Card")
-const validateCard = require("../../shared/PlayCardValidator");
+const PlayCardValidator = require("../../client/src/PlayCardValidator");
 
 playcardRouter.post("/", (req, res) =>{
     //console.log("play card");
@@ -25,20 +25,12 @@ playcardRouter.post("/", (req, res) =>{
                         Player.findOne({
                             "id": playerID
                         }, (err, activePlayer) =>{
-                            //console.log("found player: " + activePlayer);
                             const topCard = match.playedCards[match.playedCards.length-1]
-                            
-                            // find handcard from player
-                            console.log("active player card count: " + activePlayer.cards.length);
                             const playCard = extractCardFromPlayer(activePlayer, cardID);
-                            console.log(activePlayer.cards.length);
-                            console.log("found topcard: " + topCard);
-                            console.log("found playcard: " + playCard);
-                            if(validateCard(playCard, topCard)){
-                                //removeCardFromPlayer(match, playerID, )
+                            
+                            if(PlayCardValidator.validateCard(playCard, topCard)){
                                 match.playedCards.push(playCard);
-                                console.log("added card to playedCards: " + match.playedCards.length);
-                                //console.log("player has remaining cards: " + player.cards.length);
+                                console.log("validation equal in client and server...adding card to playedCards: " + match.playedCards.length);
                             }
                             else{
                                 /* we removed the card from the hand deck, 
@@ -53,7 +45,8 @@ playcardRouter.post("/", (req, res) =>{
                             
                             activePlayer.save()
                                 .then((savedPlayer) =>{
-                                    console.log("saved active player: " + savedPlayer.cards.length);
+                                    //saved active player
+                                    
                                     let oldPlayer;
                                     // replace new player in match. THIS LOOKS WEIRD? check mongo doc...
                                     for(var x=0; x<match.players.length; x++){
@@ -63,12 +56,22 @@ playcardRouter.post("/", (req, res) =>{
                                             match.players[x] = savedPlayer;
                                         }
                                     }
+                                    
+                                    // *****
+                                    // TODO:
+                                    // apply played card effect: 
+                                    //  - change direction? 
+                                    //  - add penalty cards to next player
 
-                                    match.save()          // promise based
+                                    // *****
+                                    let playerPointerIsMovingForward = true;      // 0, 1, ..., 4, 0, 1
+                                    
+                                    // set next player
+                                    match.activePlayerID = getNextPlayerID(match.players, match.activePlayerID, playerPointerIsMovingForward);
+
+                                    match.save()
                                     .then((savedMatch) => {
-                                        console.log("updated match: " + match.players[0].cards.length);
-                                        console.log("savedPlayer: " + savedPlayer.cards.length);
-                                        res.json(savedMatch)
+                                        res.json(savedMatch)                // match saved
                                     });
                                 });
                         })
@@ -77,22 +80,38 @@ playcardRouter.post("/", (req, res) =>{
             })
         })
         .catch(e =>{
-            console.log("error: " + e);
+            console.log("error updating match when playing a card: " + e);
         })
         ;
 });
 
 // helper
+function getNextPlayerID(players, currentPlayerID, playerPointerIsMovingForward){
+    // forwards:  0, 1, 2, 3, 4, 0, 1
+    // backwards: 0, 4, 3, 2, 1, 0, 4
+    let nextPlayerIndex;
+
+    players.map((player, index) =>{
+        if(player.id === currentPlayerID){
+            console.log("found current player");
+
+            nextPlayerIndex = playerPointerIsMovingForward ? 
+                (index + 1) % players.length :                              // forward
+                ((index - 1) >= 0) ? (index - 1) : players.length - 1;      // backwards
+        }
+    });
+
+    console.log("next player index: " + nextPlayerIndex);
+    return players[nextPlayerIndex].id;
+}
+
 function extractCardFromPlayer(player, cardID){
     let card;
-    console.log("extractCardFromPlayer: " + player.cards.length);
 
     for(let j=0; j<player.cards.length; j++){
         card = player.cards[j];
         console.log(card.id);
         if(card.id === cardID){
-            console.log("************* extracting card ************* " + player.cards.length);
-            
             player.cards.splice(j, 1);
             console.log("************* extracting card ************* " + player.cards.length);
 

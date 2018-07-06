@@ -25,6 +25,7 @@ class PlayerList extends Component{
                     <CardList 
                         cards={player.cards} 
                         owner={player.id}
+                        topCard={this.props.topCard}
                     />
                 </div>
             );
@@ -72,7 +73,8 @@ class PlayerList extends Component{
 }
 
 PlayerList.propTypes = {
-    match: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired,
+    topCard: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) =>({

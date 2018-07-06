@@ -4,7 +4,7 @@ const matchRouter = express.Router();
 const Match = require("../../model/Match")
 const Player = require("../../model/Player")
 const Card = require("../../model/Card")
-const isColor = require("../../shared/PlayCardValidator");
+const PlayCardValidator = require("../../client/src/PlayCardValidator");
 
 matchRouter.get("/", (req, res) => {
    // find all matches
@@ -28,7 +28,7 @@ matchRouter.post("/", (req, res) => {
     playerCount = 5;                                            // TODO: for now every match has 5 players
     let players = [];   // PlayerObjects. serialize? hmm
     let cards = [];
-    let playerCardCount = 7;                                    // amount of hand cards for each player
+    let playerCardCount = 7;                                    // amount of hand cards for each player. default: 7
     let index;
     let card;
 
@@ -50,7 +50,7 @@ matchRouter.post("/", (req, res) => {
                 for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
                     index = getRandomInt(0, allCards.length-1);
                     card = allCards.splice(index, 1)[0];    // retrieve card
-                    console.log(card);
+                    //console.log(card);
                     player.cards.push( card );                          // move from deck to player hand
                 }
             });
@@ -58,10 +58,8 @@ matchRouter.post("/", (req, res) => {
             
             
             Player.insertMany(players, (err, result) => {
-                console.log("inserted all players.");
-                //console.log("allcards: " + allCards);
+                //console.log("inserted all players.");
                 let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
-                //console.log("firstcard: " + firstCard);
                 const match = new Match({                                   // create new match
                     id: uuid(),
                     players: result,
@@ -83,28 +81,18 @@ matchRouter.post("/", (req, res) => {
 // helper
 function pickFirstCard(cards){
     let card;
+    let firstCard = null;
+    let randomIndex;
+    
+    while(!firstCard){
+        randomIndex = getRandomInt(0, cards.length - 1);
+        card = cards[randomIndex];
 
-    for(let i=0; i<cards.length; i++){
-        card = cards[i];
-        if(isColor(card)){
-            return cards.splice(i, 1)[0];
+        if(PlayCardValidator.isColorValueCard(card)){
+            firstCard = cards.splice(randomIndex, 1)[0];
         }
     }
-}
-
-function getCardByID(allCards, cardID){
-    let result = null;
-    allCards.map((card) => {
-        if(card.id == cardID){
-            //console.log("found card by id");
-            result = card;
-        }
-    });
-
-    if(!result){
-        console.log("found no card for id: " + cardID);
-    }
-    return result;
+    return firstCard;
 }
 
 function getRandomInt(min, max) {
