@@ -4,7 +4,8 @@ const matchRouter = express.Router();
 const Match = require("../../model/Match")
 const Player = require("../../model/Player")
 const Card = require("../../model/Card")
-const PlayCardValidator = require("../../client/src/PlayCardValidator");
+const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
+const EffectSpecial = require("../../client/src/shared/EffectSpecial");
 
 matchRouter.get("/", (req, res) => {
    // find all matches
@@ -28,7 +29,7 @@ matchRouter.post("/", (req, res) => {
     playerCount = 5;                                            // TODO: for now every match has 5 players
     let players = [];   // PlayerObjects. serialize? hmm
     let cards = [];
-    let playerCardCount = 7;                                    // amount of hand cards for each player. default: 7
+    let playerCardCount = 17;                                    // amount of hand cards for each player. default: 7
     let index;
     let card;
 
@@ -53,10 +54,19 @@ matchRouter.post("/", (req, res) => {
                     //console.log(card);
                     player.cards.push( card );                          // move from deck to player hand
                 }
+                
+                // add direction change cards to each player
+                let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
+                if(changeDirectionCard){
+                    player.cards.push(changeDirectionCard);
+                }
+
+                let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
+                if(skipCard){
+                    player.cards.push(skipCard);
+                }
             });
-            
-            
-            
+
             Player.insertMany(players, (err, result) => {
                 //console.log("inserted all players.");
                 let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
@@ -79,6 +89,20 @@ matchRouter.post("/", (req, res) => {
    
 
 // helper
+function extractCardByType(cards, effectType){
+    let card;
+
+    for(let i=0; i<cards.length; i++){
+        card = cards[i];
+        
+        if(PlayCardValidator.hasEffect(card, effectType)){
+            cards.splice(i, 1);
+            return card;
+        }
+    }
+    return null;
+}
+
 function pickFirstCard(cards){
     let card;
     let firstCard = null;

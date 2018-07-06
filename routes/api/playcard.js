@@ -2,15 +2,14 @@ const express = require("express");
 const playcardRouter = express.Router();
 const Match = require("../../model/Match")
 const Card = require("../../model/Card")
-const PlayCardValidator = require("../../client/src/PlayCardValidator");
+const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
+const EffectSpecial = require("../../client/src/shared/EffectSpecial");
 
 playcardRouter.post("/", (req, res) =>{
-    //console.log("play card");
-    //console.log(req.body);
-
     const playerID = req.body.playerID;
     const cardID = req.body.cardID;
-    //console.log("playerID: " + playerID);
+    let topCard;
+    let playCard;
 
     // find match for player
     //Match.findOne({ "id": req.body.playerID }, (err, res) => {
@@ -25,12 +24,12 @@ playcardRouter.post("/", (req, res) =>{
                         Player.findOne({
                             "id": playerID
                         }, (err, activePlayer) =>{
-                            const topCard = match.playedCards[match.playedCards.length-1]
-                            const playCard = extractCardFromPlayer(activePlayer, cardID);
+                            topCard = match.playedCards[match.playedCards.length-1]
+                            playCard = extractCardFromPlayer(activePlayer, cardID);
                             
                             if(PlayCardValidator.validateCard(playCard, topCard)){
                                 match.playedCards.push(playCard);
-                                console.log("validation equal in client and server...adding card to playedCards: " + match.playedCards.length);
+                                //console.log("validation equal in client and server...adding card to playedCards: " + match.playedCards.length);
                             }
                             else{
                                 /* we removed the card from the hand deck, 
@@ -50,15 +49,13 @@ playcardRouter.post("/", (req, res) =>{
                                     let oldPlayer;
                                     let clonedPlayers = match.players.slice();
 
-                                    // replace new player in match. THIS LOOKS WEIRD? check mongo doc...
+                                    // replace new player in match. THIS LOOKS WEIRD? check mongo doc...need to have it. otherwise...we forget things?
                                     for(var x=0; x<match.players.length; x++){
                                         oldPlayer = clonedPlayers[x];
                                         
 
                                         if(oldPlayer.id === savedPlayer.id){
                                             clonedPlayers[x] = savedPlayer;
-
-                                            console.log("saved player card count: " + savedPlayer.cards.length);
                                         }
                                     }
                                     
@@ -66,14 +63,14 @@ playcardRouter.post("/", (req, res) =>{
                                     // *****
                                     // TODO:
                                     // apply played card effect: 
-                                    //  - change direction? 
                                     //  - add penalty cards to next player
 
                                     // *****
-                                    let playerPointerIsMovingForward = true;      // 0, 1, ..., 4, 0, 1
+                                    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? !match.movingPlayerCursorForward : match.movingPlayerCursorForward;
+                                    let isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
                                     match.players = clonedPlayers;
                                     // set next player
-                                    match.activePlayerID = getNextPlayerID(match.players, match.activePlayerID, playerPointerIsMovingForward);
+                                    match.activePlayerID = getNextPlayerID(match.players, match.activePlayerID, match.movingPlayerCursorForward, isSkipping);
 
                                     match.save()
                                     .then((savedMatch) => {
@@ -92,22 +89,33 @@ playcardRouter.post("/", (req, res) =>{
 });
 
 // helper
-function getNextPlayerID(players, currentPlayerID, playerPointerIsMovingForward){
+function getNextPlayerID(players, currentPlayerID, playerPointerIsMovingForward, isSkipping){
     // forwards:  0, 1, 2, 3, 4, 0, 1
     // backwards: 0, 4, 3, 2, 1, 0, 4
     let nextPlayerIndex;
-
+    let moveCursorSteps = isSkipping ? 2 : 1;       // default is 1 (neighbor)
+    
     players.map((player, index) =>{
         if(player.id === currentPlayerID){
-            console.log("found current player");
-
-            nextPlayerIndex = playerPointerIsMovingForward ? 
-                (index + 1) % players.length :                              // forward
-                ((index - 1) >= 0) ? (index - 1) : players.length - 1;      // backwards
+            if(playerPointerIsMovingForward){
+                // forwards
+                nextPlayerIndex = (index + moveCursorSteps) % players.length;
+            }
+            else{
+                // backwards
+                if(index - moveCursorSteps >= 0){
+                    nextPlayerIndex = index - moveCursorSteps;
+                }
+                else{
+                    // wrap around
+                    let wrapBy = index - moveCursorSteps;
+                    nextPlayerIndex = players.length + wrapBy;
+                }
+            }
         }
     });
 
-    console.log("next player index: " + nextPlayerIndex);
+    //console.log("next player index: " + nextPlayerIndex);
     return players[nextPlayerIndex].id;
 }
 
@@ -116,10 +124,8 @@ function extractCardFromPlayer(player, cardID){
 
     for(let j=0; j<player.cards.length; j++){
         card = player.cards[j];
-        console.log(card.id);
         if(card.id === cardID){
             player.cards.splice(j, 1);
-            console.log("************* extracting card ************* " + player.cards.length);
 
             return card;
         }

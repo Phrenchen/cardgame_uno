@@ -6,8 +6,6 @@ import PlayedCardStack from '../components/PlayedCardStack';
 class StateMatch extends Component{
 
     render(){
-        console.log("rendering state match");
-        console.log(this.props.match.playedCards.length);
         return (
             <div className="match_grid">
                  <PlayerList topCard= {this.props.match.playedCards[this.props.match.playedCards.length - 1]} />

@@ -1,10 +1,31 @@
+const EffectSpecial = require("./EffectSpecial");
+
+const hasEffect = (card, effectType) =>{
+    for(let i=0; i<card.effects.length; i++){
+        if(card.effects[i].effectType === effectType){
+            return true;
+        }
+    }
+    return false;
+}
+module.exports.hasEffect = hasEffect;
+
 const validateCard = (playCard, topCard) =>{
+    //console.log("validateCard: " + playCard.name);
+    // early out with invalid params
     if(!playCard || !topCard){
         console.log("validateCard: need 2 cards to compare");
         return false;
     }
+
+
+    // check special cards
     if(!isColorValueCard(playCard) || !isColorValueCard(topCard)){
-        console.log(playCard.name + " or " + topCard.name + " is no color value card");
+        //console.log(playCard.name + " or " + topCard.name + " is no color value card");
+
+        // TODO; color change,  +4
+
+
         return false;
     }
     /* cards are playable if
@@ -13,7 +34,6 @@ const validateCard = (playCard, topCard) =>{
         3. one of them is special card
     */
     let areSame = hasSameEffect(topCard, playCard);
-    console.log("areSame: " + areSame);
     return areSame;
 }
 module.exports.validateCard = validateCard;
@@ -44,7 +64,7 @@ const hasSameEffect = (card1, card2) =>{
             effect2 = card2.effects[j];
 
             if(effect1.effectType.toString() === effect2.effectType.toString()){
-                console.log("found identical effects:" + effect1.effectType);
+                //console.log("found identical effects:" + effect1.effectType);
                 return true;
             }
         }

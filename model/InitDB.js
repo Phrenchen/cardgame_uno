@@ -3,7 +3,7 @@ const Card = require("./Card");
 const Effect = require("./Effect");
 const EffectColor = require("./EffectColor");
 const EffectValue = require("./EffectValue");
-const EffectSpecial = require("./EffectSpecial");
+const EffectSpecial = require("./../client/src/shared/EffectSpecial");
 
 function initDB(){
     // 1. check if effects exist
@@ -29,34 +29,42 @@ function addCardsToDB() {
             // every color + value combination has 2 cards, exception: 0
             EffectValue.map((value, index) => {
                 let amount = index > 0 ? 2 : 1;     // all values have 2 cards per color except for value = 0
+                /*
                 cards = cards.concat( createCard(EffectColor.RED + value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount) );
                 cards = cards.concat( createCard(EffectColor.GREEN + value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount) );
                 cards = cards.concat( createCard(EffectColor.BLUE + value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount) );
                 cards = cards.concat( createCard(EffectColor.YELLOW + value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount) );
-                
+                */
+               cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectValue[index].toString())], amount) );
+               cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectValue[index].toString())], amount) );
+               cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectValue[index].toString())], amount) );
+               cards = cards.concat( createCard(value.toString(), [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectValue[index].toString())], amount) );
             });
             
             // create specials
             // TAKE 2
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
-            cards = cards.concat( createCard("TAKE 2", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("+2", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("+2", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("+2", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
+            cards = cards.concat( createCard("+2", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.TAKE_2)], 2) );
             
             // SKIP
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
-            cards = cards.concat( createCard("SKIP", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("skip", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("skip", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("skip", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
+            cards = cards.concat( createCard("skip", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.SKIP)], 2) );
 
-            // CHANGE DIRECTION has no color?
-            cards = cards.concat( createCard("change direction", [getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 8) );
+            // CHANGE DIRECTION 
+            cards = cards.concat( createCard("<=>", [getEffectByType(effects, EffectColor.RED), getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 2) );
+            cards = cards.concat( createCard("<=>", [getEffectByType(effects, EffectColor.GREEN), getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 2) );
+            cards = cards.concat( createCard("<=>", [getEffectByType(effects, EffectColor.BLUE), getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 2) );
+            cards = cards.concat( createCard("<=>", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 2) );
 
             // SELECT COLOR
-            cards = cards.concat( createCard("select color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            cards = cards.concat( createCard("color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
 
             // SELECT COLOR + TAKE 4
-            cards = cards.concat( createCard("take 4, select color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            cards = cards.concat( createCard("+4, color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
                 //inserted cards

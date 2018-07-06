@@ -23,5 +23,9 @@ const MatchSchema = new Schema({
         type: String,
         required: true
     },
+    movingPlayerCursorForward: {
+        type: Boolean,
+        default: true
+    }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);
