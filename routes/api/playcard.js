@@ -1,9 +1,10 @@
 const express = require("express");
 const playcardRouter = express.Router();
 const Match = require("../../model/Match")
-const Card = require("../../model/Card")
 const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
+const MathHelper = require("../../client/src/shared/MathHelper");
 const EffectSpecial = require("../../client/src/shared/EffectSpecial");
+const uuid = require("uuid");
 
 playcardRouter.post("/", (req, res) =>{
     const playerID = req.body.playerID;
@@ -60,6 +61,7 @@ playcardRouter.post("/", (req, res) =>{
                                     }
                                     
                                     match.players = clonedPlayers;
+                                    
                                     // *****
                                     // TODO:
                                     // apply played card effect: 
@@ -68,11 +70,86 @@ playcardRouter.post("/", (req, res) =>{
                                     // *****
                                     match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? !match.movingPlayerCursorForward : match.movingPlayerCursorForward;
                                     let isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
+                                    
                                     match.players = clonedPlayers;
                                     // set next player
                                     match.activePlayerID = getNextPlayerID(match.players, match.activePlayerID, match.movingPlayerCursorForward, isSkipping);
+                                    
+                                    /* 
+                                        need to add penalty cards?
+                                            1. take 2 or take 4 effect on playCard?
+                                            3. no playable card: 1 penalty card
+                                            */
+                                           let penaltyCardCount = 0;
+                                           
+                                           playCard.effects.map((effect) =>{
+                                               // get amount of penalty cards from effect
+                                               if(effect.effectType === EffectSpecial.TAKE_2){
+                                                   penaltyCardCount = 2;
+                                                }
+                                                else if(effect.effectType === EffectSpecial.TAKE_4){
+                                                    penaltyCardCount = 4;
+                                                }
+                                            });
+                                            
+                                            // PENALTY SET
+                                            let penaltySets = [];
 
-                                    match.save()
+                                            if(penaltyCardCount > 0){
+                                                let takeXPenaltyCardSet = {
+                                                    id: uuid(),
+                                                    reason: "take " + penaltyCardCount + " :)",
+                                                    cards: []
+                                                };
+                                                
+                                                for(let pc = 0; pc<penaltyCardCount; pc++){
+                                                    /* no extraction here. 
+                                                        player needs to accept penalty
+                                                        cards are then transfered from match.cards to player.cards
+                                                    
+                                                    */
+                                                    let randomCard = getRandomCard(match.cards);
+                                                    if(randomCard){
+                                                        takeXPenaltyCardSet.cards.push(randomCard);
+                                                    }
+                                                }
+
+                                                penaltySets.push(takeXPenaltyCardSet);
+                                            }
+                                            // 2. validate player cards
+                                            let nextPlayer = getPlayerByID(match.players, match.activePlayerID);
+                                            let nextPlayerHasPlayableCards = false;
+                                            
+                                            nextPlayer.cards.map((card) =>{
+                                                if(PlayCardValidator.validateCard(card, topCard)){
+                                                    nextPlayerHasPlayableCards = true;
+                                                }
+                                            });
+                                            
+                                            if(!nextPlayerHasPlayableCards){
+                                                // add 1 penalty card
+                                                // no further check required.
+                                                // current player can play a card if available
+                                                // otherwise: nextPlayer
+                                                //      -> trigger switch with seperate command
+                                                let noChoicePenaltyCardSet = {
+                                                    id: uuid(),
+                                                    reason: "no playable card. take 1 extra",
+                                                    cards: []
+                                                };
+
+                                                let noChoicePenaltyCard = getRandomCard(match.cards);
+                                                if(noChoicePenaltyCard){
+                                                    noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
+                                                }
+                                                penaltySets.push(noChoicePenaltyCardSet);
+                                            }
+                                            console.log("penalty sets: " + penaltySets.length);
+                                            //console.log(penaltySets[0]);
+                                            match.penaltyCards = penaltySets;                                            
+                                            
+                                            // *** SAVE MATCH ***
+                                            match.save()
                                     .then((savedMatch) => {
                                         res.json(savedMatch);                // match saved
                                     });
@@ -89,6 +166,20 @@ playcardRouter.post("/", (req, res) =>{
 });
 
 // helper
+function getPlayerByID(players, playerID){
+    for(let i=0; i<players.length; i++){
+        if(players[i].id === playerID){
+            return players[i];
+        }
+    }
+    return null;
+}
+
+function getRandomCard(cards){
+    let randomIndex = MathHelper.getRandomInt(0, cards.length-1);
+    return cards[randomIndex];
+}
+
 function getNextPlayerID(players, currentPlayerID, playerPointerIsMovingForward, isSkipping){
     // forwards:  0, 1, 2, 3, 4, 0, 1
     // backwards: 0, 4, 3, 2, 1, 0, 4

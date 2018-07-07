@@ -26,6 +26,10 @@ const MatchSchema = new Schema({
     movingPlayerCursorForward: {
         type: Boolean,
         default: true
+    },
+    penaltyCards: {
+        type: Array,
+        default: []
     }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);

@@ -5,6 +5,7 @@ const Match = require("../../model/Match")
 const Player = require("../../model/Player")
 const Card = require("../../model/Card")
 const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
+const MathHelper = require("../../client/src/shared/MathHelper");
 const EffectSpecial = require("../../client/src/shared/EffectSpecial");
 
 matchRouter.get("/", (req, res) => {
@@ -49,7 +50,7 @@ matchRouter.post("/", (req, res) => {
             // distribute cards for each player
             players.map((player) =>{                                    // for ever player
                 for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
-                    index = getRandomInt(0, allCards.length-1);
+                    index = MathHelper.getRandomInt(0, allCards.length-1);
                     card = allCards.splice(index, 1)[0];    // retrieve card
                     //console.log(card);
                     player.cards.push( card );                          // move from deck to player hand
@@ -109,7 +110,7 @@ function pickFirstCard(cards){
     let randomIndex;
     
     while(!firstCard){
-        randomIndex = getRandomInt(0, cards.length - 1);
+        randomIndex = MathHelper.getRandomInt(0, cards.length - 1);
         card = cards[randomIndex];
 
         if(PlayCardValidator.isColorValueCard(card)){
@@ -119,9 +120,7 @@ function pickFirstCard(cards){
     return firstCard;
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
 
 
 module.exports = matchRouter;

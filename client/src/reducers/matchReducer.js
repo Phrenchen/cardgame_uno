@@ -28,6 +28,7 @@ export default function(state = initialState, action){
                 players: action.payload.players,
                 cards: action.payload.cards,
                 playedCards: action.payload.playedCards,
+                penaltyCards: action.payload.penaltyCards,
                 activePlayerID: action.payload.activePlayerID
             };
         default:
