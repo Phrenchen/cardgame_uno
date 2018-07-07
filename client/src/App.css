@@ -27,21 +27,35 @@
     border: 0;
 }
 
+/* penalty list */
+.penaltyList{
+    border: 1px solid black;
+    background-color: rgb(117, 129, 82);
+
+    position: fixed;
+    /*top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;*/
+    box-shadow: #ff0000;
+}
+
 /* card */
 .card{
     border: 1px solid white;
     background: #000000;
     user-select: none;
-    cursor: "grab";
     width: 100px;
     height: 150px;
 }
 
 .card:hover {
-    border: 5px solid black;
+    border: 1px solid black;
 }
 
 /*------------------------------------------*/
+
+/*
 .remove-btn{
     margin-right: .5rem;
 }
@@ -60,7 +74,9 @@
     
 }
 
+
 .fade-exit-active{
     opacity: 0.01;
     transition: opacity 0ms ease-in;
 }
+*/
