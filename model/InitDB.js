@@ -61,10 +61,10 @@ function addCardsToDB() {
             cards = cards.concat( createCard("<=>", [getEffectByType(effects, EffectColor.YELLOW), getEffectByType(effects, EffectSpecial.CHANGE_DIRECTION)], 2) );
 
             // SELECT COLOR
-            cards = cards.concat( createCard("color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            cards = cards.concat( createCard("change color", [getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
 
             // SELECT COLOR + TAKE 4
-            cards = cards.concat( createCard("+4, color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
+            cards = cards.concat( createCard("+4, change color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
                 //inserted cards

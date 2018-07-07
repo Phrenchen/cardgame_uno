@@ -146,7 +146,7 @@ playcardRouter.post("/", (req, res) =>{
                                             }
                                             console.log("penalty sets: " + penaltySets.length);
                                             //console.log(penaltySets[0]);
-                                            match.penaltyCards = penaltySets;                                            
+                                            match.penalties = penaltySets;                                            
                                             
                                             // *** SAVE MATCH ***
                                             match.save()

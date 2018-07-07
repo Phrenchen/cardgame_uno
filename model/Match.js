@@ -27,7 +27,7 @@ const MatchSchema = new Schema({
         type: Boolean,
         default: true
     },
-    penaltyCards: {
+    penalties: {
         type: Array,
         default: []
     }
