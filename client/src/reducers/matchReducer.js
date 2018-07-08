@@ -1,4 +1,4 @@
-import {START_MATCH, SET_PLAYER_COUNT, CARD_PLAYED} from "../actions/types";
+import {START_MATCH, SET_PLAYER_COUNT, CARD_PLAYED, PENALTIES_ACCEPTED} from "../actions/types";
 
 const initialState = {
     id: "",
@@ -17,7 +17,8 @@ export default function(state = initialState, action){
                 ...state,
                 playerCount: action.payload
             }        
-        case CARD_PLAYED:
+            case PENALTIES_ACCEPTED:
+            case CARD_PLAYED:
             //console.log("reducing card played: " + action.payload.players[0].cards.length);
         case START_MATCH:
             //console.log("reducing match start: ");

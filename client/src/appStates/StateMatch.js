@@ -12,10 +12,10 @@ class StateMatch extends Component{
             return <PenaltyList 
                 penalties={this.props.match.penalties} 
                 activePlayerID={this.props.match.activePlayerID}
-                onAccept={(playerID) =>{
-                    console.log("on accept penalties: " + playerID);
+                onAccept={() =>{
+                    console.log("on accept penalties");
                     // trigger action to server
-                    this.props.acceptPenalties(playerID);
+                    this.props.acceptPenalties(this.props.match.id);
                 }}
             />
         }

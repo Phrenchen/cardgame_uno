@@ -35,9 +35,9 @@ export const playCard = (pPlayerID, pCardID) => dispatch => {
         });
 };
 
-export const acceptPenalties = (playerID) => dispatch => {
+export const acceptPenalties = (matchID) => dispatch => {
     axios.post("api/acceptPenalties", {
-        playerID: playerID
+        matchID: matchID
     })
     .then((res) =>{
         dispatch({
