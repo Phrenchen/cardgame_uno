@@ -17,6 +17,13 @@ playcardRouter.post("/", (req, res) =>{
     Match.find()
         .then((matches) =>{
             matches.map((match) => {
+                // no card may be played until all penalties have been accepted
+                if(match.penalties.length > 0){
+                    console.log("client needs to accept penalties");
+                    //TODO: add hint what went wrong?
+                    res.json(match);
+                }
+
                 // check players
                 match.players.map((player) =>{
                     if(player.id === playerID){
