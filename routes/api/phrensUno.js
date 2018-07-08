@@ -14,7 +14,7 @@ const Player = require("../../model/Player");
 
 phrensUnoRouter.post("/", (req, res) =>{
     let action = req.body.action;
-    console.log("routing phrensUno: " + action);
+    //console.log("routing phrensUno: " + action);
 
     switch(action){
         case ActionConsts.START_MATCH:
@@ -170,8 +170,8 @@ const playCard = (req, res) =>{
         }
         penaltySets.push(noChoicePenaltyCardSet);
     }
-    console.log("penalty sets: " + penaltySets.length);
-    //console.log(penaltySets[0]);
+    
+    //console.log("penalty sets: " + penaltySets.length);
     match.penalties = penaltySets;                                            
     
     // *** SAVE MATCH ***
@@ -239,7 +239,7 @@ const startMatch = (req, res) =>{
 
     match.save()                                                 //match.save...
         .then((pMatch) => {
-            console.log("saved match");
+            //console.log("saved match");
             MatchData.matches.push(pMatch);
             res.json(pMatch);                                   // return match to client
         });
