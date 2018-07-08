@@ -54,6 +54,9 @@ const extractCardFromPlayer = (player, cardID) =>{
 
     for(let j=0; j<player.cards.length; j++){
         card = player.cards[j];
+        if(!card){
+            console.log("trying to extract null from player.cards. check where we insert to player.cards");
+        }
         if(card.id === cardID){
             player.cards.splice(j, 1);
 

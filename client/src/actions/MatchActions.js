@@ -3,11 +3,14 @@ import {START_MATCH, SET_APP_STATE, CARD_PLAYED, PENALTIES_ACCEPTED} from "../ac
 import { STATE_MATCH } from "../appStates/AppState";
 import ActionConsts from "../shared/ActionConsts";
 
+
 export const startMatch = () => dispatch => {
     console.log("start match");
     // TEST
-/*    axios
-        .post("api/phrens_uno", {action:ActionConsts.START_MATCH})
+    axios
+        .post("api/phrens_uno", {
+            action:ActionConsts.START_MATCH
+            })
             .then( (res) => {
                 dispatch({
                     type: START_MATCH,
@@ -19,9 +22,9 @@ export const startMatch = () => dispatch => {
                     payload: STATE_MATCH
                 });
             });
-*/
+
     //--------
-    
+    /*
     axios
         .post("api/matches")
         .then( (res) => {
@@ -35,11 +38,12 @@ export const startMatch = () => dispatch => {
                 payload: STATE_MATCH
             });
         });
-        
+    */  
 };
 
 export const playCard = (pMatchID, pPlayerID, pCardID) => dispatch => {
-    axios.post("api/playcard/", {
+    axios.post("api/phrens_uno/", {
+            action:ActionConsts.PLAY_CARD,
             matchID: pMatchID,
             playerID: pPlayerID,
             cardID: pCardID
@@ -54,7 +58,8 @@ export const playCard = (pMatchID, pPlayerID, pCardID) => dispatch => {
 };
 
 export const acceptPenalties = (matchID) => dispatch => {
-    axios.post("api/acceptPenalties", {
+    axios.post("api/phrens_uno", {
+        action: ActionConsts.ACCEPT_PENALTIES,
         matchID: matchID
     })
     .then((res) =>{

@@ -2,14 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
-const matches = require("./routes/api/matches");
-const playcard = require("./routes/api/playcard");
-const acceptPenalties = require("./routes/api/acceptPenalties");
-
 const phrensUno = require("./routes/api/phrensUno");
-
 const app = express();
-
 const {initDB} = require("./model/InitDB");
 
 // body parser middleware
@@ -28,16 +22,7 @@ mongoose
     .catch(() => console.log("err"))
 
 
-// use routes
-//app.use("/api/items", items);
-//app.use("/api/cards", cards);
-//app.use("/api/players", players);
-//app.use("/api/effects", effects);
-app.use("/api/matches", matches);
-app.use("/api/playcard", playcard);
-app.use("/api/acceptPenalties", acceptPenalties);
-
-// target: use only one route with additional "action" parameter
+// use route
 app.use("/api/phrens_uno", phrensUno)
 
 // serve static assets if we are in production
