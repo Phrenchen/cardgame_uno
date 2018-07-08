@@ -8,7 +8,10 @@ class StateMatch extends Component{
 
     displayPenaltyDialog(){
         if(this.props.match.penalties && this.props.match.penalties.length > 0){
-            return <PenaltyList penalties={this.props.match.penalties} />
+            return <PenaltyList 
+                penalties={this.props.match.penalties} 
+                activePlayerID={this.props.match.activePlayerID}
+            />
         }
 
         return null;
