@@ -6,6 +6,8 @@ const matches = require("./routes/api/matches");
 const playcard = require("./routes/api/playcard");
 const acceptPenalties = require("./routes/api/acceptPenalties");
 
+const phrensUno = require("./routes/api/phrensUno");
+
 const app = express();
 
 const {initDB} = require("./model/InitDB");
@@ -34,6 +36,9 @@ mongoose
 app.use("/api/matches", matches);
 app.use("/api/playcard", playcard);
 app.use("/api/acceptPenalties", acceptPenalties);
+
+// target: use only one route with additional "action" parameter
+app.use("/api/phrens_uno", phrensUno)
 
 // serve static assets if we are in production
 if(process.env.NODE_ENV === "production"){
