@@ -20,23 +20,6 @@ export const startMatch = () => dispatch => {
                     payload: STATE_MATCH
                 });
             });
-
-    //--------
-    /*
-    axios
-        .post("api/matches")
-        .then( (res) => {
-            dispatch({
-                type: START_MATCH,
-                payload: res.data
-            });
-            // update redux state
-            dispatch({
-                type: SET_APP_STATE,
-                payload: STATE_MATCH
-            });
-        });
-    */  
 };
 
 export const playCard = (pMatchID, pPlayerID, pCardID) => dispatch => {
