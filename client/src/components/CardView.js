@@ -37,7 +37,7 @@ class CardView extends Component {
         return (
             <Card className="card" id={this.state.id} onClick={() =>{
                 if(this.props.playCard){
-                    this.props.playCard(this.props.owner, this.props.id);
+                    this.props.playCard(this.props.matchID, this.props.owner, this.props.id);
                 }
             }} >
                 <CardBody>
@@ -52,6 +52,7 @@ class CardView extends Component {
 }
 
 CardView.propTypes = {
+    matchID: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

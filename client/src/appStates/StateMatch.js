@@ -4,16 +4,17 @@ import PlayerList from '../components/PlayerList';
 import PlayedCardStack from '../components/PlayedCardStack';
 import PenaltyList from '../components/PenaltyList';
 import {acceptPenalties} from "../actions/MatchActions"
+import uuid from "uuid";
 
 class StateMatch extends Component{
 
-    displayPenaltyDialog(){
+    displayPenaltyDialog = () =>{
         if(this.props.match.penalties && this.props.match.penalties.length > 0){
             return <PenaltyList 
                 penalties={this.props.match.penalties} 
+                matchID={this.props.match.id}
                 activePlayerID={this.props.match.activePlayerID}
                 onAccept={() =>{
-                    console.log("on accept penalties");
                     // trigger action to server
                     this.props.acceptPenalties(this.props.match.id);
                 }}
@@ -24,12 +25,13 @@ class StateMatch extends Component{
     }
 
     render(){
-
-
         return (
-            <div className="match_grid">
-                 <PlayerList topCard= {this.props.match.playedCards[this.props.match.playedCards.length - 1]} />
-                 <PlayedCardStack playedCards= {this.props.match.playedCards} />
+            <div className="match_grid" key={uuid()}>
+                 <PlayerList/>
+                 <PlayedCardStack 
+                    playedCards= {this.props.match.playedCards} 
+                    matchID= {this.props.match.id}
+                />
                  { this.displayPenaltyDialog() }
             </div>
         );

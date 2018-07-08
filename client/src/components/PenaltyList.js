@@ -15,13 +15,12 @@ class PenaltyList extends Component{
                 cards={penaltySet.cards}
                 penaltyID={penaltySet.id}
                 activePlayerID={this.props.activePlayerID}
+                matchID={this.props.matchID}
             />
         );
     }
 
     render(){
-        console.log("rendering penalty list for : " + this.props.penalties);
-
         return (
             <div className="penaltyList">
                 <h2>PENALTY CARDS</h2>

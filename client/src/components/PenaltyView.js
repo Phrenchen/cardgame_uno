@@ -11,8 +11,9 @@ class PenaltyView extends Component{
             {
                 this.props.cards.map((card) => {
                     return <CardView
-                        key={card.id}
+                        key={uuid()}
                         id={card.id}
+                        matchID={this.props.matchID}
                         owner={this.props.activePlayerID}
                         name={card.name}
                         effects={card.effects}
@@ -28,7 +29,8 @@ PenaltyView.propTypes = {
     reason: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired,
     penaltyID: PropTypes.string.isRequired,
-    activePlayerID: PropTypes.string.isRequired
+    activePlayerID: PropTypes.string.isRequired,
+    matchID:PropTypes.string.isRequired
 };
 
 export default PenaltyView;

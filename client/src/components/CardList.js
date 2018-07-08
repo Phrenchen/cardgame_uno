@@ -26,6 +26,7 @@ class CardList extends Component{
                                 return <Col key={uuid()}>
                                     <CardView
                                         key={card.id}
+                                        matchID={this.props.matchID}
                                         id={card.id}
                                         owner={this.props.owner}
                                         name={card.name}
@@ -43,6 +44,7 @@ class CardList extends Component{
 }
 
 CardList.propTypes = {
+    matchID: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired,
     topCard: PropTypes.object.isRequired

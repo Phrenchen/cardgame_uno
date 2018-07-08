@@ -6,11 +6,7 @@ class PlayedCardStack extends Component{
 
 
     render(){
-        //console.log(this.props.playedCards);
-        //console.log(this.props.playedCards.length);
-        //console.log(this.props.playedCards[0]);
         const topCard = this.props.playedCards[this.props.playedCards.length -1];
-        //console.log("top card: " + topCard.name);
 
         return (
             <Container>
@@ -18,6 +14,7 @@ class PlayedCardStack extends Component{
                 <CardView
                     key={topCard.id}
                     id={topCard.id}
+                    matchID={this.props.matchID}
                     owner={"-1"}      // has been played. no matter who played it
                     name={topCard.name}
                     effects={topCard.effects}
@@ -28,6 +25,7 @@ class PlayedCardStack extends Component{
 }
 
 PlayedCardStack.propTypes = {
+    matchID: PropTypes.string.isRequired,
     playedCards: PropTypes.array.isRequired
 };
 

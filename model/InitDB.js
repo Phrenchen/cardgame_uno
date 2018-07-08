@@ -5,6 +5,15 @@ const EffectColor = require("./EffectColor");
 const EffectValue = require("./EffectValue");
 const EffectSpecial = require("./../client/src/shared/EffectSpecial");
 
+var cards = [];
+
+module.exports.InitDB2 = this;
+
+const getCarddeck = () =>{
+    return cards.slice();   // return copy of card deck
+}
+module.exports.getCardDeck = getCarddeck;
+
 function initDB(){
     // 1. check if effects exist
     Effect.find()
@@ -20,7 +29,6 @@ module.exports.initDB = initDB;
 
 // CARDS
 function addCardsToDB() {
-    let cards = [];
     // get all effects from db 
     Effect.find()
         .then((effects) =>{
@@ -67,7 +75,7 @@ function addCardsToDB() {
             cards = cards.concat( createCard("+4, change color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], 4) );
             
             Card.insertMany(cards, (err, result) => {
-                //inserted cards
+                //console.log("inserted cards: " + cards.length);
             })
         })
 
