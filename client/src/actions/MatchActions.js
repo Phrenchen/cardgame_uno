@@ -5,8 +5,6 @@ import ActionConsts from "../shared/ActionConsts";
 
 
 export const startMatch = () => dispatch => {
-    console.log("start match");
-    // TEST
     axios
         .post("api/phrens_uno", {
             action:ActionConsts.START_MATCH
