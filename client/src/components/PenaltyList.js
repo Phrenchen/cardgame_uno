@@ -32,7 +32,7 @@ class PenaltyList extends Component{
                 }
                 <Button
                     onClick={() => {
-                        console.log("clicky!");
+                        this.props.onAccept(this.props.activePlayerID);
                     }}
                 >OK</Button>
             </div>
@@ -45,7 +45,8 @@ class PenaltyList extends Component{
 
 PenaltyList.propTypes = {
     penalties: PropTypes.array.isRequired,
-    activePlayerID: PropTypes.string.isRequired
+    activePlayerID: PropTypes.string.isRequired,
+    onAccept: PropTypes.func.isRequired
 };
 
 

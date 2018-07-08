@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import CardView from "./CardView";
-
+import uuid from "uuid";
 
 class PenaltyView extends Component{
     render(){
         return (
-            <div>
+            <div id={uuid()}>
                 <p>{this.props.reason}</p>
             {
                 this.props.cards.map((card) => {

@@ -12,6 +12,7 @@ export const ADD_PLAYER = "ADD_PLAYER";
 export const START_MATCH = "START_MATCH";
 export const SET_PLAYER_COUNT = "SET_PLAYER_COUNT";
 export const CARD_PLAYED = "CARD_PLAYED";
+export const PENALTIES_ACCEPTED = "PENALTIES_ACCEPTED";
 
 // APP
 export const SET_APP_STATE = "SET_APP_STATE";

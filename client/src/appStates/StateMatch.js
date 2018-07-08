@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import PlayerList from '../components/PlayerList';
 import PlayedCardStack from '../components/PlayedCardStack';
 import PenaltyList from '../components/PenaltyList';
+import {acceptPenalties} from "../actions/MatchActions"
 
 class StateMatch extends Component{
 
@@ -11,6 +12,11 @@ class StateMatch extends Component{
             return <PenaltyList 
                 penalties={this.props.match.penalties} 
                 activePlayerID={this.props.match.activePlayerID}
+                onAccept={(playerID) =>{
+                    console.log("on accept penalties: " + playerID);
+                    // trigger action to server
+                    this.props.acceptPenalties(playerID);
+                }}
             />
         }
 
@@ -35,4 +41,4 @@ const mapStateToProps = function(state){
         match: state.match
     }
 }
-export default connect(mapStateToProps)(StateMatch);
+export default connect(mapStateToProps, {acceptPenalties})(StateMatch);

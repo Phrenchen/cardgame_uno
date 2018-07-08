@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, CardLink } from "reactstrap";
-import { selectCard } from "../actions/MatchActions";
+import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
 class CardView extends Component {
     
@@ -36,7 +36,9 @@ class CardView extends Component {
     render(){
         return (
             <Card className="card" id={this.state.id} onClick={() =>{
-                this.props.selectCard(this.props.owner, this.props.id);
+                if(this.props.playCard){
+                    this.props.playCard(this.props.owner, this.props.id);
+                }
             }} >
                 <CardBody>
                     <CardTitle>{this.props.name}</CardTitle>
@@ -54,10 +56,10 @@ CardView.propTypes = {
     owner: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     effects: PropTypes.array.isRequired,
-    selectCard: PropTypes.func.isRequired
+    playCard: PropTypes.func
 };
 
 const mapStateToProps = (state) =>({
 });
 
-export default connect(mapStateToProps, {selectCard} )(CardView);
+export default connect(mapStateToProps, {playCard} )(CardView);

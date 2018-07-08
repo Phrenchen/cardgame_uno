@@ -1,5 +1,5 @@
 import axios from "axios";
-import {START_MATCH, SET_APP_STATE, CARD_PLAYED} from "../actions/types";
+import {START_MATCH, SET_APP_STATE, CARD_PLAYED, PENALTIES_ACCEPTED} from "../actions/types";
 import { STATE_MATCH } from "../appStates/AppState";
 
 export const startMatch = () => dispatch => {
@@ -21,7 +21,7 @@ export const startMatch = () => dispatch => {
         });
 };
 
-export const selectCard = (pPlayerID, pCardID) => dispatch => {
+export const playCard = (pPlayerID, pCardID) => dispatch => {
     axios.post("api/playcard/", {
             playerID: pPlayerID,
             cardID: pCardID
@@ -34,3 +34,15 @@ export const selectCard = (pPlayerID, pCardID) => dispatch => {
             });
         });
 };
+
+export const acceptPenalties = (playerID) => dispatch => {
+    axios.post("api/acceptPenalties", {
+        playerID: playerID
+    })
+    .then((res) =>{
+        dispatch({
+            type: PENALTIES_ACCEPTED,
+            payload: res.data
+        });
+    });
+}
