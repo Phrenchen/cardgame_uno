@@ -13,52 +13,64 @@
     top:50%;
 }
 
-/* -------- */
+/* --- MATCH GRID ----- */
 .match_grid{
     display: grid;
-    grid-template-columns: 70% 1fr;
+    
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: min-content min-content;
+    width: 100%;            
+    
     align-content: center;
     align-items: center;
     align-self: center;
     text-align: center;
+    
 }
 
 /* player panel */
 .playerPanel{
-    width:100%;
-    height:100%;
-    
-    overflow: hidden;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+
+    /*overflow: hidden;*/
     margin: 0;
     padding: 0;
     border: 0;
 }
 
-.startscreen{
-    position: relative;
-    
-    text-align: center;
+.playedCards{
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
 }
 
-/* penalty list */
+/* PENALTIES */
+
 .penaltyList{
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+
     border: 1px solid black;
     background-color: rgb(117, 129, 82);
-
-    position: fixed;
-    /*
-    top: -50%;
-    position: relative;
-    /*min-width: auto;*/
     
     text-align: center;
-
-    /*
-    margin-top: -50px;
-    margin-left: -100px;
-    */
 }
 
+.penaltySet{
+    display: grid;
+    grid-auto-columns: repeat(1fr, 5);
+}
+
+/*---------------------------------------------*/
+
+.startscreen{
+    position: relative;
+    text-align: center;
+}
 /* card */
 .card{
     border: 1px solid white;

@@ -9,7 +9,7 @@ class PlayedCardStack extends Component{
         const topCard = this.props.playedCards[this.props.playedCards.length -1];
 
         return (
-            <Container>
+            <div className="playedCards">
                 played cards
                 <CardView
                     key={topCard.id}
@@ -19,7 +19,7 @@ class PlayedCardStack extends Component{
                     name={topCard.name}
                     effects={topCard.effects}
                 />
-            </Container>
+            </div>
         );  
     }
 }

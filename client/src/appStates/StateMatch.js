@@ -13,7 +13,7 @@ class StateMatch extends Component{
 
     displayPenaltyDialog = () =>{
         if(this.hasPenalties()){
-            return <PenaltyList 
+            return <PenaltyList className="penaltyList"
                 penalties={this.props.match.penalties} 
                 matchID={this.props.match.id}
                 activePlayerID={this.props.match.activePlayerID}
@@ -25,23 +25,19 @@ class StateMatch extends Component{
             />
         }
 
-        return null;
+        return <div className="penaltyList">empty penalty list </div>;
     }
 
     render(){
         return (
-            <div>
             <div className="match_grid" key={uuid()}>
-                <PlayerList/>
-                <PlayedCardStack
+                { this.displayPenaltyDialog() }
+                <PlayerList className="playerPanel"/>
+                <PlayedCardStack className="playedCards"
                     playedCards= {this.props.match.playedCards} 
                     matchID= {this.props.match.id}
-                    >
-                </PlayedCardStack>
+                />
             </div>
-            { this.displayPenaltyDialog() }
-            </div>
-
         );
     }
 } 

@@ -21,7 +21,7 @@ class PlayerList extends Component{
     createCardList(player){
         if(player.id === this.props.match.activePlayerID){
             return (
-                <div className="cardlist">
+                <div>
                     <CardList 
                         matchID={this.props.match.id}
                         cards={player.cards} 
@@ -35,16 +35,14 @@ class PlayerList extends Component{
     }
 
     createPlayers(){
-        let id;
         let counter = 0;
 
         return  this.props.match.players.map((player) => {                // WAT IS LOS? CEHCK!
-            id = uuid();
             counter++;
 
             return(
-                <CSSTransition className="playerPanel" key={id} timeout={500} classNames="fade">
-                    <ListGroupItem>
+                <div key={uuid()}>
+                    <ListGroupItem >
                         <Navbar color="dark" dark expand="sm" className="mb-5">
                             <Container>
                                 <Button>Player {counter + " (" + player.cards.length + " )"}</Button>
@@ -54,21 +52,19 @@ class PlayerList extends Component{
                             </Container>
                         </Navbar>
                     </ListGroupItem>
-                </CSSTransition>
+                </div>
             )});
     }
 
     render(){
         return (
-            <Container>
+            <div className="playerPanel">
                 <ListGroup>
-                    <TransitionGroup className="shopping-list">
                         {
                             this.createPlayers()
                         }
-                    </TransitionGroup>
                 </ListGroup>
-            </Container>
+            </div>
         );
     }
 }
