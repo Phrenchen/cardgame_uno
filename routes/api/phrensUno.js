@@ -46,10 +46,7 @@ const acceptPenalties = (req, res) => {
     })
     match.penalties = [];       // forget about penalties
 
-    match.save()
-        .then((savedMatch) =>{
-            res.json(savedMatch);
-        });
+    saveMatchAndReturnToClient(match, res, false);
 }
 
 const playCard = (req, res) =>{
@@ -75,7 +72,9 @@ const playCard = (req, res) =>{
     if(match.penalties.length > 0){
         console.log("client needs to accept penalties");
         //TODO: add hint what went wrong?
+        console.log("match.penalties.length: " + match.penalties.length);
         res.json(match);
+        return;
     }
     
     let activePlayer = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
@@ -85,7 +84,85 @@ const playCard = (req, res) =>{
     
     if(PlayCardValidator.validateCard(playCard, topCard)){
         match.playedCards.push(playCard);
-        //console.log("validation equal in client and server...adding card to playedCards: " + match.playedCards.length);
+        //----------------
+        // set cursor direction
+        match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? 
+                                            !match.movingPlayerCursorForward : 
+                                            match.movingPlayerCursorForward;
+                
+        
+        // set next player
+        let isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
+        match.activePlayerID = MatchHelper.getNextPlayerID(match.players, match.activePlayerID, match.movingPlayerCursorForward, isSkipping);
+        
+        //----------------
+        // PENALTY CARDS
+        // define penalty card count by card effect
+        let penaltyCardCount = 0;
+        let penaltySets = [];
+        
+        playCard.effects.map((effect) =>{
+            // get amount of penalty cards from effect
+            if(effect.effectType === EffectSpecial.TAKE_2){
+                penaltyCardCount = 2;
+            }
+            else if(effect.effectType === EffectSpecial.TAKE_4){
+                penaltyCardCount = 4;
+            }
+        });
+    
+        // add penalty caused by card effects
+        if(penaltyCardCount > 0){
+            let takeXPenaltyCardSet = {
+                id: uuid(),
+                reason: "take " + penaltyCardCount + " :)",
+                cards: []
+            };
+            
+            for(let pc = 0; pc<penaltyCardCount; pc++){
+                let randomCard = MatchHelper.getRandomCard(match.cards);
+                if(randomCard){
+                    takeXPenaltyCardSet.cards.push(randomCard);
+                }
+            }
+    
+            penaltySets.push(takeXPenaltyCardSet);
+        }
+        
+        // 2. validate player cards
+        let nextPlayer = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
+        let nextPlayerHasPlayableCards = false;
+        
+        nextPlayer.cards.map((card) =>{
+            if(PlayCardValidator.validateCard(card, topCard)){
+                nextPlayerHasPlayableCards = true;
+            }
+        });
+        
+        if(!nextPlayerHasPlayableCards){
+            // add 1 penalty card
+            // no further check required.
+            // current player can play a card if available
+            // otherwise: nextPlayer
+            //      -> trigger switch with seperate command
+            let noChoicePenaltyCardSet = {
+                id: uuid(),
+                reason: "no playable card. take 1 extra",
+                cards: []
+            };
+    
+            let noChoicePenaltyCard = MatchHelper.getRandomCard(match.cards);
+            if(noChoicePenaltyCard){
+                noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
+            }
+            penaltySets.push(noChoicePenaltyCardSet);
+        }
+        
+        //console.log("penalty sets: " + penaltySets.length);
+        match.penalties = penaltySets;                                            
+        
+        // *** SAVE MATCH ***
+        saveMatchAndReturnToClient(match, res, false);
     }
     else{
         /* we removed the card from the hand deck, 
@@ -94,94 +171,26 @@ const playCard = (req, res) =>{
         
         here we are to react to a validation error
         */
-        console.log("PLAY CARD VALIDATION!!!! out of sync with client and server");
-        activePlayer.cards.push(playCard);     // re-add card to hand deck
+       //console.log("PLAY CARD VALIDATION!!!! out of sync with client and server");
+       activePlayer.cards.push(playCard);     // re-add card to hand deck
+       
+       saveMatchAndReturnToClient(match, res, false);
     }
-    //----------------
-    // set cursor direction
-    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? 
-                                        !match.movingPlayerCursorForward : 
-                                        match.movingPlayerCursorForward;
-            
-    
-    // set next player
-    let isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
-    match.activePlayerID = MatchHelper.getNextPlayerID(match.players, match.activePlayerID, match.movingPlayerCursorForward, isSkipping);
-    
-    //----------------
-    // PENALTY CARDS
-    // define penalty card count by card effect
-    let penaltyCardCount = 0;
-    let penaltySets = [];
-    
-    playCard.effects.map((effect) =>{
-        // get amount of penalty cards from effect
-        if(effect.effectType === EffectSpecial.TAKE_2){
-            penaltyCardCount = 2;
-        }
-        else if(effect.effectType === EffectSpecial.TAKE_4){
-            penaltyCardCount = 4;
-        }
-    });
-
-    // add penalty caused by card effects
-    if(penaltyCardCount > 0){
-        let takeXPenaltyCardSet = {
-            id: uuid(),
-            reason: "take " + penaltyCardCount + " :)",
-            cards: []
-        };
-        
-        for(let pc = 0; pc<penaltyCardCount; pc++){
-            let randomCard = MatchHelper.getRandomCard(match.cards);
-            if(randomCard){
-                takeXPenaltyCardSet.cards.push(randomCard);
-            }
-        }
-
-        penaltySets.push(takeXPenaltyCardSet);
-    }
-    
-    // 2. validate player cards
-    let nextPlayer = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
-    let nextPlayerHasPlayableCards = false;
-    
-    nextPlayer.cards.map((card) =>{
-        if(PlayCardValidator.validateCard(card, topCard)){
-            nextPlayerHasPlayableCards = true;
-        }
-    });
-    
-    if(!nextPlayerHasPlayableCards){
-        // add 1 penalty card
-        // no further check required.
-        // current player can play a card if available
-        // otherwise: nextPlayer
-        //      -> trigger switch with seperate command
-        let noChoicePenaltyCardSet = {
-            id: uuid(),
-            reason: "no playable card. take 1 extra",
-            cards: []
-        };
-
-        let noChoicePenaltyCard = MatchHelper.getRandomCard(match.cards);
-        if(noChoicePenaltyCard){
-            noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
-        }
-        penaltySets.push(noChoicePenaltyCardSet);
-    }
-    
-    //console.log("penalty sets: " + penaltySets.length);
-    match.penalties = penaltySets;                                            
-    
-    // *** SAVE MATCH ***
-    match.save()
-        .then((savedMatch) => {
-            res.json(savedMatch);                // match saved
-        });
 };
 
+
 // privates
+const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
+    match.save()
+        .then((savedMatch) => {
+            if(saveToTemporaryList){
+                MatchData.matches.push(savedMatch);
+            }
+            res.json(savedMatch);                // send to client
+        });
+}
+
+
 const startMatch = (req, res) =>{
     //console.log("starting match");
     let playerCount = req.body.playerCount;
@@ -237,12 +246,7 @@ const startMatch = (req, res) =>{
         activePlayerID: players.length > 0 ? players[0].id : "no human players" // first player starts
     });
 
-    match.save()                                                 //match.save...
-        .then((pMatch) => {
-            //console.log("saved match");
-            MatchData.matches.push(pMatch);
-            res.json(pMatch);                                   // return match to client
-        });
+    saveMatchAndReturnToClient(match, res, true);
 };
 
 // helper
