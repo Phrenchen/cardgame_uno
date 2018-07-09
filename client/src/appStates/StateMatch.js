@@ -11,7 +11,12 @@ class StateMatch extends Component{
         return this.props.match.penalties && this.props.match.penalties.length > 0;
     }
 
-    displayPenaltyDialog = () =>{
+    hasServerMessage = () =>{
+        return this.props.message != "";
+    }
+
+    displayAdditionalMatchInfos = () =>{
+        
         if(this.hasPenalties()){
             return <PenaltyList className="penaltyList"
                 penalties={this.props.match.penalties} 
@@ -24,14 +29,13 @@ class StateMatch extends Component{
                 }}
             />
         }
-
-        return <div className="penaltyList">empty penalty list </div>;
+        return null;
     }
 
     render(){
         return (
             <div className="match_grid" key={uuid()}>
-                { this.displayPenaltyDialog() }
+                { this.displayAdditionalMatchInfos() }                       
                 <PlayerList className="playerPanel"/>
                 <PlayedCardStack className="playedCards"
                     playedCards= {this.props.match.playedCards} 

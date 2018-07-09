@@ -8,7 +8,7 @@ import uuid from "uuid";
 
 class PenaltyList extends Component{
 
-    getPenaltySet(penaltySet){
+    createPenaltySet(penaltySet){
         return (
             <PenaltyView
                 key={uuid()}
@@ -28,7 +28,7 @@ class PenaltyList extends Component{
                 <h4>{this.props.playerName}</h4>
                 {
                     this.props.penalties.map((penaltySet) =>{
-                        return this.getPenaltySet(penaltySet);
+                        return this.createPenaltySet(penaltySet);
                     })
                 }
                 <Button

@@ -30,6 +30,10 @@ const MatchSchema = new Schema({
     penalties: {
         type: Array,
         default: []
+    },
+    serverMessage: {
+        type: String,
+        default: ""
     }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);
