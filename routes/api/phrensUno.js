@@ -60,6 +60,8 @@ const playCard = (req, res) =>{
     
     if(!match){
         console.log("found no match for id: " + matchID);
+        let message = "no match could be found for your cardplay. here you have a new match";
+        startMatch(req, res, message);
         return;
     }
 
@@ -191,7 +193,7 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
 }
 
 
-const startMatch = (req, res) =>{
+const startMatch = (req, res, message = "") =>{
     //console.log("starting match");
     let playerCount = req.body.playerCount;
     playerCount = 5;                                            // TODO: for now every match has 5 players
@@ -246,6 +248,7 @@ const startMatch = (req, res) =>{
         activePlayerID: players.length > 0 ? players[0].id : "no human players" // first player starts
     });
 
+    match.message = message;
     saveMatchAndReturnToClient(match, res, true);
 };
 
