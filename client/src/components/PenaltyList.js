@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import uuid from "uuid";
 
 
+
 class PenaltyList extends Component{
 
     getPenaltySet(penaltySet){
@@ -24,6 +25,7 @@ class PenaltyList extends Component{
         return (
             <div className="penaltyList">
                 <h2>PENALTY CARDS</h2>
+                <h4>{this.props.playerName}</h4>
                 {
                     this.props.penalties.map((penaltySet) =>{
                         return this.getPenaltySet(penaltySet);
@@ -45,7 +47,8 @@ class PenaltyList extends Component{
 PenaltyList.propTypes = {
     penalties: PropTypes.array.isRequired,
     activePlayerID: PropTypes.string.isRequired,
-    onAccept: PropTypes.func.isRequired
+    onAccept: PropTypes.func.isRequired,
+    playerName:PropTypes.string.isRequired
 };
 
 

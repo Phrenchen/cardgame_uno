@@ -14,13 +14,23 @@ class StateStart extends Component{
         //console.log("render StateSetup");
         //console.log(this.props);
         return (
-            <div>
-                <Button
-                    onClick= {this.onStartMatch}
-                >
-                    start match
-                </Button>
-            </div>
+                <div className="startscreen">
+                    <h1>UNO</h1>
+                    <p>
+                        currently 5 human players play on one screen.
+                        <br/>
+                        this does not make a lot of sense...
+                        <br/>
+                        it´s "work in progress" :)
+                    </p>
+                    <br />
+                    <br />
+                    <Button
+                        onClick= {this.onStartMatch}
+                    >
+                        start match
+                    </Button>
+                </div>
         );
     }
 }

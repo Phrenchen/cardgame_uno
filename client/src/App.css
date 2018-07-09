@@ -6,6 +6,13 @@
     --card_yellow: #d9ff00;
     --card_black: #000000;
 }
+
+.centered{
+    position: absolute;
+    left:50%;
+    top:50%;
+}
+
 /* -------- */
 .match_grid{
     display: grid;
@@ -27,17 +34,29 @@
     border: 0;
 }
 
+.startscreen{
+    position: relative;
+    
+    text-align: center;
+}
+
 /* penalty list */
 .penaltyList{
     border: 1px solid black;
     background-color: rgb(117, 129, 82);
 
     position: fixed;
-    /*top: 50%;
-    left: 50%;
+    /*
+    top: -50%;
+    position: relative;
+    /*min-width: auto;*/
+    
+    text-align: center;
+
+    /*
     margin-top: -50px;
-    margin-left: -100px;*/
-    box-shadow: #ff0000;
+    margin-left: -100px;
+    */
 }
 
 /* card */
