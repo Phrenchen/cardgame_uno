@@ -41,17 +41,14 @@ class PlayerList extends Component{
             counter++;
 
             return(
-                <div key={uuid()}>
-                    <ListGroupItem >
-                        <Navbar color="dark" dark expand="sm" className="mb-5">
-                            <Container>
-                                <Button>Player {counter + " (" + player.cards.length + " )"}</Button>
-                                    {
-                                        this.createCardList(player) // will only render something if the player is active
-                                    }
-                            </Container>
-                        </Navbar>
-                    </ListGroupItem>
+                <div 
+                    key={uuid()} 
+                    className="player"
+                >
+                    <Button>Player {counter + " (" + player.cards.length + " )"}</Button>
+                        {
+                            this.createCardList(player) // will only render something if the player is active
+                        }
                 </div>
             )});
     }
