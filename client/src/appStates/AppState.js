@@ -1,2 +1,5 @@
-export const STATE_START = "STATE_SETUP";
-export const STATE_MATCH = "STATE_MATCH";
+const STATE_START = "STATE_SETUP";
+const STATE_MATCH = "STATE_MATCH";
+
+module.exports.STATE_START = STATE_START;
+module.exports.STATE_MATCH = STATE_MATCH;
