@@ -27,6 +27,10 @@ class Player extends Component{
         let position = MathHelper.calculatePositionsOnCircle(this.props.match.players.length, radius, origin)[this.props.positionInRow - 1];
         
         let containerDiv = document.getElementById(this.state.id);
+        if(!containerDiv){
+            console.log("could not find containerdiv to reposition");
+            return;
+        }
         containerDiv.style.position = "absolute";
         containerDiv.style.zIndex =this.props.positionInRow;
         containerDiv.style.left = position.x + "px";
@@ -37,8 +41,8 @@ class Player extends Component{
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
         let name = player.name;
         
-        name += (this.props.id === this.props.match.activePlayerID) ? " (*)" : ""
         name += "(" + player.cards.length + ")";
+        name += (this.props.id === this.props.match.activePlayerID) ? " (*)" : ""
 
         return name;
     }
