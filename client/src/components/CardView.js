@@ -25,6 +25,19 @@ class CardView extends Component {
             }
         });
 
+        if(this.props.positionInRow){       // attention: will not enter if position = 0!!!
+            let step = 5;
+            let offsetX = this.props.positionInRow * step;
+            let offsetY = this.props.positionInRow * step;
+            
+            containerDiv.style.position = "absolute";
+            containerDiv.style.zIndex =this.props.positionInRow;
+            containerDiv.style.left = offsetX + "px";
+            containerDiv.style.top = offsetY + "px";
+        }
+        else{
+            console.log("player card");
+        }
         containerDiv.style.backgroundColor = backgroundColor;
         containerDiv.style.color = color;
     }
@@ -57,7 +70,8 @@ CardView.propTypes = {
     owner: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     effects: PropTypes.array.isRequired,
-    playCard: PropTypes.func
+    playCard: PropTypes.func,
+    positionInRow: PropTypes.number
 };
 
 const mapStateToProps = (state) =>({

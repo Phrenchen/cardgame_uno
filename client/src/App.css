@@ -41,6 +41,7 @@
 }
 
 .playedCards{
+    position: relative;
     grid-column: 2 / 3;
     grid-row: 2 / 3;
 
@@ -86,6 +87,7 @@
 
 /* card */
 .card{
+    position: relative;
     border: 1px solid white;
     background: #000000;
     user-select: none;

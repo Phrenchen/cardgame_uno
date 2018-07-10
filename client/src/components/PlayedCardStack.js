@@ -4,21 +4,31 @@ import CardView from "./CardView";
 import {Container} from "reactstrap";
 class PlayedCardStack extends Component{
 
+    createCard(card, index){
+        return (
+            <CardView
+                key={card.id}
+                id={card.id}
+                matchID={this.props.matchID}
+                owner={"-1"}      // has been played. no matter who played it
+                name={card.name}
+                effects={card.effects}
+                positionInRow={index}
+            />
+        );
+    }
 
     render(){
-        const topCard = this.props.playedCards[this.props.playedCards.length -1];
+        let counter = 0;
 
         return (
             <div className="playedCards">
                 played cards
-                <CardView
-                    key={topCard.id}
-                    id={topCard.id}
-                    matchID={this.props.matchID}
-                    owner={"-1"}      // has been played. no matter who played it
-                    name={topCard.name}
-                    effects={topCard.effects}
-                />
+                {
+                    this.props.playedCards.map((card) =>{
+                        return this.createCard(card, ++counter);
+                    })
+                }
             </div>
         );  
     }
