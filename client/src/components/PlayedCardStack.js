@@ -5,6 +5,7 @@ import {Container} from "reactstrap";
 class PlayedCardStack extends Component{
 
     createCard(card, index){
+        console.log("rendering played card at " + index + " : " + card.name);
         return (
             <CardView
                 key={card.id}
@@ -19,13 +20,30 @@ class PlayedCardStack extends Component{
     }
 
     render(){
+        const cardCountToRender = 10;
         let counter = 0;
+        let index = this.props.playedCards.length - cardCountToRender;
+        if(index < 0){
+            index = 0;
+        }
+        console.log("cards played: " + this.props.playedCards.length);
+        console.log("start index: " + index);
+
 
         return (
             <div className="playedCards centered">
                 {
                     this.props.playedCards.map((card) =>{
-                        return this.createCard(card, ++counter);
+                        counter++;
+
+                        if(counter <= cardCountToRender){                       // only render last 10 played cards
+                            console.log("---");
+                            console.log("creating card for index: " + index + " : " + card.name);
+                            return this.createCard(card, index++);
+                        }
+                        else{
+                            return null;
+                        }
                     })
                 }
             </div>

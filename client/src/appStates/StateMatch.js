@@ -40,18 +40,18 @@ class StateMatch extends Component{
         console.log(player);
         return (
             <div className="match_grid" key={uuid()}>
-                { this.displayAdditionalMatchInfos() }                       
                 <PlayerList className="playerPanel"/>
                 <PlayedCardStack className="playedCards"
                     playedCards= {this.props.match.playedCards} 
                     matchID= {this.props.match.id}
-                />
+                    />
                 <CardList 
                     matchID={this.props.match.id}
                     cards={MatchHelper.getActivePlayer(this.props.match).cards} 
                     owner={this.props.match.activePlayerID}
                     topCard={this.props.match.playedCards[this.props.match.playedCards.length - 1]}
-                />
+                    />
+                { this.displayAdditionalMatchInfos() }                       
             </div>
         );
     }

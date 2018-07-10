@@ -24,7 +24,9 @@ class Player extends Component{
 
         let radius = lesserSide * .3;
         let origin = {x: screenCenterX, y: screenCenterY};
-        let position = MathHelper.calculatePositionsOnCircle(this.props.match.players.length, radius, origin)[this.props.positionInRow - 1];
+        // we need twice the amount of positions to fill bottom half of circle (first element is at 3 o´clock)
+        let amountOfPositions = this.props.match.players.length * 2;
+        let position = MathHelper.calculatePositionsOnCircle(amountOfPositions, radius, origin)[this.props.positionInRow - 1];
         
         let containerDiv = document.getElementById(this.state.id);
         if(!containerDiv){
@@ -32,7 +34,7 @@ class Player extends Component{
             return;
         }
         containerDiv.style.position = "absolute";
-        containerDiv.style.zIndex =this.props.positionInRow;
+        containerDiv.style.zIndex = this.props.positionInRow;
         containerDiv.style.left = position.x + "px";
         containerDiv.style.top = position.y + "px";
     }
@@ -52,7 +54,12 @@ class Player extends Component{
         this.setPosition();
         
         window.addEventListener("resize", () =>{
-            this.setPosition();
+            try{
+                this.setPosition();
+            }
+            catch(e){
+                console.log("error setting player positions after resize");
+            }
         });
     }
 
