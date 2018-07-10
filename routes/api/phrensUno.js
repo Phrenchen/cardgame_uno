@@ -37,16 +37,23 @@ const acceptPenalties = (req, res) => {
 
     //console.log("server accepting penalties for matchID: " + matchID);
     let match = matchData.getMatchByID(matchID);
-    let player = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
 
-    match.penalties.map((penalty) =>{
-        penalty.cards.map((card) =>{
-            player.cards.push(card);
+    if(match){
+        let player = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
+    
+        match.penalties.map((penalty) =>{
+            penalty.cards.map((card) =>{
+                player.cards.push(card);
+            })
         })
-    })
-    match.penalties = [];       // forget about penalties
-
-    saveMatchAndReturnToClient(match, res, false);
+        match.penalties = [];       // forget about penalties
+    
+        saveMatchAndReturnToClient(match, res, false);
+    }
+    else{
+        console.log("CREATING NEW MATCH! Could not accept penalties for unknown match. why is this?");
+        startMatch(req, res);
+    }
 }
 
 const playCard = (req, res) =>{
