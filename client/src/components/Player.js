@@ -7,31 +7,13 @@ import {connect} from "react-redux";
 import uuid from "uuid";
 import { CardBody, CardTitle } from "reactstrap";
 
+/**
+ * positions itself on a circle around screen center
+ */
 class Player extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            id: uuid()
-        };
-    }
-
-    createCardList(id){
-        if(id === this.props.match.activePlayerID){
-            let cards = MatchHelper.getPlayerByID(id).cards;
-            return (
-                <div>
-                    <CardList 
-                        matchID={this.props.match.id}
-                        cards={cards} 
-                        owner={id}
-                        topCard={this.props.match.playedCards[this.props.match.playedCards.length - 1]}
-                    />
-                </div>
-            );
-        }
-        return null;
-    }
-    //----------------
+    state={
+        id: uuid()
+    };
     
     setPosition(){
         let lesserSide = window.innerWidth < window.innerHeight ? 
@@ -50,6 +32,18 @@ class Player extends Component{
         containerDiv.style.left = position.x + "px";
         containerDiv.style.top = position.y + "px";
     }
+
+    getPlayerName(){
+        const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
+        let name = player.name;
+        
+        name += (this.props.id === this.props.match.activePlayerID) ? " (*)" : ""
+        name += "(" + player.cards.length + ")";
+
+        return name;
+    }
+
+    //-------------------
     componentDidMount(){
         this.setPosition();
         
@@ -62,13 +56,11 @@ class Player extends Component{
         return (
             <div  id={this.state.id}>
                 <CardBody>
-                    <CardTitle>{MatchHelper.getPlayerByID(this.props.match.players, this.props.id).name}</CardTitle>
+                    <CardTitle>{this.getPlayerName()}</CardTitle>
                 </CardBody>
-                {this.createCardList()}
             </div>
         );
     }
-
 }
 
 Player.propTypes = {

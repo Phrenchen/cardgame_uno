@@ -6,6 +6,9 @@ import PenaltyList from '../components/PenaltyList';
 import {acceptPenalties} from "../actions/MatchActions"
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
+import PlayerOpenCards from './PlayerOpenCards';
+import CardList from '../components/CardList';
+
 class StateMatch extends Component{
     hasPenalties = () =>{
         return this.props.match.penalties && this.props.match.penalties.length > 0;
@@ -22,7 +25,7 @@ class StateMatch extends Component{
                 penalties={this.props.match.penalties} 
                 matchID={this.props.match.id}
                 activePlayerID={this.props.match.activePlayerID}
-                playerName={MatchHelper.getPlayerByID(this.props.match.players, this.props.match.activePlayerID).name}
+                playerName={MatchHelper.getActivePlayer(this.props.match).name}
                 onAccept={() =>{
                     // trigger action to server
                     this.props.acceptPenalties(this.props.match.id);
@@ -33,6 +36,8 @@ class StateMatch extends Component{
     }
 
     render(){
+        let player = MatchHelper.getActivePlayer(this.props.match);
+        console.log(player);
         return (
             <div className="match_grid" key={uuid()}>
                 { this.displayAdditionalMatchInfos() }                       
@@ -40,6 +45,12 @@ class StateMatch extends Component{
                 <PlayedCardStack className="playedCards"
                     playedCards= {this.props.match.playedCards} 
                     matchID= {this.props.match.id}
+                />
+                <CardList 
+                    matchID={this.props.match.id}
+                    cards={MatchHelper.getActivePlayer(this.props.match).cards} 
+                    owner={this.props.match.activePlayerID}
+                    topCard={this.props.match.playedCards[this.props.match.playedCards.length - 1]}
                 />
             </div>
         );

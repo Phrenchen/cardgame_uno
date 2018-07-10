@@ -1,5 +1,10 @@
 const MathHelper = require("./MathHelper");
 
+const getActivePlayer = (match) => {
+    return getPlayerByID(match.players, match.activePlayerID);
+}
+module.exports.getActivePlayer = getActivePlayer;
+
 const getPlayerByID = (players, playerID) =>{
     for(let i=0; i<players.length; i++){
         if(players[i].id === playerID){
