@@ -1,10 +1,11 @@
 /* variables */
 :root{
-    --card_red: #ff0000;
-    --card_green: rgb(13, 138, 13);
-    --card_blue: rgb(12, 12, 204);
-    --card_yellow: #d9ff00;
+    --card_red: #940600;
+    --card_green: #006B04;
+    --card_blue: #263AB1;
+    --card_yellow: #FFEE27;
     --card_black: #000000;
+    --dialog_background: #E8CDA5;
 }
 
 .centered{
@@ -42,6 +43,8 @@
 .playedCards{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
+
+    background-color: var(--dialog_background);
 }
 
 /* PENALTIES */
@@ -55,7 +58,7 @@
     grid-template-rows: 1fr 1fr;
 
     border: 1px solid black;
-    background-color: rgb(117, 129, 82);
+    background-color: var(--dialog_background);
     
     text-align: center;
 }
@@ -71,6 +74,16 @@
     position: relative;
     text-align: center;
 }
+
+/* player */
+.player{
+    background: var(--dialog_background);
+    border: 1px solid red;
+    padding: 5px;
+    margin: 1px;
+}
+
+
 /* card */
 .card{
     border: 1px solid white;
