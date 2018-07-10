@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Player from "./Player";
+import uuid from "uuid";
 
 class PlayerList extends Component{
 
@@ -9,7 +10,7 @@ class PlayerList extends Component{
     createPlayer(player, index){
         return (
             <Player
-                key={player.id}
+                key={uuid()}
                 id={player.id}
                 positionInRow={index}
             />
