@@ -39,7 +39,7 @@ class AppStateMachine extends Component{
     }
 }
 
-const mapStateToProps = function(state){
+const mapStateToProps = (state) => {
     return {
         appState:state.appState
     };

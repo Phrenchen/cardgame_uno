@@ -73,7 +73,9 @@ Player.propTypes = {
     match:PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
-    match: state.match
-});
+const mapStateToProps = (state) => {
+    return {
+        match: state.match
+    }
+};
 export default connect(mapStateToProps)(Player);

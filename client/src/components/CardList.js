@@ -1,6 +1,4 @@
 import React, {Component} from "react";
-import  { Container, Row, Col } from "reactstrap";
-import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 import CardView from "./CardView";
@@ -23,6 +21,10 @@ class CardList extends Component{
         */
         let position = {x: 50, y: 20};
         let containerDiv = document.getElementById(this.state.id);
+        if(!containerDiv){
+            console.log("could not find container to update style");
+            return;
+        }
         containerDiv.style.position = "absolute";
         containerDiv.style.zIndex =this.props.positionInRow;
         containerDiv.style.left = position.x + "px";

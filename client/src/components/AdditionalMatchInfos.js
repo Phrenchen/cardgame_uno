@@ -48,7 +48,7 @@ AdditionalMatchInfos.propTypes = {
     penalties: PropTypes.array
 };
 
-const mapStateToProps = function(state){
+const mapStateToProps = (state) => {
     return {
         match: state.match
     };

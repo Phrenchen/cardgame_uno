@@ -20,7 +20,9 @@ import {connect} from "react-redux";
  }
 
  const mapStateToProps = (state) =>{
-     appState: state.appState;
+     return {
+         appState: state.appState
+     };
  }
 
  export default connect(mapStateToProps)(Help);

@@ -57,7 +57,7 @@ class StateMatch extends Component{
     }
 } 
 
-const mapStateToProps = function(state){
+const mapStateToProps = (state) =>{
     return {
         match: state.match
     }
