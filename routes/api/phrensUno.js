@@ -204,26 +204,40 @@ const startMatch = (req, res, message = "") =>{
     //console.log("starting match");
     let playerCount = req.body.playerCount;
     playerCount = 5;                                            // TODO: for now every match has 5 players
-    let players = [];   // PlayerObjects. serialize? hmm
+    let allPlayers = InitDB.getPlayers();
+    let selectedPlayers = [];
     let playerCardCount = 17;                                    // amount of hand cards for each player. default: 7
     let index;
     let card;
 
     let allCards = InitDB.getCardDeck();
-    //console.log("allCards: " + allCards.length);             // should be 108
+    let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
     
+    for(let i=0; i<playerCount; i++){
+        selectedPlayers.push( allPlayers[randomPlayerIDs[i]] );
+    }
+
+    // reassign ID to ensure uniquness
+    selectedPlayers.map((player) =>{
+        player.id = uuid();
+    });
+    
+    // ------------------------------
+    //sconsole.log("allCards: " + allCards.length);             // should be 108
+    /*
     for(let i = 0; i<playerCount; i++){
         //console.log(("Player " + (i+1)));
         const newPlayer = new Player({
             name: "Player " + (i+1),
-            id: uuid(),
-            cards: new Array()
+            id: uuid()
         });
         players.push(newPlayer);
     }
+    */
+   // ------------------------------
     
     // distribute cards for each player
-    players.map((player) =>{                                    // for ever player
+    selectedPlayers.map((player) =>{                                    // for ever player
         for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
             index = MathHelper.getRandomInt(0, allCards.length-1);
             card = allCards.splice(index, 1)[0];    // retrieve card
@@ -250,10 +264,10 @@ const startMatch = (req, res, message = "") =>{
     let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
     const match = new Match({                                   // create new match
         id: uuid(),
-        players: players,
+        players: selectedPlayers,
         playedCards: [firstCard],                           // add first card to stack
         cards: allCards,
-        activePlayerID: players.length > 0 ? players[0].id : "no human players" // first player starts
+        activePlayerID: selectedPlayers.length > 0 ? selectedPlayers[0].id : "no human players" // first player starts
     });
 
     match.message = message;

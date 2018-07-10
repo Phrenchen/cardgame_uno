@@ -1,31 +1,108 @@
 const uuid = require("uuid");
 const Card = require("./Card");
 const Effect = require("./Effect");
+const Player = require("./Player");
 const EffectColor = require("./EffectColor");
 const EffectValue = require("./EffectValue");
 const EffectSpecial = require("./../client/src/shared/EffectSpecial");
 
 var cards = [];
-
-module.exports.InitDB2 = this;
+var players = [];
 
 const getCarddeck = () =>{
     return cards.slice();   // return copy of card deck
 }
 module.exports.getCardDeck = getCarddeck;
 
+const getPlayers = () =>{
+    return players.slice();
+}
+module.exports.getPlayers = getPlayers;
+
+
 function initDB(){
     // 1. check if effects exist
     Effect.find()
         .then( effects => {
-                if(effects.length == 0){
+                if(effects.length === 0){
                     // add effects, cards will be created after effects have been stored
                     addEffectsToDB(); 
                 }
             })
+
+    // check if players exist
+    Player.find()
+        .then((players) =>{
+            if(players.length === 0){
+                addPlayersToDB();
+            }
+        })
+
+
 }
 module.exports.initDB = initDB;
 
+// PLAYERS
+function addPlayersToDB(){
+    //TODO: create players
+    players.push( new Player({
+        id: uuid(),
+        name: "The Ninja",
+        image: "images/the_ninja.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Dr. Surprise",
+        image: "images/dr_surprise.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Captain Obvious",
+        image: "images/captain_obvious.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Colonel Custard",
+        image: "images/colonel_custard.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Sir Has-A-Plan",
+        image: "images/sir_has_a_plan.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Missy Suspicious",
+        image: "images/missy_suspicious.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "The Demon",
+        image: "images/the_demon.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Innocence",
+        image: "images/innocence.png"
+    }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Her Majesty II",
+        image: "images/her_majesty_ii.png"
+    }));
+
+    Player.insertMany(players, (err, result) =>{
+        //console.log("inserted players: " + result.length);
+    });
+}
 
 // CARDS
 function addCardsToDB() {
@@ -115,24 +192,30 @@ createCard = (pName, pEffects, amount = 1) =>{
 let effectInProgressCounter = 0;
 
 addEffectsToDB = () => {
+    let effects = [];
     // color
-    createEffect(EffectColor.RED);
-    createEffect(EffectColor.GREEN);
-    createEffect(EffectColor.BLUE);
-    createEffect(EffectColor.YELLOW);
+    effects.push( createEffect(EffectColor.RED) );
+    effects.push( createEffect(EffectColor.GREEN) );
+    effects.push( createEffect(EffectColor.BLUE) );
+    effects.push( createEffect(EffectColor.YELLOW) );
     
     // create cards with values 0-9
     let valueCount = EffectValue.length;
     EffectValue.map((value) => {
-        createEffect(value);
+        effects.push( createEffect(value) );
     });
 
     // specials
-    createEffect(EffectSpecial.TAKE_2);
-    createEffect(EffectSpecial.TAKE_4);
-    createEffect(EffectSpecial.SKIP);
-    createEffect(EffectSpecial.CHANGE_COLOR);
-    createEffect(EffectSpecial.CHANGE_DIRECTION);
+    effects.push( createEffect(EffectSpecial.TAKE_2) );
+    effects.push( createEffect(EffectSpecial.TAKE_4) );
+    effects.push( createEffect(EffectSpecial.SKIP) );
+    effects.push( createEffect(EffectSpecial.CHANGE_COLOR) );
+    effects.push( createEffect(EffectSpecial.CHANGE_DIRECTION) );
+
+    Effect.insertMany(effects, (err, result) =>{
+        //console.log("saved effects, adding cards, now");
+        addCardsToDB();
+    });
 }
 
 createEffect = (eType) => {
@@ -143,18 +226,5 @@ createEffect = (eType) => {
         id: uuid(),
         effectType: eType
     });
-    
-    effect.save()
-        .then( (newEffect) => {
-            effectInProgressCounter--;
-            if(effectInProgressCounter <= 0){
-                Card.find()
-                    .then( cards => {
-                        if(cards.length == 0){
-                            // add cards
-                            addCardsToDB();
-                        }
-                    });
-            }
-        });
+    return effect;
 }
