@@ -22,7 +22,7 @@ class PlayedCardStack extends Component{
         let counter = 0;
 
         return (
-            <div className="playedCards">
+            <div className="playedCards centered">
                 played cards
                 {
                     this.props.playedCards.map((card) =>{

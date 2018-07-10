@@ -1,15 +1,14 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import uuid from "uuid";
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, CardLink } from "reactstrap";
+import { CardBody, CardTitle } from "reactstrap";
 import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
 class CardView extends Component {
     
     state={
-        id: uuid(),
-        style: ""
-    }
+        id: uuid()
+    };
 
     // helper. MOVE somewhere clever (this rhymes wtf!?)
     setColor(effects){
@@ -48,18 +47,15 @@ class CardView extends Component {
 
     render(){
         return (
-            <Card className="card" id={this.state.id} onClick={() =>{
+            <div className="card" id={this.state.id} onClick={() =>{
                 if(this.props.playCard){
                     this.props.playCard(this.props.matchID, this.props.owner, this.props.id);
                 }
             }} >
                 <CardBody>
                     <CardTitle>{this.props.name}</CardTitle>
-                        </CardBody>
-                            <img width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
-                        <CardBody>
                 </CardBody>
-            </Card>
+            </div>
         );
     }
 }

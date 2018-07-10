@@ -14,37 +14,16 @@
     top:50%;
 }
 
-/* --- MATCH GRID ----- */
-.match_grid{
-    display: grid;
-    
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: min-content min-content;
-    width: 100%;            
-    
-    align-content: center;
-    align-items: center;
-    align-self: center;
-    text-align: center;
-    
-}
-
 /* player panel */
 .playerPanel{
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-
-    /*overflow: hidden;*/
     margin: 0;
     padding: 0;
     border: 0;
 }
 
 .playedCards{
-    position: relative;
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-
+    position: absolute;
+    
     background-color: var(--dialog_background);
 }
 
@@ -72,16 +51,19 @@
 /*---------------------------------------------*/
 
 .startscreen{
-    position: relative;
     text-align: center;
 }
 
 /* player */
 .player{
+    position: absolute;
     background: var(--dialog_background);
     border: 1px solid red;
     padding: 5px;
     margin: 1px;
+
+    width: 20vmax;
+    height: 20vmax;
 }
 
 
@@ -89,10 +71,11 @@
 .card{
     position: relative;
     border: 1px solid white;
-    background: #000000;
+    background:  var(--card_black);
     user-select: none;
-    width: 100px;
-    height: 150px;
+    width: 10vmax;
+    height: 10vmax;
+    text-align: center;
 }
 
 .card:hover {

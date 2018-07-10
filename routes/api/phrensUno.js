@@ -206,6 +206,7 @@ const startMatch = (req, res, message = "") =>{
     //console.log("allCards: " + allCards.length);             // should be 108
     
     for(let i = 0; i<playerCount; i++){
+        //console.log(("Player " + (i+1)));
         const newPlayer = new Player({
             name: "Player " + (i+1),
             id: uuid(),
