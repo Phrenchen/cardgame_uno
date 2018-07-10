@@ -64,14 +64,12 @@
 .playerIconSmall{
     margin: 5px;
     max-width: 100px;
-    max-height: 100px;
     width: 20vmax;
 }
 
 .playerIconSmallActive{
     margin: 5;
     max-width: 100px;
-    max-height: 100px;
     width: 20vmax;
 
     border: 3px solid black;

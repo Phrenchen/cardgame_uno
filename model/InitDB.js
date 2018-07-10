@@ -102,7 +102,7 @@ function addPlayersToDB(){
     players.push( new Player({
         id: uuid(),
         name: "Bat Cat",
-        imageUrl: "/images/bat_cat.jpeg"
+        imageUrl: "/images/batcat.jpeg"
     }));
 
 
