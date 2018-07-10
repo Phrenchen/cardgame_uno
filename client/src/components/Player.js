@@ -63,14 +63,26 @@ class Player extends Component{
         });
     }
 
+    getClassName(){
+        return this.props.id === this.props.match.activePlayerID ? 
+            "playerIconSmallActive" :
+            "playerIconSmall"
+    }
+
     render(){
+        const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
+
         return (
             <div  id={this.state.id}>
+                {player.cards.length}
+                <img className={this.getClassName()} src={MatchHelper.getPlayerByID(this.props.match.players, this.props.id).imageUrl} />
+            </div>
+        );
+        /*
                 <CardBody>
                     <CardTitle>{this.getPlayerName()}</CardTitle>
                 </CardBody>
-            </div>
-        );
+        */
     }
 }
 

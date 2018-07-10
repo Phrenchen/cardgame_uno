@@ -48,56 +48,63 @@ function addPlayersToDB(){
     players.push( new Player({
         id: uuid(),
         name: "The Ninja",
-        image: "images/the_ninja.png"
+        imageUrl: "/images/the_ninja.jpeg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Dr. Surprise",
-        image: "images/dr_surprise.png"
+        imageUrl: "/images/dr_surprise.jpg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Captain Obvious",
-        image: "images/captain_obvious.png"
+        imageUrl: "/images/captain_obvious.jpg"
     }));
 
     players.push( new Player({
         id: uuid(),
-        name: "Colonel Custard",
-        image: "images/colonel_custard.png"
+        name: "Mr. Mustache",
+        imageUrl: "/images/mr_mustache.jpg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Sir Has-A-Plan",
-        image: "images/sir_has_a_plan.png"
+        imageUrl: "/images/sir_has_a_plan.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Missy Suspicious",
-        image: "images/missy_suspicious.png"
+        imageUrl: "/images/missy_suspicious.jpg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "The Demon",
-        image: "images/the_demon.png"
+        imageUrl: "/images/the_demon.jpeg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Innocence",
-        image: "images/innocence.png"
+        imageUrl: "/images/innocence.jpg"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Her Majesty II",
-        image: "images/her_majesty_ii.png"
+        imageUrl: "/images/her_majesty.jpg"
     }));
+
+    players.push( new Player({
+        id: uuid(),
+        name: "Bat Cat",
+        imageUrl: "/images/bat_cat.jpeg"
+    }));
+
 
     Player.insertMany(players, (err, result) =>{
         //console.log("inserted players: " + result.length);

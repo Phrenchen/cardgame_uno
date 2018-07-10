@@ -1,5 +1,15 @@
 const getNRandomInts = (min, max, amount) =>{
     let result = [];
+    let random;
+
+    while(result.length < amount){
+        random = getRandomInt(min, max);
+
+        if(result.indexOf(random) == -1){
+            result.push(random);
+        }
+    }
+
     for(let i=0; i<amount; i++){
         result.push( getRandomInt(min, max) );
     }

@@ -10,7 +10,7 @@ const PlayerSchema = new Schema({
         type: String,
         required: true
     },
-    image: {
+    imageUrl: {
         type : String,
         default: ""
     },
