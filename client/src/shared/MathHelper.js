@@ -1,7 +1,15 @@
+const getNRandomInts = (min, max, amount) =>{
+    let result = [];
+    for(let i=0; i<amount; i++){
+        result.push( getRandomInt(min, max) );
+    }
+    return result;
+}
+module.exports.getNRandomInts = getNRandomInts;
+
 const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 module.exports.getRandomInt = getRandomInt;
 
 
