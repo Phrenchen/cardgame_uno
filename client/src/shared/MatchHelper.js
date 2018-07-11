@@ -25,7 +25,21 @@ const getWinner = (match) => {
     return result;
 }
 module.exports.getWinner = getWinner;
+
 //------------------------------------------------------
+const getValidCardTo = (cards, topCard) =>{
+    let card;
+
+    for(let i=0; i<cards.length; i++){
+        card = cards[i];
+
+        if(PlayCardValidator.validateCard(card, topCard)){
+            return cards.splice(i, 1)[0];
+        }
+    }
+}
+module.exports.getValidCardTo = getValidCardTo;
+
 
 const playerHasPlayableCards = (match) => {
     let result = false;

@@ -53,41 +53,9 @@ const startMatch = (req, res, message = "") =>{
         player.cards = [];
     });
         
+   let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
+   distributeHandCardsToPlayers(selectedPlayers, allCards, "FIRST_PLAYER_WINS", 5, firstCard);
 
-
-    // distribute cards for each player
-    /*
-    TODO: CARD DECKS
-    player can choose between a random deck or a preselected deck.
-    
-
-    */
-    selectedPlayers.map((player) =>{                                    // for ever player
-        for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
-            index = MathHelper.getRandomInt(0, allCards.length-1);
-            card = allCards.splice(index, 1)[0];    // retrieve card
-            //console.log(card);
-            player.cards.push( card );                          // move from deck to player hand
-        }
-        
-
-        // DEBUG CARD INSERTING
-        // add direction change cards to each player
-        /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
-        if(changeDirectionCard){
-            player.cards.push(changeDirectionCard);
-        }
-
-        let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
-        if(skipCard){
-            player.cards.push(skipCard);
-        }
-        */
-
-        // END OF DEBUG CARD INSERTING
-    });
-
-    let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
     const match = new Match({                                   // create new match
         id: uuid(),
         players: selectedPlayers,
@@ -103,6 +71,61 @@ const startMatch = (req, res, message = "") =>{
     match.message = message;
     saveMatchAndReturnToClient(match, res, true);
 };
+
+const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCardCount, topCard) => {
+    let p;
+    playerCardCount = 1;
+    switch(distributionMode){
+        case "FIRST_PLAYER_WINS":
+            //console.log("first player wins");
+            
+            for(let i=0; i<players.length; i++){
+                p = players[i];
+
+                if(i==0){
+                    // first player gets valid card
+                    let validCard = MatchHelper.getValidCardTo(cards, topCard);
+                    p.cards.push( validCard );
+                    distributeRandomCardsToPlayer(p, cards, playerCardCount-1);
+                    continue;
+                }
+                distributeRandomCardsToPlayer(p,cards, playerCardCount);
+            }
+            break;
+        default:
+            console.log("default random card distribution");
+            players.map( (player) =>{                                    // for ever player
+                distributeRandomCardsToPlayer(player, cards, playerCardCount);
+            });
+            break;
+            
+        }
+        
+        
+        // DEBUG CARD INSERTING
+        // add direction change cards to each player
+        /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
+        if(changeDirectionCard){
+            player.cards.push(changeDirectionCard);
+        }
+        
+        let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
+        if(skipCard){
+            player.cards.push(skipCard);
+        }
+        */
+       
+       // END OF DEBUG CARD INSERTING
+    }
+    
+    const distributeRandomCardsToPlayer = (player, cards, playerCardCount) =>{
+        for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
+            index = MathHelper.getRandomInt(0, cards.length-1);
+            card = cards.splice(index, 1)[0];    // retrieve card
+            //console.log(card);
+            player.cards.push( card );                          // move from deck to player hand
+        }
+    };
 
 // ACCEPT PENALTIES
 const acceptPenalties = (req, res) => {
