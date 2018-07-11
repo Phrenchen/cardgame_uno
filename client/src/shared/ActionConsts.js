@@ -1,9 +1,7 @@
 const START_MATCH = "START_MATCH";
 const PLAY_CARD = "PLAY_CARD";
 const ACCEPT_PENALTIES = "ACCEPT_PENALTIES";
-const GAME_OVER = "GAME_OVER";
 
 module.exports.START_MATCH = START_MATCH;
-module.exports.GAME_OVER = GAME_OVER;
 module.exports.PLAY_CARD = PLAY_CARD;
 module.exports.ACCEPT_PENALTIES = ACCEPT_PENALTIES;

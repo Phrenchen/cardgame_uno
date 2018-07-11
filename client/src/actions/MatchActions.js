@@ -1,7 +1,7 @@
 import axios from "axios";
 import {START_MATCH, SET_APP_STATE, CARD_PLAYED, PENALTIES_ACCEPTED} from "../actions/types";
-import { STATE_MATCH } from "../appStates/AppState";
-import ActionConsts, { GAME_OVER } from "../shared/ActionConsts";
+import { STATE_MATCH, STATE_GAME_OVER } from "../appStates/AppState";
+import ActionConsts from "../shared/ActionConsts";
 import MatchHelper from "../shared/MatchHelper";
 
 export const startMatch = () => dispatch => {
@@ -30,17 +30,14 @@ export const playCard = (pMatchID, pPlayerID, pCardID) => dispatch => {
             cardID: pCardID
         })
         .then((res) =>{
+            dispatch({
+                type: CARD_PLAYED,
+                payload: res.data
+            });
             if(MatchHelper.getWinner(res.data)){
                 dispatch({
-                    type: GAME_OVER,
-                    payload: res.data
-                });
-
-            }
-            else{
-                dispatch({
-                    type: CARD_PLAYED,
-                    payload: res.data
+                    type: SET_APP_STATE,
+                    payload: STATE_GAME_OVER
                 });
             }
         });

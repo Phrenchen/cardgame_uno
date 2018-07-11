@@ -9,6 +9,7 @@ const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
 const matchData = require("../../model/MatchData");
 const MatchHelper = require("../../client/src/shared/MatchHelper");
 const EffectSpecial = require("../../client/src/shared/EffectSpecial");
+const Player = require("../../model/Player");
 const Match = require("../../model/Match");
 
 phrensUnoRouter.post("/", (req, res) =>{
@@ -42,9 +43,12 @@ const startMatch = (req, res, message = "") =>{
 
     let allCards = InitDB.getCardDeck();
     let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
-    
+    let player;
+
     for(let i=0; i<playerCount; i++){
-        selectedPlayers.push( allPlayers[randomPlayerIDs[i]] );
+        player = allPlayers[randomPlayerIDs[i]];
+        player.matchScore = 0;
+        selectedPlayers.push( player );
     }
 
     // reassign ID to ensure uniquness
@@ -200,9 +204,15 @@ const playCard = (req, res) =>{
             if winning conditions change, so to speak hmm
             */
             match.activePlayerID = winner.id;        
-            match.serverMessage = "GAME_OVER";
+            match.serverMessage = winner.name + " has won!";
             
             MatchHelper.calculateScores(match);
+
+            match.players.map((player) =>{
+                console.log(player.matchScore);
+
+            })
+            
             
             saveMatchAndReturnToClient(match, res);     // send game over
             return;
@@ -309,6 +319,10 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList = false) =>{
             if(saveToTemporaryList){
                 MatchData.matches.push(savedMatch);
             }
+
+            savedMatch.players.map(p =>{
+                console.log(p.name + " scored: " + p.matchScore);
+            })
             res.json(savedMatch);                // send to client
         })
         .catch((res) =>{

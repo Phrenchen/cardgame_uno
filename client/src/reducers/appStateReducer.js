@@ -17,13 +17,18 @@ function appState(state = initialState, action){
                 case AppState.STATE_MATCH:
                     message = "you need to accept penalty cards before playing a card.";
                     break;
+                
+                case AppState.STATE_GAME_OVER:
+                    console.log("appState reducing game over")
+                    message = "game over! restart!";
+                    break;
+                
                 default:
                     message  = "default halp!";
                     break;
 
             }
-            console.log("help message: " + message);
-
+            
             return {
                 ...state,
                 current: (action.payload !== undefined) ? action.payload : "no valid state for reducer",
