@@ -34,7 +34,6 @@ phrensUnoRouter.post("/", (req, res) =>{
 // ACCEPT PENALTIES
 const acceptPenalties = (req, res) => {
     const matchID = req.body.matchID;
-    console.log("accepting penalties");
     let match = matchData.getMatchByID(matchID);
 
     if(match){
