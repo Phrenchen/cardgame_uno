@@ -14,7 +14,6 @@ const Player = require("../../model/Player");
 
 phrensUnoRouter.post("/", (req, res) =>{
     let action = req.body.action;
-    //console.log("routing phrensUno: " + action);
 
     switch(action){
         case ActionConsts.START_MATCH:
@@ -32,22 +31,26 @@ phrensUnoRouter.post("/", (req, res) =>{
     }
 });
 
+// ACCEPT PENALTIES
 const acceptPenalties = (req, res) => {
     const matchID = req.body.matchID;
-
-    //console.log("server accepting penalties for matchID: " + matchID);
+    console.log("accepting penalties");
     let match = matchData.getMatchByID(matchID);
 
     if(match){
-        let player = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
-    
+        let player = MatchHelper.getActivePlayer(match);
+        
         match.penalties.map((penalty) =>{
             penalty.cards.map((card) =>{
                 player.cards.push(card);
             })
         })
         match.penalties = [];       // forget about penalties
-    
+        
+        if(!MatchHelper.playerHasPlayableCards(match)){
+            setNextPlayer(match, MatchHelper.getTopCard(match), true);
+            applyPenaltyCheckNoValidCard(match);
+        }
         saveMatchAndReturnToClient(match, res, false);
     }
     else{
@@ -56,54 +59,44 @@ const acceptPenalties = (req, res) => {
     }
 }
 
+// PLAY CARD
 const playCard = (req, res) =>{
     const matchID = req.body.matchID;
     const playerID = req.body.playerID;
     const cardID = req.body.cardID;
+    let activePlayer;
     let topCard;
     let playCard;
 
     let match = matchData.getMatchByID(matchID);
     
     if(!match){
-        console.log("found no match for id: " + matchID + ". providing new match");
         let message = "no match could be found for your cardplay. here you have a new match";
         startMatch(req, res, message);
         return;
     }
-
-    // only activePlayer may play a card
     if(playerID != match.activePlayerID){
-        //console.log("only the active player may play a card. returning current state");
         match.message = "only the active player may play a card";
         res.json(match);
         return;
     }
-    
     if(match.penalties.length > 0){
         match.message = "client needs to accept penalties";
         res.json(match);
         return;
     }
     //----------------------- EARLY OUT END ----------------------------------
-    let activePlayer = MatchHelper.getPlayerByID(match.players, 
-                                                    match.activePlayerID);
-
-    topCard = match.playedCards[match.playedCards.length-1]
+    activePlayer = MatchHelper.getActivePlayer(match);
+    topCard = MatchHelper.getTopCard(match);
     playCard = MatchHelper.extractCardFromPlayer(activePlayer, cardID);
     
     if(PlayCardValidator.validateCard(playCard, topCard)){
         match.playedCards.push(playCard);
-        setNextPlayer(match, playCard);
+        setNextPlayer(match, playCard, false);
 
         // PENALTY CARDS
-        let penaltySets = [];
-        applyPenaltyTakeX(match, playCard, penaltySets);
-        applyPenaltyCheckNoValidCard(MatchHelper.getPlayerByID(match.players, match.activePlayerID), 
-                                        topCard, 
-                                        penaltySets);
-
-        match.penalties = penaltySets;                                            
+        applyPenaltyTakeX(match, playCard, match.penalties);
+        applyPenaltyCheckNoValidCard(match);
         
         // *** SAVE MATCH ***
         saveMatchAndReturnToClient(match, res, false);
@@ -116,7 +109,7 @@ const playCard = (req, res) =>{
        saveMatchAndReturnToClient(match, res, false);
     }
 };
-
+//---------------------------------------------
 
 // privates
 const applyPenaltyTakeX = (match, playCard, penaltySets) => {
@@ -150,7 +143,7 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
     }
 }
 
-const setNextPlayer = (match, playCard) =>{
+const setNextPlayer = (match, playCard, ignoreSkip) =>{
     // set cursor direction
     match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, 
         EffectSpecial.CHANGE_DIRECTION) ? 
@@ -158,44 +151,38 @@ const setNextPlayer = (match, playCard) =>{
             match.movingPlayerCursorForward;
 
     // set next player
+    
     let isSkipping = PlayCardValidator.hasEffect(playCard, 
-            EffectSpecial.SKIP);
+                                 EffectSpecial.SKIP);
+
+    if(!ignoreSkip){
+        isSkipping = false;
+    }
     match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
-    match.activePlayerID, 
-    match.movingPlayerCursorForward, 
-    isSkipping);
+        match.activePlayerID, 
+        match.movingPlayerCursorForward, 
+        isSkipping);
 }
 
-const applyPenaltyCheckNoValidCard = (player, topCard, penaltySets) =>{
-    if(!playerHasPlayableCards(player, topCard)){
-        penaltySets.push(getNoValidCardPenalty());
+const applyPenaltyCheckNoValidCard = (match) =>{
+    if(!MatchHelper.playerHasPlayableCards(match)){
+        match.penalties.push( getNoValidCardPenalty(match.cards) );
     }
 }
 
-const getNoValidCardPenalty = () =>{
+const getNoValidCardPenalty = (cards) =>{
     let noChoicePenaltyCardSet = {
         id: uuid(),
         reason: "no playable card. take 1 extra",
         cards: []
     };
 
-    let noChoicePenaltyCard = MatchHelper.getRandomCard(match.cards);
+    let noChoicePenaltyCard = MatchHelper.getRandomCard(cards);
     if(noChoicePenaltyCard){
         noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
     }
     
     return noChoicePenaltyCardSet;
-}
-
-const playerHasPlayableCards = (player, topCard) => {
-    let playerHasPlayableCards = false;
-
-    player.cards.map((card) =>{
-        if(PlayCardValidator.validateCard(card, topCard)){
-            playerHasPlayableCards = true;
-        }
-    });
-    return playerHasPlayableCards;
 }
 
 
@@ -205,7 +192,7 @@ const startMatch = (req, res, message = "") =>{
     playerCount = 5;                                            // TODO: for now every match has 5 players
     let allPlayers = InitDB.getPlayers();
     let selectedPlayers = [];
-    let playerCardCount = 12;                                    // amount of hand cards for each player. default: 7
+    let playerCardCount = 0;                                    // amount of hand cards for each player. default: 7
     let index;
     let card;
 
@@ -258,9 +245,8 @@ const startMatch = (req, res, message = "") =>{
 
     //TODO
     // validate activePlayer and add penalty card if no valid card in handdeck
-
-
-
+    applyPenaltyCheckNoValidCard(match);    // no penalties is guaranteed after match creation
+    
     match.message = message;
     saveMatchAndReturnToClient(match, res, true);
 };

@@ -39,7 +39,7 @@ class Player extends Component{
         containerDiv.style.top = position.y + "px";
     }
 
-    getPlayerName(){
+    getPlayerName = () =>{
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
         let name = player.name;
         

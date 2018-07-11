@@ -1,4 +1,33 @@
 const MathHelper = require("./MathHelper");
+const PlayCardValidator = require("./PlayCardValidator");
+
+
+///--------------------
+const playerHasPlayableCards = (match) => {
+    let result = false;
+    let allCandidates = getActivePlayer(match).cards;
+    let topCard = getTopCard(match);
+
+    match.penalties.map((pSet) =>{
+        console.log("1 concatenating: " + allCandidates.length);
+        allCandidates.concat(pSet.cards);
+        console.log("2 concatenating: " + allCandidates.length);
+    });
+
+    allCandidates.map((card) =>{
+        if(PlayCardValidator.validateCard(card, topCard)){
+            result = true;
+        }
+    });
+    return result;
+}
+module.exports.playerHasPlayableCards = playerHasPlayableCards;
+
+///--------------------
+const getTopCard = (match) =>{
+    return match.playedCards[match.playedCards.length-1];
+}
+module.exports.getTopCard = getTopCard;
 
 const getActivePlayer = (match) => {
     return getPlayerByID(match.players, match.activePlayerID);
@@ -6,6 +35,9 @@ const getActivePlayer = (match) => {
 module.exports.getActivePlayer = getActivePlayer;
 
 const getPlayerByID = (players, playerID) =>{
+    if(!players){
+        console.log("no players :( :( :("); 
+    }
     for(let i=0; i<players.length; i++){
         if(players[i].id === playerID){
             return players[i];
