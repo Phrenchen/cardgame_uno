@@ -10,7 +10,6 @@ const matchData = require("../../model/MatchData");
 const MatchHelper = require("../../client/src/shared/MatchHelper");
 const EffectSpecial = require("../../client/src/shared/EffectSpecial");
 const Match = require("../../model/Match");
-const Player = require("../../model/Player");
 
 phrensUnoRouter.post("/", (req, res) =>{
     let action = req.body.action;
@@ -30,6 +29,71 @@ phrensUnoRouter.post("/", (req, res) =>{
             break;
     }
 });
+
+const startMatch = (req, res, message = "") =>{
+    //console.log("starting match");
+    let playerCount = req.body.playerCount;
+    playerCount = 5;                                            // TODO: for now every match has 5 players
+    let allPlayers = InitDB.getPlayers();
+    let selectedPlayers = [];
+    let playerCardCount = 7;                                    // amount of hand cards for each player. default: 7
+    let index;
+    let card;
+
+    let allCards = InitDB.getCardDeck();
+    let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
+    
+    for(let i=0; i<playerCount; i++){
+        selectedPlayers.push( allPlayers[randomPlayerIDs[i]] );
+    }
+
+    // reassign ID to ensure uniquness
+    selectedPlayers.map((player) =>{
+        player.id = uuid();
+        player.cards = [];
+    });
+        
+    // distribute cards for each player
+    selectedPlayers.map((player) =>{                                    // for ever player
+        for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
+            index = MathHelper.getRandomInt(0, allCards.length-1);
+            card = allCards.splice(index, 1)[0];    // retrieve card
+            //console.log(card);
+            player.cards.push( card );                          // move from deck to player hand
+        }
+        
+        // DEBUG CARD INSERTING
+        // add direction change cards to each player
+        /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
+        if(changeDirectionCard){
+            player.cards.push(changeDirectionCard);
+        }
+
+        let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
+        if(skipCard){
+            player.cards.push(skipCard);
+        }
+        */
+
+        // END OF DEBUG CARD INSERTING
+    });
+
+    let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
+    const match = new Match({                                   // create new match
+        id: uuid(),
+        players: selectedPlayers,
+        playedCards: [firstCard],                           // add first card to stack
+        cards: allCards,
+        activePlayerID: selectedPlayers.length > 0 ? selectedPlayers[0].id : "no human players" // first player starts
+    });
+
+    //TODO
+    // validate activePlayer and add penalty card if no valid card in handdeck
+    applyPenaltyCheckNoValidCard(match);    // no penalties is guaranteed after match creation
+    
+    match.message = message;
+    saveMatchAndReturnToClient(match, res, true);
+};
 
 // ACCEPT PENALTIES
 const acceptPenalties = (req, res) => {
@@ -108,9 +172,52 @@ const playCard = (req, res) =>{
        saveMatchAndReturnToClient(match, res, false);
     }
 };
-//---------------------------------------------
+//------------------------------------------------------------------------
 
-// privates
+// private
+const setNextPlayer = (match, playCard, ignoreSkip) =>{
+    // set cursor direction
+    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, 
+        EffectSpecial.CHANGE_DIRECTION) ? 
+            !match.movingPlayerCursorForward : 
+            match.movingPlayerCursorForward;
+
+    // set next player
+    
+    let isSkipping = PlayCardValidator.hasEffect(playCard, 
+                                 EffectSpecial.SKIP);
+
+    if(!ignoreSkip){
+        isSkipping = false;
+    }
+    match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
+        match.activePlayerID, 
+        match.movingPlayerCursorForward, 
+        isSkipping);
+}
+
+// create penalties
+const applyPenaltyCheckNoValidCard = (match) =>{
+    if(!MatchHelper.playerHasPlayableCards(match)){
+        match.penalties.push( getNoValidCardPenalty(match.cards) );
+    }
+}
+
+const getNoValidCardPenalty = (cards) =>{
+    let noChoicePenaltyCardSet = {
+        id: uuid(),
+        reason: "no playable card. take 1 extra",
+        cards: []
+    };
+    
+    let noChoicePenaltyCard = MatchHelper.getRandomCard(cards);
+    if(noChoicePenaltyCard){
+        noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
+    }
+    
+    return noChoicePenaltyCardSet;
+}
+
 const applyPenaltyTakeX = (match, playCard, penaltySets) => {
     let penaltyCardCount = 0;
         
@@ -141,114 +248,7 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
         penaltySets.push(takeXPenaltyCardSet);
     }
 }
-
-const setNextPlayer = (match, playCard, ignoreSkip) =>{
-    // set cursor direction
-    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, 
-        EffectSpecial.CHANGE_DIRECTION) ? 
-            !match.movingPlayerCursorForward : 
-            match.movingPlayerCursorForward;
-
-    // set next player
-    
-    let isSkipping = PlayCardValidator.hasEffect(playCard, 
-                                 EffectSpecial.SKIP);
-
-    if(!ignoreSkip){
-        isSkipping = false;
-    }
-    match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
-        match.activePlayerID, 
-        match.movingPlayerCursorForward, 
-        isSkipping);
-}
-
-const applyPenaltyCheckNoValidCard = (match) =>{
-    if(!MatchHelper.playerHasPlayableCards(match)){
-        match.penalties.push( getNoValidCardPenalty(match.cards) );
-    }
-}
-
-const getNoValidCardPenalty = (cards) =>{
-    let noChoicePenaltyCardSet = {
-        id: uuid(),
-        reason: "no playable card. take 1 extra",
-        cards: []
-    };
-
-    let noChoicePenaltyCard = MatchHelper.getRandomCard(cards);
-    if(noChoicePenaltyCard){
-        noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
-    }
-    
-    return noChoicePenaltyCardSet;
-}
-
-
-const startMatch = (req, res, message = "") =>{
-    //console.log("starting match");
-    let playerCount = req.body.playerCount;
-    playerCount = 5;                                            // TODO: for now every match has 5 players
-    let allPlayers = InitDB.getPlayers();
-    let selectedPlayers = [];
-    let playerCardCount = 7;                                    // amount of hand cards for each player. default: 7
-    let index;
-    let card;
-
-    let allCards = InitDB.getCardDeck();
-    let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
-    
-    for(let i=0; i<playerCount; i++){
-        selectedPlayers.push( allPlayers[randomPlayerIDs[i]] );
-    }
-
-    // reassign ID to ensure uniquness
-    selectedPlayers.map((player) =>{
-        player.id = uuid();
-        player.cards = [];
-    });
-        
-    // distribute cards for each player
-    selectedPlayers.map((player) =>{                                    // for ever player
-        for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
-            index = MathHelper.getRandomInt(0, allCards.length-1);
-            card = allCards.splice(index, 1)[0];    // retrieve card
-            //console.log(card);
-            player.cards.push( card );                          // move from deck to player hand
-        }
-        
-        // DEBUG CARD INSERTING
-        // add direction change cards to each player
-        /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
-        if(changeDirectionCard){
-            player.cards.push(changeDirectionCard);
-        }
-
-        let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
-        if(skipCard){
-            player.cards.push(skipCard);
-        }
-        */
-
-        // END OF DEBUG CARD INSERTING
-    });
-
-    let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
-    const match = new Match({                                   // create new match
-        id: uuid(),
-        players: selectedPlayers,
-        playedCards: [firstCard],                           // add first card to stack
-        cards: allCards,
-        activePlayerID: selectedPlayers.length > 0 ? selectedPlayers[0].id : "no human players" // first player starts
-    });
-
-    //TODO
-    // validate activePlayer and add penalty card if no valid card in handdeck
-    applyPenaltyCheckNoValidCard(match);    // no penalties is guaranteed after match creation
-    
-    match.message = message;
-    saveMatchAndReturnToClient(match, res, true);
-};
+// end create penalties
 
 // helper
 const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
