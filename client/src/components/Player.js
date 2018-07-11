@@ -25,7 +25,7 @@ class Player extends Component{
         let radius = lesserSide * .3;
         let origin = {x: screenCenterX, y: screenCenterY};
         // we need twice the amount of positions to fill bottom half of circle (first element is at 3 o´clock)
-        let amountOfPositions = this.props.match.players.length * 2;
+        let amountOfPositions = this.props.match.players.length * 1;        // * 2 to position all players on bottom half of circle
         let position = MathHelper.calculatePositionsOnCircle(amountOfPositions, radius, origin)[this.props.positionInRow - 1];
         
         let containerDiv = document.getElementById(this.state.id);
