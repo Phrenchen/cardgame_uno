@@ -220,22 +220,9 @@ const startMatch = (req, res, message = "") =>{
     // reassign ID to ensure uniquness
     selectedPlayers.map((player) =>{
         player.id = uuid();
+        player.cards = [];
     });
-    
-    // ------------------------------
-    //sconsole.log("allCards: " + allCards.length);             // should be 108
-    /*
-    for(let i = 0; i<playerCount; i++){
-        //console.log(("Player " + (i+1)));
-        const newPlayer = new Player({
-            name: "Player " + (i+1),
-            id: uuid()
-        });
-        players.push(newPlayer);
-    }
-    */
-   // ------------------------------
-    
+        
     // distribute cards for each player
     selectedPlayers.map((player) =>{                                    // for ever player
         for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
