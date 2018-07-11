@@ -66,7 +66,7 @@ const playCard = (req, res) =>{
     let match = matchData.getMatchByID(matchID);
     
     if(!match){
-        console.log("found no match for id: " + matchID);
+        console.log("found no match for id: " + matchID + ". providing new match");
         let message = "no match could be found for your cardplay. here you have a new match";
         startMatch(req, res, message);
         return;
@@ -74,14 +74,15 @@ const playCard = (req, res) =>{
 
     // only activePlayer may play a card
     if(playerID != match.activePlayerID){
-        console.log("only the active player may play a card");
+        //console.log("only the active player may play a card. returning current state");
+        res.json(match);
         return;
     }
     
     if(match.penalties.length > 0){
-        console.log("client needs to accept penalties");
+        //console.log("client needs to accept penalties");
         //TODO: add hint what went wrong?
-        console.log("match.penalties.length: " + match.penalties.length);
+        //console.log("match.penalties.length: " + match.penalties.length);
         res.json(match);
         return;
     }
@@ -196,6 +197,9 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
                 MatchData.matches.push(savedMatch);
             }
             res.json(savedMatch);                // send to client
+        })
+        .catch((res) =>{
+            console.log("failed to save match. please refresh and start a new game. sorry about this :(");
         });
 }
 
