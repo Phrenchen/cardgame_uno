@@ -9,9 +9,7 @@ const playerHasPlayableCards = (match) => {
     let topCard = getTopCard(match);
 
     match.penalties.map((pSet) =>{
-        console.log("1 concatenating: " + allCandidates.length);
         allCandidates.concat(pSet.cards);
-        console.log("2 concatenating: " + allCandidates.length);
     });
 
     allCandidates.map((card) =>{
@@ -35,9 +33,6 @@ const getActivePlayer = (match) => {
 module.exports.getActivePlayer = getActivePlayer;
 
 const getPlayerByID = (players, playerID) =>{
-    if(!players){
-        console.log("no players :( :( :("); 
-    }
     for(let i=0; i<players.length; i++){
         if(players[i].id === playerID){
             return players[i];
