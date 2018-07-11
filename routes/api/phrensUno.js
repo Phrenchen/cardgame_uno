@@ -75,113 +75,42 @@ const playCard = (req, res) =>{
     // only activePlayer may play a card
     if(playerID != match.activePlayerID){
         //console.log("only the active player may play a card. returning current state");
+        match.message = "only the active player may play a card";
         res.json(match);
         return;
     }
     
     if(match.penalties.length > 0){
-        //console.log("client needs to accept penalties");
-        //TODO: add hint what went wrong?
-        //console.log("match.penalties.length: " + match.penalties.length);
+        match.message = "client needs to accept penalties";
         res.json(match);
         return;
     }
-    
-    let activePlayer = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
+    //----------------------- EARLY OUT END ----------------------------------
+    let activePlayer = MatchHelper.getPlayerByID(match.players, 
+                                                    match.activePlayerID);
 
     topCard = match.playedCards[match.playedCards.length-1]
     playCard = MatchHelper.extractCardFromPlayer(activePlayer, cardID);
     
     if(PlayCardValidator.validateCard(playCard, topCard)){
         match.playedCards.push(playCard);
-        //----------------
-        // set cursor direction
-        match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? 
-                                            !match.movingPlayerCursorForward : 
-                                            match.movingPlayerCursorForward;
-                
-        
-        // set next player
-        let isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
-        match.activePlayerID = MatchHelper.getNextPlayerID(match.players, match.activePlayerID, match.movingPlayerCursorForward, isSkipping);
-        
-        //----------------
+        setNextPlayer(match, playCard);
+
         // PENALTY CARDS
-        // define penalty card count by card effect
-        let penaltyCardCount = 0;
         let penaltySets = [];
-        
-        playCard.effects.map((effect) =>{
-            // get amount of penalty cards from effect
-            if(effect.effectType === EffectSpecial.TAKE_2){
-                penaltyCardCount = 2;
-            }
-            else if(effect.effectType === EffectSpecial.TAKE_4){
-                penaltyCardCount = 4;
-            }
-        });
-    
-        // add penalty caused by card effects
-        if(penaltyCardCount > 0){
-            let takeXPenaltyCardSet = {
-                id: uuid(),
-                reason: "take " + penaltyCardCount + " :)",
-                cards: []
-            };
-            
-            for(let pc = 0; pc<penaltyCardCount; pc++){
-                let randomCard = MatchHelper.getRandomCard(match.cards);
-                if(randomCard){
-                    takeXPenaltyCardSet.cards.push(randomCard);
-                }
-            }
-    
-            penaltySets.push(takeXPenaltyCardSet);
-        }
-        
-        // 2. validate player cards
-        let nextPlayer = MatchHelper.getPlayerByID(match.players, match.activePlayerID);
-        let nextPlayerHasPlayableCards = false;
-        
-        nextPlayer.cards.map((card) =>{
-            if(PlayCardValidator.validateCard(card, topCard)){
-                nextPlayerHasPlayableCards = true;
-            }
-        });
-        
-        if(!nextPlayerHasPlayableCards){
-            // add 1 penalty card
-            // no further check required.
-            // current player can play a card if available
-            // otherwise: nextPlayer
-            //      -> trigger switch with seperate command
-            let noChoicePenaltyCardSet = {
-                id: uuid(),
-                reason: "no playable card. take 1 extra",
-                cards: []
-            };
-    
-            let noChoicePenaltyCard = MatchHelper.getRandomCard(match.cards);
-            if(noChoicePenaltyCard){
-                noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
-            }
-            penaltySets.push(noChoicePenaltyCardSet);
-        }
-        
-        //console.log("penalty sets: " + penaltySets.length);
+        applyPenaltyTakeX(match, playCard, penaltySets);
+        applyPenaltyCheckNoValidCard(MatchHelper.getPlayerByID(match.players, match.activePlayerID), 
+                                        topCard, 
+                                        penaltySets);
+
         match.penalties = penaltySets;                                            
         
         // *** SAVE MATCH ***
         saveMatchAndReturnToClient(match, res, false);
     }
     else{
-        /* we removed the card from the hand deck, 
-        optimistically assuming client and server validation return same results.
-        using shared validation function.
-        
-        here we are to react to a validation error
-        */
-       //console.log("PLAY CARD VALIDATION!!!! out of sync with client and server");
+        // VALIDATION OUT OF SYNC
+       console.log("PLAY CARD VALIDATION! out of sync with client and server");
        activePlayer.cards.push(playCard);     // re-add card to hand deck
        
        saveMatchAndReturnToClient(match, res, false);
@@ -190,17 +119,83 @@ const playCard = (req, res) =>{
 
 
 // privates
-const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
-    match.save()
-        .then((savedMatch) => {
-            if(saveToTemporaryList){
-                MatchData.matches.push(savedMatch);
+const applyPenaltyTakeX = (match, playCard, penaltySets) => {
+    let penaltyCardCount = 0;
+        
+    playCard.effects.map((effect) =>{
+        // get amount of penalty cards from effect
+        if(effect.effectType === EffectSpecial.TAKE_2){
+            penaltyCardCount = 2;
+        }
+        else if(effect.effectType === EffectSpecial.TAKE_4){
+            penaltyCardCount = 4;
+        }
+    });
+
+    // add penalty caused by card effects
+    if(penaltyCardCount > 0){
+        let takeXPenaltyCardSet = {
+            id: uuid(),
+            reason: "take " + penaltyCardCount + " :)",
+            cards: []
+        };
+        
+        for(let pc = 0; pc<penaltyCardCount; pc++){
+            let randomCard = MatchHelper.getRandomCard(match.cards);
+            if(randomCard){
+                takeXPenaltyCardSet.cards.push(randomCard);
             }
-            res.json(savedMatch);                // send to client
-        })
-        .catch((res) =>{
-            console.log("failed to save match. please refresh and start a new game. sorry about this :(");
-        });
+        }
+        penaltySets.push(takeXPenaltyCardSet);
+    }
+}
+
+const setNextPlayer = (match, playCard) =>{
+    // set cursor direction
+    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, 
+        EffectSpecial.CHANGE_DIRECTION) ? 
+            !match.movingPlayerCursorForward : 
+            match.movingPlayerCursorForward;
+
+    // set next player
+    let isSkipping = PlayCardValidator.hasEffect(playCard, 
+            EffectSpecial.SKIP);
+    match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
+    match.activePlayerID, 
+    match.movingPlayerCursorForward, 
+    isSkipping);
+}
+
+const applyPenaltyCheckNoValidCard = (player, topCard, penaltySets) =>{
+    if(!playerHasPlayableCards(player, topCard)){
+        penaltySets.push(getNoValidCardPenalty());
+    }
+}
+
+const getNoValidCardPenalty = () =>{
+    let noChoicePenaltyCardSet = {
+        id: uuid(),
+        reason: "no playable card. take 1 extra",
+        cards: []
+    };
+
+    let noChoicePenaltyCard = MatchHelper.getRandomCard(match.cards);
+    if(noChoicePenaltyCard){
+        noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
+    }
+    
+    return noChoicePenaltyCardSet;
+}
+
+const playerHasPlayableCards = (player, topCard) => {
+    let playerHasPlayableCards = false;
+
+    player.cards.map((card) =>{
+        if(PlayCardValidator.validateCard(card, topCard)){
+            playerHasPlayableCards = true;
+        }
+    });
+    return playerHasPlayableCards;
 }
 
 
@@ -261,23 +256,27 @@ const startMatch = (req, res, message = "") =>{
         activePlayerID: selectedPlayers.length > 0 ? selectedPlayers[0].id : "no human players" // first player starts
     });
 
+    //TODO
+    // validate activePlayer and add penalty card if no valid card in handdeck
+
+
+
     match.message = message;
     saveMatchAndReturnToClient(match, res, true);
 };
 
 // helper
-function extractCardByType(cards, effectType){
-    let card;
-
-    for(let i=0; i<cards.length; i++){
-        card = cards[i];
-        
-        if(PlayCardValidator.hasEffect(card, effectType)){
-            cards.splice(i, 1);
-            return card;
-        }
-    }
-    return null;
+const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
+    match.save()
+        .then((savedMatch) => {
+            if(saveToTemporaryList){
+                MatchData.matches.push(savedMatch);
+            }
+            res.json(savedMatch);                // send to client
+        })
+        .catch((res) =>{
+            console.log("failed to save match. please refresh and start a new game. sorry about this :(");
+        });
 }
 
 function pickFirstCard(cards){
@@ -294,6 +293,22 @@ function pickFirstCard(cards){
         }
     }
     return firstCard;
+}
+
+// DO NOT DELETE
+// helper for debugging
+function extractCardByType(cards, effectType){
+    let card;
+
+    for(let i=0; i<cards.length; i++){
+        card = cards[i];
+        
+        if(PlayCardValidator.hasEffect(card, effectType)){
+            cards.splice(i, 1);
+            return card;
+        }
+    }
+    return null;
 }
 
 module.exports = phrensUnoRouter;
