@@ -68,7 +68,7 @@ const startMatch = (req, res, message = "") =>{
     // validate activePlayer and add penalty card if no valid card in handdeck
     applyPenaltyCheckNoValidCard(match);    // no penalties is guaranteed after match creation
     
-    match.message = message;
+    match.serverMessage = message;
     saveMatchAndReturnToClient(match, res, true);
 };
 
@@ -171,12 +171,12 @@ const playCard = (req, res) =>{
         return;
     }
     if(playerID != match.activePlayerID){
-        match.message = "only the active player may play a card";
+        match.serverMessage = "only the active player may play a card";
         res.json(match);
         return;
     }
     if(match.penalties.length > 0){
-        match.message = "client needs to accept penalties";
+        match.serverMessage = "client needs to accept penalties";
         res.json(match);
         return;
     }
@@ -200,7 +200,7 @@ const playCard = (req, res) =>{
             if winning conditions change, so to speak hmm
             */
             match.activePlayerID = winner.id;        
-            match.message = winner.name + " won the match!";
+            match.serverMessage = "GAME_OVER";
             
             MatchHelper.calculateScores(match);
             

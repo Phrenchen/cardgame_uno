@@ -1,4 +1,5 @@
 import {START_MATCH, SET_PLAYER_COUNT, CARD_PLAYED, PENALTIES_ACCEPTED} from "../actions/types";
+import { GAME_OVER } from "../shared/ActionConsts";
 
 const initialState = {
     id: "",
@@ -16,12 +17,12 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 playerCount: action.payload
-            }        
-            case PENALTIES_ACCEPTED:
-            case CARD_PLAYED:
-            //console.log("reducing card played: " + action.payload.players[0].cards.length);
+            }
+        case GAME_OVER:
+            console.log("reducing game over");
+        case PENALTIES_ACCEPTED:
+        case CARD_PLAYED:
         case START_MATCH:
-            //console.log("reducing match start: ");
             return {
                 ...state,
                 id: action.payload.id,
