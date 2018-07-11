@@ -35,8 +35,6 @@
 
 .penaltyList{
     position: absolute;
-    grid-column: 1 / 3;
-    grid-row: 1 / 2;
     
     display: grid;
     grid-template-columns: 1fr;
@@ -106,31 +104,3 @@
 .card:hover {
     border: 1px solid black;
 }
-
-/*------------------------------------------*/
-
-/*
-.remove-btn{
-    margin-right: .5rem;
-}
-
-.fade-enter{
-    opacity: 0.01;
-}
-
-.fade-enter-active{
-    opacity: 1;
-    transition: opacity 0ms ease-in;
-}
-
-.fade-exit{
-    opacity: 1;
-    
-}
-
-
-.fade-exit-active{
-    opacity: 0.01;
-    transition: opacity 0ms ease-in;
-}
-*/

@@ -23,7 +23,7 @@ class PenaltyList extends Component{
 
     render(){
         return (
-            <div className="penaltyList topCentered">
+            <div className="penaltyList">
                 <h2>PENALTY CARDS</h2>
                 <h4>{this.props.playerName}</h4>
                 {
