@@ -17,6 +17,11 @@ const PlayerSchema = new Schema({
     cards: {
         type: Array,
         default: []
+    },
+    matchScore: {
+        type: Number,
+        default: 0
     }
+    //TODO: totalScore, if multiple a game consists of multiple matches 
 });
 module.exports = Player = mongoose.model("player", PlayerSchema);

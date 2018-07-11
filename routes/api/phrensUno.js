@@ -53,7 +53,15 @@ const startMatch = (req, res, message = "") =>{
         player.cards = [];
     });
         
+
+
     // distribute cards for each player
+    /*
+    TODO: CARD DECKS
+    player can choose between a random deck or a preselected deck.
+    
+
+    */
     selectedPlayers.map((player) =>{                                    // for ever player
         for(let i=0; i<playerCardCount; i++){                   // select 7 random cards
             index = MathHelper.getRandomInt(0, allCards.length-1);
@@ -62,6 +70,7 @@ const startMatch = (req, res, message = "") =>{
             player.cards.push( card );                          // move from deck to player hand
         }
         
+
         // DEBUG CARD INSERTING
         // add direction change cards to each player
         /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
@@ -114,7 +123,7 @@ const acceptPenalties = (req, res) => {
             setNextPlayer(match, MatchHelper.getTopCard(match), true);
             applyPenaltyCheckNoValidCard(match);
         }
-        saveMatchAndReturnToClient(match, res, false);
+        saveMatchAndReturnToClient(match, res);
     }
     else{
         console.log("CREATING NEW MATCH! Could not accept penalties for unknown match. why is this?");
@@ -150,26 +159,47 @@ const playCard = (req, res) =>{
     }
     //----------------------- EARLY OUT END ----------------------------------
     activePlayer = MatchHelper.getActivePlayer(match);
+
     topCard = MatchHelper.getTopCard(match);
-    playCard = MatchHelper.extractCardFromPlayer(activePlayer, cardID);
+    playCard = MatchHelper.extractCard(activePlayer.cards, cardID);
     
     if(PlayCardValidator.validateCard(playCard, topCard)){
         match.playedCards.push(playCard);
+
+        //TODO: check gameover. count player´s cards
+        let winner = MatchHelper.getWinner(match);
+        if(winner != null){
+            //game over. we need additional match infos
+            
+            /* 
+            should be the same anyways, 
+            because the last active player played his / her last card.
+            if winning conditions change, so to speak hmm
+            */
+            match.activePlayerID = winner.id;        
+            match.message = winner.name + " won the match!";
+            
+            // calculate scores (cards on other players hands)
+            MatchHelper.calculateScores(match);
+
+            saveMatchAndReturnToClient(match, res);
+            
+        }
+
         setNextPlayer(match, playCard, false);
 
         // PENALTY CARDS
         applyPenaltyTakeX(match, playCard, match.penalties);
         applyPenaltyCheckNoValidCard(match);
         
-        // *** SAVE MATCH ***
-        saveMatchAndReturnToClient(match, res, false);
+        saveMatchAndReturnToClient(match, res);  // *** SAVE MATCH ***
     }
     else{
         // VALIDATION OUT OF SYNC
        console.log("PLAY CARD VALIDATION! out of sync with client and server");
        activePlayer.cards.push(playCard);     // re-add card to hand deck
        
-       saveMatchAndReturnToClient(match, res, false);
+       saveMatchAndReturnToClient(match, res);   // *** SAVE MATCH ***
     }
 };
 //------------------------------------------------------------------------
@@ -210,7 +240,7 @@ const getNoValidCardPenalty = (cards) =>{
         cards: []
     };
     
-    let noChoicePenaltyCard = MatchHelper.getRandomCard(cards);
+    let noChoicePenaltyCard = MatchHelper.extractRandomCard(cards);
     if(noChoicePenaltyCard){
         noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
     }
@@ -240,7 +270,7 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
         };
         
         for(let pc = 0; pc<penaltyCardCount; pc++){
-            let randomCard = MatchHelper.getRandomCard(match.cards);
+            let randomCard = MatchHelper.extractRandomCard(match.cards);
             if(randomCard){
                 takeXPenaltyCardSet.cards.push(randomCard);
             }
@@ -251,7 +281,7 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
 // end create penalties
 
 // helper
-const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
+const saveMatchAndReturnToClient = (match, res, saveToTemporaryList = false) =>{
     match.save()
         .then((savedMatch) => {
             if(saveToTemporaryList){
@@ -260,6 +290,7 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList) =>{
             res.json(savedMatch);                // send to client
         })
         .catch((res) =>{
+            // WHAT HAPPEND?
             console.log("failed to save match. please refresh and start a new game. sorry about this :(");
         });
 }

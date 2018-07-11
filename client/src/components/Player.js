@@ -30,7 +30,7 @@ class Player extends Component{
         
         let containerDiv = document.getElementById(this.state.id);
         if(!containerDiv){
-            console.log("could not find containerdiv to reposition");
+            //throw new Error("Player could not position itself");
             return;
         }
         containerDiv.style.position = "absolute";

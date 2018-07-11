@@ -11,7 +11,6 @@ class CardList extends Component{
 
 
     setPosition(){
-        console.log("setting position");
         /*
         let lesserSide = window.innerWidth < window.innerHeight ? 
                             window.innerWidth : 
@@ -22,7 +21,7 @@ class CardList extends Component{
         let position = {x: 50, y: 20};
         let containerDiv = document.getElementById(this.state.id);
         if(!containerDiv){
-            console.log("could not find container to update style");
+            //throw new Error("CardList could not position itself");
             return;
         }
         containerDiv.style.position = "absolute";

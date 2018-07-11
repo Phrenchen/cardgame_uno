@@ -35,7 +35,7 @@ class CardView extends Component {
             containerDiv.style.top = offsetY + "px";
         }
         else{
-            console.log("player card");
+            //console.log("player card");
         }
         containerDiv.style.backgroundColor = backgroundColor;
         containerDiv.style.color = color;

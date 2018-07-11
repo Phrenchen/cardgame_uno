@@ -1,8 +1,32 @@
 const MathHelper = require("./MathHelper");
 const PlayCardValidator = require("./PlayCardValidator");
 
+const calculateScores = (match) =>{
+    match.players.map((player) =>{
+        let score = 0;
 
-///--------------------
+        player.cards.map((card) =>{
+            score += card.score;
+        });
+
+        player.matchScore = score;
+    });
+}
+module.exports.calculateScores = calculateScores;
+
+const getWinner = (match) => {
+    let result = null;
+
+    match.players.map((player) =>{
+        if(player.cards.length === 0){
+            result = player;
+        }
+    });
+    return result;
+}
+module.exports.getWinner = getWinner;
+//------------------------------------------------------
+
 const playerHasPlayableCards = (match) => {
     let result = false;
     let allCandidates = getActivePlayer(match).cards;
@@ -21,7 +45,6 @@ const playerHasPlayableCards = (match) => {
 }
 module.exports.playerHasPlayableCards = playerHasPlayableCards;
 
-///--------------------
 const getTopCard = (match) =>{
     return match.playedCards[match.playedCards.length-1];
 }
@@ -42,12 +65,11 @@ const getPlayerByID = (players, playerID) =>{
 }
 module.exports.getPlayerByID = getPlayerByID;
 
-const getRandomCard = (cards) =>{
+const extractRandomCard = (cards) =>{
     let randomIndex = MathHelper.getRandomInt(0, cards.length-1);
-    return cards[randomIndex];
+    return cards.splice(randomIndex, 1)[0];
 }
-
-module.exports.getRandomCard = getRandomCard;
+module.exports.extractRandomCard = extractRandomCard;
 
 const getNextPlayerID = (players, currentPlayerID, playerPointerIsMovingForward, isSkipping) => {
     // forwards:  0, 1, 2, 3, 4, 0, 1
@@ -78,23 +100,23 @@ const getNextPlayerID = (players, currentPlayerID, playerPointerIsMovingForward,
     //console.log("next player index: " + nextPlayerIndex);
     return players[nextPlayerIndex].id;
 }
-
 module.exports.getNextPlayerID = getNextPlayerID;
 
-const extractCardFromPlayer = (player, cardID) =>{
+const extractCard = (cards, cardID = "-1") =>{
     let card;
-
-    for(let j=0; j<player.cards.length; j++){
-        card = player.cards[j];
-        if(!card){
-            console.log("trying to extract null from player.cards. check where we insert to player.cards");
-        }
-        if(card.id === cardID){
-            player.cards.splice(j, 1);
-
-            return card;
+    if(cardID === "-1"){
+        card = extractRandomCard(cards);
+    }
+    else{
+        for(let j=0; j<cards.length; j++){
+            card = cards[j];
+            
+            if(card.id === cardID){
+                cards.splice(j, 1);
+                return card;
+            }
         }
     }
     return null;
 }
-module.exports.extractCardFromPlayer = extractCardFromPlayer;
+module.exports.extractCard = extractCard;
