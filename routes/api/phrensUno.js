@@ -206,7 +206,7 @@ const startMatch = (req, res, message = "") =>{
     playerCount = 5;                                            // TODO: for now every match has 5 players
     let allPlayers = InitDB.getPlayers();
     let selectedPlayers = [];
-    let playerCardCount = 17;                                    // amount of hand cards for each player. default: 7
+    let playerCardCount = 12;                                    // amount of hand cards for each player. default: 7
     let index;
     let card;
 
