@@ -54,7 +54,7 @@ const startMatch = (req, res, message = "") =>{
     });
         
    let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
-   distributeHandCardsToPlayers(selectedPlayers, allCards, "FIRST_PLAYER_WINS", 5, firstCard);
+   distributeHandCardsToPlayers(selectedPlayers, allCards, "FIRST_PLAYER_WINS", playerCardCount, firstCard);
 
     const match = new Match({                                   // create new match
         id: uuid(),
@@ -74,11 +74,10 @@ const startMatch = (req, res, message = "") =>{
 
 const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCardCount, topCard) => {
     let p;
-    playerCardCount = 1;
     switch(distributionMode){
         case "FIRST_PLAYER_WINS":
             //console.log("first player wins");
-            
+
             for(let i=0; i<players.length; i++){
                 p = players[i];
 
@@ -86,10 +85,11 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
                     // first player gets valid card
                     let validCard = MatchHelper.getValidCardTo(cards, topCard);
                     p.cards.push( validCard );
-                    distributeRandomCardsToPlayer(p, cards, playerCardCount-1);
-                    continue;
+                    //distributeRandomCardsToPlayer(p, cards, playerCardCount-1);
                 }
-                distributeRandomCardsToPlayer(p,cards, playerCardCount);
+                else{
+                    distributeRandomCardsToPlayer(p,cards, playerCardCount);
+                }
             }
             break;
         default:
@@ -202,11 +202,10 @@ const playCard = (req, res) =>{
             match.activePlayerID = winner.id;        
             match.message = winner.name + " won the match!";
             
-            // calculate scores (cards on other players hands)
             MatchHelper.calculateScores(match);
-
-            saveMatchAndReturnToClient(match, res);
             
+            saveMatchAndReturnToClient(match, res);     // send game over
+            return;
         }
 
         setNextPlayer(match, playCard, false);
@@ -313,8 +312,7 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList = false) =>{
             res.json(savedMatch);                // send to client
         })
         .catch((res) =>{
-            // WHAT HAPPEND?
-            console.log("failed to save match. please refresh and start a new game. sorry about this :(");
+            // ParallelSaveError: Can't save() the same doc multiple times in parallel
         });
 }
 

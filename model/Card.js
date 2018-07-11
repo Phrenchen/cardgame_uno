@@ -15,6 +15,10 @@ const CardSchema = new Schema({
     effects:{
         type: Array,
         default: []
+    },
+    score:{
+        type: Number,
+        required: true
     }
 });
 module.exports = Card = mongoose.model("card", CardSchema); 
