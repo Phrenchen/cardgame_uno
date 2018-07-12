@@ -69,7 +69,7 @@
 
 .playerIconSmallActive{
     margin: 0;
-    border: 0;
+    border: 2px solid rgb(2, 0, 94);
     max-width: 300px;
     max-height: 300px;
     width: 14vmin;
