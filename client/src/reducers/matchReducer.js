@@ -10,7 +10,6 @@ const initialState = {
 }
 
 export default function(state = initialState, action){
-    console.log("reducing: " + action.type);
     switch(action.type){
         case SET_PLAYER_COUNT:
             console.log("reducing match set player count: " + action.type);
@@ -21,7 +20,6 @@ export default function(state = initialState, action){
         case PENALTIES_ACCEPTED:
         case CARD_PLAYED:
         case GAME_OVER:
-            console.log("match reducing game over")
         case START_MATCH:
             return {
                 ...state,
