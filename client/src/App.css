@@ -88,6 +88,19 @@
     height: 20vmax;
 }
 
+.player_win{
+    max-width: 300px;
+    max-height: 300px;
+    width: 12vmax;
+
+    border: 5px solid red;
+}
+
+.player_lose{
+    max-width: 300px;
+    max-height: 300px;
+    width: 8vmax;
+}
 
 /* card */
 .card{

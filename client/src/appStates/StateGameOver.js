@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {acceptPenalties} from "../actions/MatchActions"
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
+import  { Button } from "reactstrap";
+import {startMatch} from "../actions/MatchActions";
 
 class StateGameOver extends Component{
     hasPenalties = () =>{
@@ -15,19 +17,50 @@ class StateGameOver extends Component{
 
     createPlayerResults = (match, player) =>{
         if(match.activePlayerID === player.id){
+            //<p key={uuid()}>winner is {player.name}!</p>
             return (
-                <p key={uuid()}>winner is {player.name}!</p>
+                <div key={uuid()}>
+                    <img 
+                        className={"player_win"} 
+                        src={MatchHelper.getPlayerByID(this.props.match.players, player.id).imageUrl} 
+                    />
+                    {player.name} won the match!
+                </div>
             );
         }
         else{
+            //            <p key={uuid()}>{player.name} has scored {player.matchScore}</p>
             return (
-                <p key={uuid()}>{player.name} has scored {player.matchScore}</p>
+                <div key={uuid()}>
+                    <img 
+                        className={"player_lose"} 
+                        src={MatchHelper.getPlayerByID(this.props.match.players, player.id).imageUrl} 
+                    />
+                    {player.name} scored: {player.matchScore}
+                </div>
             );
         }
     }
 
+    onStartMatch = () =>{
+        this.props.startMatch(/*this.props.match.playerCount*/);        //TODO: for now every match has 5 players
+    }
+
+    sortPlayersByMatchScore(players){
+        players.sort((a, b) =>{
+            if(a.matchScore < b.matchScore){
+                return -1;
+            }
+            else if(a.matchScore > b.matchScore){
+                return 1;
+            }
+            return 0;
+        });
+    }
+    
     render(){
-        let player = MatchHelper.getActivePlayer(this.props.match);
+        this.sortPlayersByMatchScore(this.props.match.players);
+
         return (
             <div key={uuid()}>
                 {
@@ -35,6 +68,11 @@ class StateGameOver extends Component{
                         return this.createPlayerResults(this.props.match, player)
                     })
                 }
+                <Button
+                    onClick= {this.onStartMatch}
+                >
+                    next match
+                </Button>
             </div>
         );
     }
@@ -45,4 +83,4 @@ const mapStateToProps = (state) =>{
         match: state.match
     }
 }
-export default connect(mapStateToProps, {acceptPenalties})(StateGameOver);
+export default connect(mapStateToProps, {startMatch})(StateGameOver);
