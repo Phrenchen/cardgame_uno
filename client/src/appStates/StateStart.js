@@ -17,11 +17,10 @@ class StateStart extends Component{
                 <div className="startscreen">
                     <h1>UNO</h1>
                     <p>
-                        currently 5 human players play on one screen.
+                        work in progress
                         <br/>
-                        this does not make a lot of sense...
+                        5 players play on one screen.
                         <br/>
-                        it´s "work in progress" :)
                     </p>
                     <br />
                     <br />
