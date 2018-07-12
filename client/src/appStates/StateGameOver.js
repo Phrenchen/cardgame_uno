@@ -63,6 +63,9 @@ class StateGameOver extends Component{
 
         return (
             <div key={uuid()}>
+                <h3>
+                    GAME OVER!
+                </h3>
                 {
                     this.props.match.players.map((player) => {
                         return this.createPlayerResults(this.props.match, player)
