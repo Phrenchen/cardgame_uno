@@ -246,7 +246,7 @@ const setNextPlayer = (match, playCard, ignoreSkip) =>{
     let isSkipping = PlayCardValidator.hasEffect(playCard, 
                                  EffectSpecial.SKIP);
 
-    if(!ignoreSkip){
+    if(ignoreSkip){
         isSkipping = false;
     }
     match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
