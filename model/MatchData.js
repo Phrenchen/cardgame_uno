@@ -1,4 +1,4 @@
-const matches = [];
+let matches = [];
 module.exports.matches = matches;
 
 const getMatchByID = (matchID) => {

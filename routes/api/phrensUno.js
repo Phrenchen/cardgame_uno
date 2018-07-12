@@ -6,11 +6,18 @@ const InitDB = require("../../model/InitDB");
 const MatchData = require("../../model/MatchData");
 const MathHelper = require("../../client/src/shared/MathHelper");
 const PlayCardValidator = require("../../client/src/shared/PlayCardValidator");
-const matchData = require("../../model/MatchData");
 const MatchHelper = require("../../client/src/shared/MatchHelper");
 const EffectSpecial = require("../../client/src/shared/EffectSpecial");
 const Player = require("../../model/Player");
 const Match = require("../../model/Match");
+
+// read players
+phrensUnoRouter.get("/", (req, res) => {
+   // find all match
+    Match.find()                 // promise based
+        //.sort({id: -1})       // sort by date descendingly
+        .then(players => res.json(players))
+});
 
 phrensUnoRouter.post("/", (req, res) =>{
     let action = req.body.action;
@@ -133,7 +140,7 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
 // ACCEPT PENALTIES
 const acceptPenalties = (req, res) => {
     const matchID = req.body.matchID;
-    let match = matchData.getMatchByID(matchID);
+    let match = MatchData.getMatchByID(matchID);
 
     if(match){
         let player = MatchHelper.getActivePlayer(match);
@@ -152,6 +159,7 @@ const acceptPenalties = (req, res) => {
         saveMatchAndReturnToClient(match, res);
     }
     else{
+        console.log("failed finding match for id " + req.body.matchID);
         console.log("CREATING NEW MATCH! Could not accept penalties for unknown match. why is this?");
         startMatch(req, res);
     }
@@ -166,7 +174,7 @@ const playCard = (req, res) =>{
     let topCard;
     let playCard;
 
-    let match = matchData.getMatchByID(matchID);
+    let match = MatchData.getMatchByID(matchID);
     
     if(!match){
         let message = "no match could be found for your cardplay. here you have a new match";
@@ -313,16 +321,21 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
 
 // helper
 const saveMatchAndReturnToClient = (match, res, saveToTemporaryList = false) =>{
+    if(saveToTemporaryList){
+        MatchData.matches.push(match);
+    }
+    res.json(match);                // send to client
+    
+    /*
+    // expensive operation.
+    // let user manually save a match?
     match.save()
         .then((savedMatch) => {
-            if(saveToTemporaryList){
-                MatchData.matches.push(savedMatch);
-            }
-            res.json(savedMatch);                // send to client
         })
         .catch((res) =>{
             // ParallelSaveError: Can't save() the same doc multiple times in parallel
         });
+    */
 }
 
 function pickFirstCard(cards){
