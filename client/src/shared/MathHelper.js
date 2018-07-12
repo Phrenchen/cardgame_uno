@@ -5,7 +5,7 @@ const getNRandomInts = (min, max, amount) =>{
     while(result.length < amount){
         random = getRandomInt(min, max);
 
-        if(result.indexOf(random) == -1){
+        if(result.indexOf(random) === -1){
             result.push(random);
         }
     }

@@ -6,7 +6,6 @@ import PenaltyList from '../components/PenaltyList';
 import {acceptPenalties} from "../actions/MatchActions"
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
-import PlayerOpenCards from './PlayerOpenCards';
 import CardList from '../components/CardList';
 
 class StateMatch extends Component{
@@ -15,7 +14,7 @@ class StateMatch extends Component{
     }
 
     hasServerMessage = () =>{
-        return this.props.message != "";
+        return this.props.message !== "";
     }
 
     displayAdditionalMatchInfos = () =>{
@@ -36,7 +35,6 @@ class StateMatch extends Component{
     }
 
     render(){
-        let player = MatchHelper.getActivePlayer(this.props.match);
         return (
             <div key={uuid()}>
                 <PlayerList className="playerPanel"/>

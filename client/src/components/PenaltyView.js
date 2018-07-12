@@ -17,6 +17,7 @@ class PenaltyView extends Component{
                         owner={this.props.activePlayerID}
                         name={card.name}
                         effects={card.effects}
+                        imageUrl={card.imageUrl}
                         />
                 })
             }

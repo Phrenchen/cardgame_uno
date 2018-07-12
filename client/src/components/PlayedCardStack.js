@@ -21,7 +21,7 @@ class PlayedCardStack extends Component{
     }
 
     render(){
-        const cardCountToRender = 10;
+        const cardCountToRender = 3;
         let counter = 0;
         let index = this.props.playedCards.length - cardCountToRender;
         if(index < 0){

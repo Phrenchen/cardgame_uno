@@ -60,33 +60,22 @@
 
 /* player */
 .playerIconSmall{
-    margin: 5px;
+    margin: 0px;
     border: 0px;
     max-width: 300px;       /* asset size*/
     max-height: 300px;
-    width: 10vmax;
+    width: 10vmin;
 }
 
 .playerIconSmallActive{
-    margin: 0px;
-    border: 5px solid black;
+    margin: 0;
+    border: 0;
     max-width: 300px;
     max-height: 300px;
-    width: 12vmin;
+    width: 14vmin;
 
 }
 
-.player{
-    position: absolute;
-    background: var(--dialog_background);
-    border: 1px solid red;
-    padding: 5px;
-    margin: 1px;
-
-    max-width: 200px;
-    width: 20vmin;
-    height: 20vmin;
-}
 
 .player_win{
     max-width: 300px;
@@ -106,7 +95,7 @@
 /* card */
 .card{
     position: relative;
-    border: 1px solid white;
+    border: 3px solid black;
     background:  var(--card_black);
     user-select: none;
     
@@ -120,5 +109,5 @@
 }
 
 .card:hover {
-    border: 1px solid black;
+    border: 3px dashed black;
 }

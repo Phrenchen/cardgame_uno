@@ -58,7 +58,7 @@ class Player extends Component{
                 this.setPosition();
             }
             catch(e){
-                console.log("error setting player positions after resize");
+                //console.log("error setting player positions after resize");
             }
         });
     }
@@ -73,9 +73,14 @@ class Player extends Component{
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
 
         return (
-            <div  id={this.state.id}>
+            <div id={this.state.id} >
                 {player.cards.length}
-                <img className={this.getClassName()} src={MatchHelper.getPlayerByID(this.props.match.players, this.props.id).imageUrl} />
+                <img 
+                    className={this.getClassName()} 
+                    src={MatchHelper.getPlayerByID(this.props.match.players, 
+                                                    this.props.id).imageUrl
+                        } 
+                />
             </div>
         );
         /*

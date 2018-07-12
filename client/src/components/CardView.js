@@ -4,6 +4,7 @@ import uuid from "uuid";
 import { CardBody, CardTitle } from "reactstrap";
 import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
+
 class CardView extends Component {
     
     state={
@@ -45,6 +46,26 @@ class CardView extends Component {
         this.setColor(this.props.effects);
     }
 
+    getContent(){
+        if(this.props.imageUrl){
+            return (
+                <div>
+                <img 
+                    className={"playerIconSmall"} 
+                    src={this.props.imageUrl} 
+                    />
+                </div>
+            );
+        }
+        else{
+            return (
+                <h3>
+                    {this.props.name}
+                </h3>
+            );
+        }
+    }
+
     render(){
         return (
             <div className="card" id={this.state.id} onClick={() =>{
@@ -52,9 +73,9 @@ class CardView extends Component {
                     this.props.playCard(this.props.matchID, this.props.owner, this.props.id);
                 }
             }} >
-                <CardBody>
-                    <CardTitle>{this.props.name}</CardTitle>
-                </CardBody>
+                {
+                    this.getContent()
+                }
             </div>
         );
     }
