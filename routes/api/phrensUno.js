@@ -38,8 +38,6 @@ const startMatch = (req, res, message = "") =>{
     let allPlayers = InitDB.getPlayers();
     let selectedPlayers = [];
     let playerCardCount = 7;                                    // amount of hand cards for each player. default: 7
-    let index;
-    let card;
 
     let allCards = InitDB.getCardDeck();
     let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
@@ -58,7 +56,8 @@ const startMatch = (req, res, message = "") =>{
     });
         
    let firstCard = pickFirstCard(allCards);                // removes firstCard from allCards array
-   distributeHandCardsToPlayers(selectedPlayers, allCards, "FIRST_PLAYER_WINS", playerCardCount, firstCard);
+   distributeHandCardsToPlayers(selectedPlayers, allCards, "random", playerCardCount, firstCard);
+   //distributeHandCardsToPlayers(selectedPlayers, allCards, "FIRST_PLAYER_WINS", playerCardCount, firstCard);
 
     const match = new Match({                                   // create new match
         id: uuid(),
