@@ -134,3 +134,14 @@ const extractCard = (cards, cardID = "-1") =>{
     return null;
 }
 module.exports.extractCard = extractCard;
+
+const canSupplyStackCards = (match, requiredCardCount) =>{
+    return match.cards.length >= requiredCardCount;
+}
+module.exports.canSupplyStackCards = canSupplyStackCards;
+
+const recyclePlayedCards = (match) =>{
+    // last card in match.playedCards stays in stack
+    match.cards = match.playedCards.splice(0, match.playedCards.length - 2);
+}
+module.exports.recyclePlayedCards = recyclePlayedCards;

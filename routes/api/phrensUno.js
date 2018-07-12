@@ -96,7 +96,7 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
             }
             break;
         default:
-            console.log("default random card distribution");
+            //console.log("default random card distribution");
             players.map( (player) =>{                                    // for ever player
                 distributeRandomCardsToPlayer(player, cards, playerCardCount);
             });
@@ -207,11 +207,8 @@ const playCard = (req, res) =>{
             
             MatchHelper.calculateScores(match);
 
-            match.players.map((player) =>{
-                console.log(player.matchScore);
-
-            })
-            
+            // debug log
+            //match.players.map((player) =>{ console.log(player.matchScore); })
             
             saveMatchAndReturnToClient(match, res);     // send game over
             return;
@@ -219,6 +216,7 @@ const playCard = (req, res) =>{
 
         setNextPlayer(match, playCard, false);
 
+        // REMOVING CARDS FROM STACK
         // PENALTY CARDS
         applyPenaltyTakeX(match, playCard, match.penalties);
         applyPenaltyCheckNoValidCard(match);
@@ -260,21 +258,22 @@ const setNextPlayer = (match, playCard, ignoreSkip) =>{
 // create penalties
 const applyPenaltyCheckNoValidCard = (match) =>{
     if(!MatchHelper.playerHasPlayableCards(match)){
-        match.penalties.push( getNoValidCardPenalty(match.cards) );
+        match.penalties.push( applyNoValidCardPenalty(match) );
     }
 }
 
-const getNoValidCardPenalty = (cards) =>{
+const applyNoValidCardPenalty = (match) =>{
     let noChoicePenaltyCardSet = {
         id: uuid(),
         reason: "no playable card. take 1 extra",
         cards: []
     };
     
-    let noChoicePenaltyCard = MatchHelper.extractRandomCard(cards);
-    if(noChoicePenaltyCard){
-        noChoicePenaltyCardSet.cards.push(noChoicePenaltyCard);
+    if( !MatchHelper.canSupplyStackCards(match, 1) ){
+        console.log("1 match.cards is empty. recycling");
+        MatchHelper.recyclePlayedCards(match);
     }
+    noChoicePenaltyCardSet.cards.push( MatchHelper.extractRandomCard(match.cards) );
     
     return noChoicePenaltyCardSet;
 }
@@ -300,11 +299,12 @@ const applyPenaltyTakeX = (match, playCard, penaltySets) => {
             cards: []
         };
         
+        if( !MatchHelper.canSupplyStackCards(match, penaltyCardCount) ){
+            console.log("2 match.cards is empty. recycling");
+            MatchHelper.recyclePlayedCards(match);
+        }
         for(let pc = 0; pc<penaltyCardCount; pc++){
-            let randomCard = MatchHelper.extractRandomCard(match.cards);
-            if(randomCard){
-                takeXPenaltyCardSet.cards.push(randomCard);
-            }
+            takeXPenaltyCardSet.cards.push( MatchHelper.extractRandomCard(match.cards) );
         }
         penaltySets.push(takeXPenaltyCardSet);
     }
@@ -318,10 +318,6 @@ const saveMatchAndReturnToClient = (match, res, saveToTemporaryList = false) =>{
             if(saveToTemporaryList){
                 MatchData.matches.push(savedMatch);
             }
-
-            savedMatch.players.map(p =>{
-                console.log(p.name + " scored: " + p.matchScore);
-            })
             res.json(savedMatch);                // send to client
         })
         .catch((res) =>{
