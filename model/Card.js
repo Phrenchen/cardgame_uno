@@ -19,6 +19,10 @@ const CardSchema = new Schema({
     score:{
         type: Number,
         required: true
+    },
+    imageUrl:{
+        type:String,
+        required:true
     }
 });
 module.exports = Card = mongoose.model("card", CardSchema); 

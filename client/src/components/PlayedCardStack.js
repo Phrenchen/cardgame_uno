@@ -15,6 +15,7 @@ class PlayedCardStack extends Component{
                 name={card.name}
                 effects={card.effects}
                 positionInRow={index}
+                imageUrl={card.imageUrl}
             />
         );
     }

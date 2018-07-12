@@ -12,7 +12,7 @@ class StateGameOver extends Component{
     }
 
     hasServerMessage = () =>{
-        return this.props.message != "";
+        return this.props.message !== "";
     }
 
     createPlayerResults = (match, player) =>{

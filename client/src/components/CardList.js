@@ -55,6 +55,7 @@ class CardList extends Component{
                                         name={card.name}
                                         effects={card.effects}
                                         disabled={ isValid }
+                                        imageUrl={card.imageUrl}
                                     />
                                 </div>
                             }
