@@ -49,7 +49,6 @@ class CardList extends Component{
                                 return <div key={uuid()}>
                                     <CardView
                                         key={card.id}
-                                        disabled={!isValid}
                                         onColorSelection={this.props.onColorSelection}
                                         matchID={this.props.matchID}
                                         owner={this.props.owner}

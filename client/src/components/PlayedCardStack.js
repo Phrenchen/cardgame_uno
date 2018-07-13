@@ -10,7 +10,6 @@ class PlayedCardStack extends Component{
             <CardView
                 key={uuid()}
                 matchID={this.props.matchID}
-                disabled={true}
                 owner={"-1"}      // has been played. no matter who played it
                 positionInRow={index}
                 card={card}
