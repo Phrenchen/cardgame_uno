@@ -10,6 +10,7 @@ function appState(state = initialState, action){
         case SET_APP_STATE:
             let message;
 
+            // ADD a message
             switch(action.payload){
                 case AppState.STATE_START:
                     message = "start a game with 5 local players.\ncurrently all games are played with open cards.\nwork in progress :)";

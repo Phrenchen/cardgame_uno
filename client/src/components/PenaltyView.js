@@ -12,12 +12,9 @@ class PenaltyView extends Component{
                 this.props.cards.map((card) => {
                     return <CardView
                         key={uuid()}
-                        id={card.id}
                         matchID={this.props.matchID}
                         owner={this.props.activePlayerID}
-                        name={card.name}
-                        effects={card.effects}
-                        imageUrl={card.imageUrl}
+                        card={card}
                         />
                 })
             }

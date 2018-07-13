@@ -1,4 +1,5 @@
 import {START_MATCH, GAME_OVER, SET_PLAYER_COUNT, CARD_PLAYED, PENALTIES_ACCEPTED} from "../actions/types";
+import ActionConsts from "../shared/ActionConsts";
 
 const initialState = {
     id: "",
@@ -6,7 +7,8 @@ const initialState = {
     players: [],
     cards: [],
     playedCards: [],
-    activePlayerID: ""
+    activePlayerID: "",
+    showColorSelector: false
 }
 
 export default function(state = initialState, action){
@@ -16,7 +18,14 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 playerCount: action.payload
-            }
+            };
+        case ActionConsts.SELECT_COLOR:
+            console.log("reducing color selection");
+            return {
+                ...state,
+                showColorSelector: true
+            };
+            break;
         case PENALTIES_ACCEPTED:
         case CARD_PLAYED:
         case GAME_OVER:

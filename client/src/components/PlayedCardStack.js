@@ -9,13 +9,11 @@ class PlayedCardStack extends Component{
         return (
             <CardView
                 key={uuid()}
-                id={card.id}
                 matchID={this.props.matchID}
+                disabled={true}
                 owner={"-1"}      // has been played. no matter who played it
-                name={card.name}
-                effects={card.effects}
                 positionInRow={index}
-                imageUrl={card.imageUrl}
+                card={card}
             />
         );
     }

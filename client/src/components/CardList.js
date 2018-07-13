@@ -49,13 +49,11 @@ class CardList extends Component{
                                 return <div key={uuid()}>
                                     <CardView
                                         key={card.id}
+                                        disabled={!isValid}
+                                        onColorSelection={this.props.onColorSelection}
                                         matchID={this.props.matchID}
-                                        id={card.id}
                                         owner={this.props.owner}
-                                        name={card.name}
-                                        effects={card.effects}
-                                        disabled={ isValid }
-                                        imageUrl={card.imageUrl}
+                                        card={card}
                                     />
                                 </div>
                             }
@@ -70,7 +68,8 @@ CardList.propTypes = {
     matchID: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired,
-    topCard: PropTypes.object.isRequired
+    topCard: PropTypes.object.isRequired,
+    onColorSelection: PropTypes.func
 };
 
 export default CardList;

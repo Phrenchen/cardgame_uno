@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import uuid from "uuid";
-import { CardBody, CardTitle } from "reactstrap";
 import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
+import MatchHelper from "../shared/MatchHelper";
+
 
 class CardView extends Component {
     
@@ -43,16 +44,16 @@ class CardView extends Component {
     }
 
     componentDidMount(){
-        this.setColor(this.props.effects);
+        this.setColor(this.props.card.effects);
     }
 
     getContent(){
-        if(this.props.imageUrl){
+        if(this.props.card.imageUrl){
             return (
                 <div>
                 <img 
                     className={"playerIconSmall"} 
-                    src={this.props.imageUrl} 
+                    src={this.props.card.imageUrl} 
                     />
                 </div>
             );
@@ -60,7 +61,7 @@ class CardView extends Component {
         else{
             return (
                 <h3>
-                    {this.props.name}
+                    {this.props.card.name}
                 </h3>
             );
         }
@@ -70,7 +71,13 @@ class CardView extends Component {
         return (
             <div className="card" id={this.state.id} onClick={() =>{
                 if(this.props.playCard){
-                    this.props.playCard(this.props.matchID, this.props.owner, this.props.id);
+                    if(MatchHelper.isColorChanger(this.props.card)){
+                        // tell someone to render ColorSelector
+                        if(this.props.onColorSelection){
+                            this.props.onColorSelection();
+                        }
+                    }
+                    this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id);
                 }
             }} >
                 {
@@ -83,12 +90,12 @@ class CardView extends Component {
 
 CardView.propTypes = {
     matchID: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    effects: PropTypes.array.isRequired,
+    card: PropTypes.object.isRequired,
+
+    positionInRow: PropTypes.number,
     playCard: PropTypes.func,
-    positionInRow: PropTypes.number
+    onColorSelection: PropTypes.func
 };
 
 const mapStateToProps = (state) =>({

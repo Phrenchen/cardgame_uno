@@ -1,5 +1,6 @@
 const MathHelper = require("./MathHelper");
 const PlayCardValidator = require("./PlayCardValidator");
+const EffectSpecial = require("./EffectSpecial");
 
 const calculateScores = (match) =>{
     match.players.map((player) =>{
@@ -145,3 +146,9 @@ const recyclePlayedCards = (match) =>{
     match.cards = match.playedCards.splice(0, match.playedCards.length - 2);
 }
 module.exports.recyclePlayedCards = recyclePlayedCards;
+
+const isColorChanger = (card) =>{
+    return PlayCardValidator.hasEffect(card, EffectSpecial.CHANGE_COLOR) ||
+        PlayCardValidator.hasEffect(card, EffectSpecial.TAKE_4);
+}
+module.exports.isColorChanger = isColorChanger;

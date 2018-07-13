@@ -22,6 +22,13 @@ export const startMatch = () => dispatch => {
             });
 };
 
+export const showColorSelector = () => dispatch => {
+    dispatch({
+        type: ActionConsts.SELECT_COLOR
+        // no playload
+    });
+}
+
 export const playCard = (pMatchID, pPlayerID, pCardID) => dispatch => {
     axios.post("api/phrens_uno/", {
             action:ActionConsts.PLAY_CARD,
