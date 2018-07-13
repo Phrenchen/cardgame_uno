@@ -25,8 +25,10 @@ class CardView extends Component {
                 color = "black";
             }
         });
+        containerDiv.style.backgroundColor = backgroundColor;
+        containerDiv.style.color = color;
 
-        if(this.props.positionInRow){       // attention: will not enter if position = 0!!!
+        /*if(this.props.positionInRow){       // attention: will not enter if position = 0!!!
             let step = 5;
             let offsetX = this.props.positionInRow * step;
             let offsetY = this.props.positionInRow * step;
@@ -38,9 +40,7 @@ class CardView extends Component {
         }
         else{
             //console.log("player card");
-        }
-        containerDiv.style.backgroundColor = backgroundColor;
-        containerDiv.style.color = color;
+        }*/
     }
 
     componentDidMount(){
