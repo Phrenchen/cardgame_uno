@@ -20,13 +20,11 @@ const validateCard = (playCard, topCard) =>{
 
 
     // check special cards
-    if(!isColorValueCard(playCard) || !isColorValueCard(topCard)){
+    if(isJoker(playCard)){
         //console.log(playCard.name + " or " + topCard.name + " is no color value card");
 
         // TODO; color change,  +4
-
-
-        return false;
+        return true;
     }
     /* cards are playable if
         1. same color or
@@ -38,19 +36,11 @@ const validateCard = (playCard, topCard) =>{
 }
 module.exports.validateCard = validateCard;
 
-const isColorValueCard = (card) => {
-    if(!card){
-        console.log("isColorValueCard: no card to check :(");
-        return false;
-    }
-    for(let i=0; i< card.effects.length; i++){
-        if(card.effects[i].effectType.indexOf("color") !== -1){
-            return true;
-        }
-    }
-    return false;
+const isJoker = (card) => {
+    return hasEffect(card, EffectSpecial.CHANGE_COLOR) ||
+            hasEffect(card, EffectSpecial.TAKE_4);
 }
-module.exports.isColorValueCard = isColorValueCard;
+module.exports.hasSpecialEffect = isJoker;
 
 // helper
 const hasSameEffect = (card1, card2) =>{

@@ -106,26 +106,21 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
             //console.log("default random card distribution");
             players.map( (player) =>{                                    // for ever player
                 distributeRandomCardsToPlayer(player, cards, playerCardCount);
+                            // DEBUG CARD INSERTING
+                            // add direction change cards to each player
+                            let extraCard1 = extractCardByType(cards, EffectSpecial.TAKE_4);
+                            if(extraCard1){
+                                player.cards.push(extraCard1);
+                            }
+                            
+                            let extraCard2 = extractCardByType(cards, EffectSpecial.CHANGE_COLOR);
+                            if(extraCard2){
+                                player.cards.push(extraCard2);
+                            }
+                            // END OF DEBUG CARD INSERTING
             });
             break;
-            
         }
-        
-        
-        // DEBUG CARD INSERTING
-        // add direction change cards to each player
-        /*let changeDirectionCard = extractCardByType(allCards, EffectSpecial.CHANGE_DIRECTION);
-        if(changeDirectionCard){
-            player.cards.push(changeDirectionCard);
-        }
-        
-        let skipCard = extractCardByType(allCards, EffectSpecial.SKIP);
-        if(skipCard){
-            player.cards.push(skipCard);
-        }
-        */
-       
-       // END OF DEBUG CARD INSERTING
     }
     
     const distributeRandomCardsToPlayer = (player, cards, playerCardCount) =>{
@@ -347,7 +342,7 @@ function pickFirstCard(cards){
         randomIndex = MathHelper.getRandomInt(0, cards.length - 1);
         card = cards[randomIndex];
 
-        if(PlayCardValidator.isColorValueCard(card)){
+        if(!PlayCardValidator.hasSpecialEffect(card)){
             firstCard = cards.splice(randomIndex, 1)[0];
         }
     }
