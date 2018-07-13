@@ -192,7 +192,12 @@ const playCard = (req, res) =>{
     }
     //----------------------- EARLY OUT END ----------------------------------
     activePlayer = MatchHelper.getActivePlayer(match);
-
+    // can activeplayer be null?
+    if(!activePlayer){
+        console.log("how come there is no active player for this match? player count: " + match.players.length);
+        res.json(match);
+        return;
+    }
     topCard = MatchHelper.getTopCard(match);
     playCard = MatchHelper.extractCard(activePlayer.cards, cardID);
 
