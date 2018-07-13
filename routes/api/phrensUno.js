@@ -165,12 +165,13 @@ const playCard = (req, res) =>{
     const matchID = req.body.matchID;
     const playerID = req.body.playerID;
     const cardID = req.body.cardID;
+    const selectedColor = req.body.selectedColor;
     let activePlayer;
     let topCard;
     let playCard;
 
     let match = MatchData.getMatchByID(matchID);
-    
+
     if(!match){
         let message = "no match could be found for your cardplay. here you have a new match";
         startMatch(req, res, message);
@@ -187,6 +188,7 @@ const playCard = (req, res) =>{
         return;
     }
     //----------------------- EARLY OUT END ----------------------------------
+    match.selectedColor = selectedColor;
     activePlayer = MatchHelper.getActivePlayer(match);
 
     topCard = MatchHelper.getTopCard(match);

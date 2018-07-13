@@ -29,7 +29,8 @@ export default function(state = initialState, action){
                 cards: action.payload.cards,
                 playedCards: action.payload.playedCards,
                 penalties: action.payload.penalties,
-                activePlayerID: action.payload.activePlayerID
+                activePlayerID: action.payload.activePlayerID,
+                selectedColor: action.payload.selectedColor
             };
         default:
             return state;

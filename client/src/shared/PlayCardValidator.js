@@ -1,4 +1,5 @@
 const EffectSpecial = require("./EffectSpecial");
+const EffectColor = require("./EffectColor");
 
 const hasEffect = (card, effectType) =>{
     for(let i=0; i<card.effects.length; i++){
@@ -10,7 +11,7 @@ const hasEffect = (card, effectType) =>{
 }
 module.exports.hasEffect = hasEffect;
 
-const validateCard = (playCard, topCard) =>{
+const validateCard = (playCard, topCard, selectedColor = null) =>{
     //console.log("validateCard: " + playCard.name);
     // early out with invalid params
     if(!playCard || !topCard){
@@ -31,6 +32,16 @@ const validateCard = (playCard, topCard) =>{
         2. same value or
         3. one of them is special card
     */
+
+    if(isJoker(topCard)){
+        if(selectedColor){
+            if(hasEffect(playCard, selectedColor)){
+                return true;        // play card color matches color selected by previous player
+                                    // can another special card be played on top of another one?
+            }
+        }
+    }
+
     let areSame = hasSameEffect(topCard, playCard);
     return areSame;
 }

@@ -34,6 +34,10 @@ const MatchSchema = new Schema({
     serverMessage: {
         type: String,
         default: ""
+    },
+    selectedColor: {
+        type: String,
+        default: null
     }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);

@@ -2,8 +2,8 @@ const uuid = require("uuid");
 const Card = require("./Card");
 const Effect = require("./Effect");
 const Player = require("./Player");
-const EffectColor = require("./EffectColor");
 const EffectValue = require("./EffectValue");
+const EffectColor = require("./../client/src/shared/EffectColor");
 const EffectSpecial = require("./../client/src/shared/EffectSpecial");
 
 var cards = [];
@@ -18,7 +18,6 @@ const getPlayers = () =>{
     return players.slice();
 }
 module.exports.getPlayers = getPlayers;
-
 
 function initDB(){
     // 1. check if effects exist
