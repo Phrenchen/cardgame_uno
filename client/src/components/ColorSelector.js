@@ -6,7 +6,17 @@ import PropTypes from "prop-types";
  * grid 
  */
 class ColorSelector extends Component{
-
+    render(){
+        return (
+            <div className="colorselector_grid">
+                <h3 className="colorSelectorTitle">Select a color</h3>
+                <button>red</button>
+                <button>green</button>
+                <button>blue</button>
+                <button>yellow</button>
+            </div>
+        );
+    }
 }
 
 export default ColorSelector;

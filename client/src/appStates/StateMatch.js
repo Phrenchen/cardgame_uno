@@ -8,6 +8,7 @@ import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
 import CardList from '../components/CardList';
 import {showColorSelector} from "../actions/MatchActions";
+import ColorSelector from '../components/ColorSelector';
 
 class StateMatch extends Component{
     hasPenalties = () =>{
@@ -38,11 +39,7 @@ class StateMatch extends Component{
     displayColorSelector = () =>{
 
         return this.props.match.showColorSelector ?
-            (
-                <div>
-                    COLOR SELECTOR!
-                </div>
-            ) :
+            <ColorSelector /> :
             null;
     }
 

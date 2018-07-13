@@ -47,11 +47,18 @@
     z-index: 9999;
 }
 
-.penaltySet{
+.colorselector_grid{
+    position: absolute;
     display: grid;
-    grid-auto-columns: repeat(1fr, 5);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    
 }
 
+.colorSelectorTitle{
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+}
 /*---------------------------------------------*/
 
 .startscreen{
