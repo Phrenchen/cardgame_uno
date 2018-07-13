@@ -18,16 +18,14 @@ class CardList extends Component{
         let screenCenterX = window.innerWidth * .5;
         let screenCenterY = window.innerHeight * .5;
         */
-        let position = {x: 50, y: 20};
         let containerDiv = document.getElementById(this.state.id);
         if(!containerDiv){
-            //throw new Error("CardList could not position itself");
             return;
         }
         containerDiv.style.position = "absolute";
         containerDiv.style.zIndex =this.props.positionInRow;
-        containerDiv.style.left = position.x + "px";
-        containerDiv.style.bottom = position.y + "px";
+        containerDiv.style.left = 3 + "vmin";
+        containerDiv.style.bottom = 3 + "vmin"
     }
     //_--------------------
     componentDidMount(){
