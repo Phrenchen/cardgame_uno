@@ -77,7 +77,16 @@
     background-color: var(--card_yellow);
 }
 
-/*---------------------------------------------*/
+
+.selectedColorIndicator{
+    position: absolute;
+    border: 3px solid black;
+    min-width: 10px;
+    min-height: 10px;
+    
+    width: 5vmin;
+    height: 5vmin;
+}
 
 .startscreen{
     text-align: center;
@@ -87,6 +96,7 @@
 .playerIconSmall{
     margin: 0px;
     border: 0px;
+    
     max-width: 300px;       /* asset size*/
     max-height: 300px;
     width: 10vmin;
@@ -95,6 +105,7 @@
 .playerIconSmallActive{
     margin: 0;
     border: 2px solid rgb(2, 0, 94);
+    
     max-width: 300px;
     max-height: 300px;
     width: 14vmin;
@@ -103,18 +114,20 @@
 
 
 .player_win{
+    border: 5px solid red;
+    
     max-width: 300px;
     max-height: 300px;
-    width: 12vmax;
+    width: 12vmin;
 
-    border: 5px solid red;
 }
 
 .player_lose{
+    margin: 5px;
+    
     max-width: 300px;
     max-height: 300px;
     width: 8vmax;
-    margin: 5px;
 }
 
 /* card */

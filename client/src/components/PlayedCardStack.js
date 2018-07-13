@@ -2,8 +2,13 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import CardView from "./CardView";
 import uuid from "uuid";
+import MatchHelper from "../shared/MatchHelper";
 
 class PlayedCardStack extends Component{
+
+    state = {
+        id: uuid()
+    }
 
     createCard(card, index){
         return (
@@ -16,6 +21,29 @@ class PlayedCardStack extends Component{
                 selectedColor={this.props.selectedColor}
             />
         );
+    }
+
+    showLastEffect(){
+
+        if(MatchHelper.isColorChanger(this.props.playedCards[this.props.playedCards.length-1])){
+            return (
+                <div id={this.state.id} className={"selectedColorIndicator"}>
+                    
+                </div>
+            );
+        }
+        
+        return null;
+    }
+
+    componentDidMount(){
+        let colorIndicator = document.getElementById(this.state.id);
+        if(!colorIndicator){
+            return;
+        }
+        colorIndicator.style.backgroundColor = this.props.selectedColor.split("_")[1];
+        colorIndicator.style.left = 3 + "vmin";
+        colorIndicator.style.top = -6 + "vmin";
     }
 
     render(){
@@ -38,6 +66,7 @@ class PlayedCardStack extends Component{
                         }
                     })
                 }
+                {this.showLastEffect()}
             </div>
         );  
     }

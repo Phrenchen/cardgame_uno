@@ -9,7 +9,7 @@ class CardList extends Component{
         id: uuid()
     }
 
-
+    
     setPosition(){
         /*
         let lesserSide = window.innerWidth < window.innerHeight ? 
