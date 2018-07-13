@@ -13,6 +13,7 @@ class PlayedCardStack extends Component{
                 owner={"-1"}      // has been played. no matter who played it
                 positionInRow={index}
                 card={card}
+                selectedColor={this.props.selectedColor}
             />
         );
     }
@@ -44,7 +45,8 @@ class PlayedCardStack extends Component{
 
 PlayedCardStack.propTypes = {
     matchID: PropTypes.string.isRequired,
-    playedCards: PropTypes.array.isRequired
+    playedCards: PropTypes.array.isRequired,
+    selectedColor: PropTypes.string.isRequired
 };
 
 export default PlayedCardStack;

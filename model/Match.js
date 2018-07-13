@@ -37,11 +37,11 @@ const MatchSchema = new Schema({
     },
     colorSelectorCardID:{
         type:String,
-        default: null
+        default: ""
     },
     selectedColor: {
         type: String,
-        default: null
+        default: ""
     }
 });
 module.exports = Match = mongoose.model("match", MatchSchema);

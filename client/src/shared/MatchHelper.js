@@ -52,7 +52,7 @@ const playerHasPlayableCards = (match) => {
     });
 
     allCandidates.map((card) =>{
-        if(PlayCardValidator.validateCard(card, topCard)){
+        if(PlayCardValidator.validateCard(card, topCard, match.selectedColor)){
             result = true;
         }
     });

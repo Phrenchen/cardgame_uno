@@ -15,6 +15,7 @@ class PenaltyView extends Component{
                         matchID={this.props.matchID}
                         owner={this.props.activePlayerID}
                         card={card}
+                        selectedColor={this.props.selectedColor}
                         />
                 })
             }
@@ -28,7 +29,8 @@ PenaltyView.propTypes = {
     cards: PropTypes.array.isRequired,
     penaltyID: PropTypes.string.isRequired,
     activePlayerID: PropTypes.string.isRequired,
-    matchID:PropTypes.string.isRequired
+    matchID:PropTypes.string.isRequired,
+    selectedColor: PropTypes.string.isRequired
 };
 
 export default PenaltyView;

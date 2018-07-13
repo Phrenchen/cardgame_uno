@@ -17,6 +17,7 @@ class PenaltyList extends Component{
                 penaltyID={penaltySet.id}
                 activePlayerID={this.props.activePlayerID}
                 matchID={this.props.matchID}
+                selectedColor={this.props.selectedColor}
             />
         );
     }
@@ -48,7 +49,8 @@ PenaltyList.propTypes = {
     penalties: PropTypes.array.isRequired,
     activePlayerID: PropTypes.string.isRequired,
     onAccept: PropTypes.func.isRequired,
-    playerName:PropTypes.string.isRequired
+    playerName:PropTypes.string.isRequired,
+    selectedColor:PropTypes.string.isRequired
 };
 
 

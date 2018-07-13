@@ -94,6 +94,7 @@ CardView.propTypes = {
 
     positionInRow: PropTypes.number,
     playCard: PropTypes.func.isRequired,
+    selectedColor: PropTypes.string.isRequired,
     onColorSelection: PropTypes.func
 };
 

@@ -44,7 +44,7 @@ class CardList extends Component{
                     Player Cards
                     {
                         this.props.cards.map((card) => {
-                            let isValid = PlayCardValidator.validateCard(card, this.props.topCard);
+                            let isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
                             if(isValid){
                                 return <div key={uuid()}>
                                     <CardView
@@ -53,6 +53,7 @@ class CardList extends Component{
                                         matchID={this.props.matchID}
                                         owner={this.props.owner}
                                         card={card}
+                                        selectedColor={this.props.selectedColor}
                                     />
                                 </div>
                             }
@@ -68,7 +69,8 @@ CardList.propTypes = {
     owner: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired,
     topCard: PropTypes.object.isRequired,
-    onColorSelection: PropTypes.func
+    onColorSelection: PropTypes.func,
+    selectedColor: PropTypes.string
 };
 
 export default CardList;

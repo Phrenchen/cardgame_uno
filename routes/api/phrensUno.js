@@ -108,6 +108,8 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
                 distributeRandomCardsToPlayer(player, cards, playerCardCount);
                             // DEBUG CARD INSERTING
                             // add direction change cards to each player
+                            
+                            /*
                             let extraCard1 = extractCardByType(cards, EffectSpecial.TAKE_4);
                             if(extraCard1){
                                 player.cards.push(extraCard1);
@@ -117,6 +119,7 @@ const distributeHandCardsToPlayers = (players, cards, distributionMode, playerCa
                             if(extraCard2){
                                 player.cards.push(extraCard2);
                             }
+                            */
                             // END OF DEBUG CARD INSERTING
             });
             break;
@@ -188,13 +191,15 @@ const playCard = (req, res) =>{
         return;
     }
     //----------------------- EARLY OUT END ----------------------------------
-    match.selectedColor = selectedColor;
+    if(selectedColor){
+        match.selectedColor = selectedColor;
+    }
     activePlayer = MatchHelper.getActivePlayer(match);
 
     topCard = MatchHelper.getTopCard(match);
     playCard = MatchHelper.extractCard(activePlayer.cards, cardID);
-    
-    if(PlayCardValidator.validateCard(playCard, topCard)){
+
+    if(PlayCardValidator.validateCard(playCard, topCard, match.selectedColor)){
         match.playedCards.push(playCard);
 
         //TODO: check gameover. count player´s cards
@@ -230,10 +235,13 @@ const playCard = (req, res) =>{
     }
     else{
         // VALIDATION OUT OF SYNC
-       console.log("PLAY CARD VALIDATION! out of sync with client and server");
-       activePlayer.cards.push(playCard);     // re-add card to hand deck
+        console.log("PLAY CARD VALIDATION! out of sync with client and server");
+        activePlayer.cards.push(playCard);     // re-add card to hand deck
        
-       saveMatchAndReturnToClient(match, res);   // *** SAVE MATCH ***
+        console.log(req.body.cardID);
+        console.log(req.body.selectedColor);
+
+        saveMatchAndReturnToClient(match, res);   // *** SAVE MATCH ***
     }
 };
 //------------------------------------------------------------------------

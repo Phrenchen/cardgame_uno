@@ -28,6 +28,7 @@ class StateMatch extends Component{
                 matchID={this.props.match.id}
                 activePlayerID={this.props.match.activePlayerID}
                 playerName={MatchHelper.getActivePlayer(this.props.match).name}
+                selectedColor={this.props.match.selectedColor}
                 onAccept={() =>{
                     // trigger action to server
                     this.props.acceptPenalties(this.props.match.id);
@@ -60,13 +61,15 @@ class StateMatch extends Component{
                 <PlayedCardStack className="playedCards"
                     playedCards= {this.props.match.playedCards} 
                     matchID= {this.props.match.id}
-                    />
+                    selectedColor={this.props.match.selectedColor}
+                />
                 <CardList 
                     matchID={this.props.match.id}
                     cards={MatchHelper.getActivePlayer(this.props.match).cards} 
                     owner={this.props.match.activePlayerID}
                     topCard={MatchHelper.getTopCard(this.props.match)}
                     onColorSelection={this.onShowColorSelector}
+                    selectedColor={this.props.match.selectedColor}
                     />
                 { this.displayAdditionalMatchInfos() }                
                 {this.displayColorSelector()}       
