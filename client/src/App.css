@@ -94,8 +94,13 @@
 
 /* card */
 .card{
+    overflow: hidden;
     position: relative;
+    
     border: 3px solid black;
+    margin:0;
+    padding: 0;
+
     background:  var(--card_black);
     user-select: none;
     
