@@ -8,7 +8,8 @@ const initialState = {
     cards: [],
     playedCards: [],
     activePlayerID: "",
-    showColorSelector: false
+    showColorSelector: false,
+    colorSelectorCardID: null
 }
 
 export default function(state = initialState, action){
@@ -20,12 +21,11 @@ export default function(state = initialState, action){
                 playerCount: action.payload
             };
         case ActionConsts.SELECT_COLOR:
-            console.log("reducing color selection");
             return {
                 ...state,
-                showColorSelector: true
+                showColorSelector: true,
+                colorSelectorCardID: action.payload
             };
-            break;
         case PENALTIES_ACCEPTED:
         case CARD_PLAYED:
         case GAME_OVER:
@@ -39,7 +39,9 @@ export default function(state = initialState, action){
                 playedCards: action.payload.playedCards,
                 penalties: action.payload.penalties,
                 activePlayerID: action.payload.activePlayerID,
-                selectedColor: action.payload.selectedColor
+                selectedColor: action.payload.selectedColor,
+                showColorSelector: false,
+                colorSelectorCardID: action.payload.colorSelectorCardID
             };
         default:
             return state;

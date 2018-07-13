@@ -35,6 +35,10 @@ const MatchSchema = new Schema({
         type: String,
         default: ""
     },
+    colorSelectorCardID:{
+        type:String,
+        default: null
+    },
     selectedColor: {
         type: String,
         default: null

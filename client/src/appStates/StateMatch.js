@@ -8,6 +8,7 @@ import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
 import CardList from '../components/CardList';
 import {showColorSelector} from "../actions/MatchActions";
+import { playCard } from "../actions/MatchActions";
 import ColorSelector from '../components/ColorSelector';
 
 class StateMatch extends Component{
@@ -37,16 +38,19 @@ class StateMatch extends Component{
     }
 
     displayColorSelector = () =>{
-
         return this.props.match.showColorSelector ?
-            <ColorSelector /> :
+            <ColorSelector 
+                matchID= {this.props.match.id}
+                activePlayerID= {this.props.match.activePlayerID}
+                playCard= {this.props.playCard}
+                cardID= {this.props.match.colorSelectorCardID}
+            /> :
             null;
     }
 
     
-    onShowColorSelector = () =>{
-        console.log("show color selector");
-        this.props.showColorSelector();
+    onShowColorSelector = (cardID) =>{
+        this.props.showColorSelector(cardID);
     }
 
     render(){
@@ -76,4 +80,4 @@ const mapStateToProps = (state) =>{
         match: state.match
     }
 }
-export default connect(mapStateToProps, {acceptPenalties, showColorSelector})(StateMatch);
+export default connect(mapStateToProps, {acceptPenalties, showColorSelector, playCard})(StateMatch);

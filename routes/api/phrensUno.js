@@ -169,9 +169,9 @@ const playCard = (req, res) =>{
     let activePlayer;
     let topCard;
     let playCard;
-
+    
     let match = MatchData.getMatchByID(matchID);
-
+    
     if(!match){
         let message = "no match could be found for your cardplay. here you have a new match";
         startMatch(req, res, message);
