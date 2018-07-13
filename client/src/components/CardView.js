@@ -76,7 +76,7 @@ class CardView extends Component {
                     }
                 }
                 else{
-                    this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id);
+                    this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id, this.props.selectedColor);
                 }
             }} >
                 {

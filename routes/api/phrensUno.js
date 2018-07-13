@@ -191,9 +191,6 @@ const playCard = (req, res) =>{
         return;
     }
     //----------------------- EARLY OUT END ----------------------------------
-    if(selectedColor){
-        match.selectedColor = selectedColor;
-    }
     activePlayer = MatchHelper.getActivePlayer(match);
 
     topCard = MatchHelper.getTopCard(match);
@@ -230,6 +227,8 @@ const playCard = (req, res) =>{
         // PENALTY CARDS
         applyPenaltyTakeX(match, playCard, match.penalties);
         applyPenaltyCheckNoValidCard(match);
+
+        match.selectedColor = selectedColor ? selectedColor : "";
         
         saveMatchAndReturnToClient(match, res);  // *** SAVE MATCH ***
     }

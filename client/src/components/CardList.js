@@ -41,7 +41,7 @@ class CardList extends Component{
     render(){
         return (
             <div id={this.state.id}>
-                    Player Cards
+                    pick a card
                     {
                         this.props.cards.map((card) => {
                             let isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
