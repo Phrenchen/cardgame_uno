@@ -47,25 +47,25 @@ function addPlayersToDB(){
     players.push( new Player({
         id: uuid(),
         name: "The Ninja",
-        imageUrl: "/images/the_ninja.jpeg"
+        imageUrl: "/images/the_ninja.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Dr. Surprise",
-        imageUrl: "/images/dr_surprise.jpg"
+        imageUrl: "/images/dr_surprise.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Captain Obvious",
-        imageUrl: "/images/captain_obvious.jpg"
+        imageUrl: "/images/captain_obvious.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Mr. Mustache",
-        imageUrl: "/images/mr_mustache.jpg"
+        imageUrl: "/images/mr_mustache.png"
     }));
 
     players.push( new Player({
@@ -77,31 +77,31 @@ function addPlayersToDB(){
     players.push( new Player({
         id: uuid(),
         name: "Missy Suspicious",
-        imageUrl: "/images/missy_suspicious.jpg"
+        imageUrl: "/images/missy_suspicious.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "The Demon",
-        imageUrl: "/images/the_demon.jpeg"
+        imageUrl: "/images/the_demon.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Innocence",
-        imageUrl: "/images/innocence.jpg"
+        imageUrl: "/images/innocence.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Her Majesty II",
-        imageUrl: "/images/her_majesty.jpg"
+        imageUrl: "/images/her_majesty.png"
     }));
 
     players.push( new Player({
         id: uuid(),
         name: "Bat Cat",
-        imageUrl: "/images/batcat.jpeg"
+        imageUrl: "/images/batcat.png"
     }));
 
 
