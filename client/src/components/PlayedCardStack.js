@@ -6,10 +6,6 @@ import MatchHelper from "../shared/MatchHelper";
 
 class PlayedCardStack extends Component{
 
-    state = {
-        id: uuid()
-    }
-
     createCard(card, index){
         return (
             <CardView
@@ -23,29 +19,6 @@ class PlayedCardStack extends Component{
         );
     }
 
-    showLastEffect(){
-
-        if(MatchHelper.isColorChanger(this.props.playedCards[this.props.playedCards.length-1])){
-            return (
-                <div id={this.state.id} className={"selectedColorIndicator"}>
-                    
-                </div>
-            );
-        }
-        
-        return null;
-    }
-
-    componentDidMount(){
-        let colorIndicator = document.getElementById(this.state.id);
-        if(!colorIndicator){
-            return;
-        }
-        colorIndicator.style.backgroundColor = this.props.selectedColor.split("_")[1];
-        colorIndicator.style.left = 3 + "vmin";
-        colorIndicator.style.top = -6 + "vmin";
-    }
-
     render(){
         const cardCountToRender = 3;
         let counter = 0;
@@ -55,7 +28,7 @@ class PlayedCardStack extends Component{
         }
 
         return (
-            <div className="playedCards centered">
+            <div className="playedCards">
                 {
                     this.props.playedCards.map((card) =>{
                         if(counter < cardCountToRender){                       // only render last 10 played cards
@@ -66,7 +39,6 @@ class PlayedCardStack extends Component{
                         }
                     })
                 }
-                {this.showLastEffect()}
             </div>
         );  
     }
