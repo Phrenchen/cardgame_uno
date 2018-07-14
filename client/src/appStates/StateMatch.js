@@ -29,11 +29,6 @@ class StateMatch extends Component{
         
         if(this.hasPenalties()){
             return <PenaltyList className="penaltyList"
-                penalties={this.props.match.penalties} 
-                matchID={this.props.match.id}
-                activePlayerID={this.props.match.activePlayerID}
-                playerName={MatchHelper.getActivePlayer(this.props.match).name}
-                selectedColor={this.props.match.selectedColor}
                 onAccept={() =>{
                     // trigger action to server
                     this.props.acceptPenalties(this.props.match.id);
@@ -60,6 +55,16 @@ class StateMatch extends Component{
     }
 
     //-----------------------------------------------------------------
+    getPlayedCardList(){
+        if(!this.hasPenalties()){
+            return <PlayedCardStack 
+            playedCards= {this.props.match.playedCards} 
+            matchID= {this.props.match.id}
+            selectedColor={this.props.match.selectedColor}
+        />;
+        }
+        return null;
+    }
     getLeftIndicator(){
         return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorLeft");
     }
@@ -70,25 +75,21 @@ class StateMatch extends Component{
 
     getIndicator(pID, pClassName){
         if(MatchHelper.isColorChanger(this.props.match.playedCards[this.props.match.playedCards.length-1])){
-            console.log("iz color card!11");
             return (
                 <div className={pClassName} id={pID}>
-                    {pClassName}
+                    
                 </div>
             );
         }
-        console.log("no colorchanger as topCard");
         return null;
     }
     
     colorizeIndicator(id){
         let colorIndicator = document.getElementById(id);
         if(!colorIndicator){
-            console.log("colorizing no indicator: " + id);
             return;
         }
         let color = this.props.match.selectedColor.split("_")[1];
-        console.log("colo000r: " + color);
         colorIndicator.style.backgroundColor = this.props.match.selectedColor.split("_")[1];
     }
 
@@ -98,7 +99,6 @@ class StateMatch extends Component{
     }
 
     componentDidMount(){
-        console.log("this.state.leftIndicatorID: " + this.state.leftIndicatorID);
         this.colorizeIndicator(this.state.leftIndicatorID);
         this.colorizeIndicator(this.state.rightIndicatorID);
     }
@@ -108,13 +108,8 @@ class StateMatch extends Component{
         return (
             <div className="match_grid" key={uuid()}>
                 <PlayerList className="playerPanel"/>
-                <PlayedCardStack 
-                    playedCards= {this.props.match.playedCards} 
-                    matchID= {this.props.match.id}
-                    selectedColor={this.props.match.selectedColor}
-                />
+                
                 <CardList 
-                    
                     matchID={this.props.match.id}
                     cards={MatchHelper.getActivePlayer(this.props.match).cards} 
                     owner={this.props.match.activePlayerID}
@@ -122,6 +117,8 @@ class StateMatch extends Component{
                     onColorSelection={this.onShowColorSelector}
                     selectedColor={this.props.match.selectedColor}
                 />
+                {this.getPlayedCardList()}
+                
                 {this.displayPenaltyList()}                
                 {this.displayColorSelector()}       
                 

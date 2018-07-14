@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import PenaltyView from "./PenaltyView";
 import { Button } from "reactstrap";
 import uuid from "uuid";
-
+import { connect } from "react-redux";
+import MatchHelper from "../shared/MatchHelper";
 
 
 class PenaltyList extends Component{
@@ -15,9 +16,9 @@ class PenaltyList extends Component{
                 reason={penaltySet.reason}
                 cards={penaltySet.cards}
                 penaltyID={penaltySet.id}
-                activePlayerID={this.props.activePlayerID}
-                matchID={this.props.matchID}
-                selectedColor={this.props.selectedColor}
+                activePlayerID={this.props.match.activePlayerID}
+                matchID={this.props.match.matchID}
+                selectedColor={this.props.match.selectedColor}
             />
         );
     }
@@ -26,15 +27,15 @@ class PenaltyList extends Component{
         return (
             <div className="penaltyList">
                 <h2>PENALTY CARDS</h2>
-                <h4>{this.props.playerName}</h4>
+                <h4>{MatchHelper.getActivePlayer(this.props.match).name}</h4>
                 {
-                    this.props.penalties.map((penaltySet) =>{
+                    this.props.match.penalties.map((penaltySet) =>{
                         return this.createPenaltySet(penaltySet);
                     })
                 }
                 <Button
                     onClick={() => {
-                        this.props.onAccept(this.props.activePlayerID);
+                        this.props.onAccept(this.props.match.activePlayerID);
                     }}
                 >OK</Button>
             </div>
@@ -44,14 +45,14 @@ class PenaltyList extends Component{
 
 }
 
+const mapStateToProps = (state) =>{
+    return {
+        match: state.match  
+    };
+}
 
 PenaltyList.propTypes = {
-    penalties: PropTypes.array.isRequired,
-    activePlayerID: PropTypes.string.isRequired,
     onAccept: PropTypes.func.isRequired,
-    playerName:PropTypes.string.isRequired,
-    selectedColor:PropTypes.string.isRequired
 };
 
-
-export default PenaltyList;
+export default connect(mapStateToProps)(PenaltyList);

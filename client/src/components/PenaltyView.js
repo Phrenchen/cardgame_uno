@@ -4,9 +4,12 @@ import CardView from "./CardView";
 import uuid from "uuid";
 
 class PenaltyView extends Component{
+
+    
+
     render(){
         return (
-            <div id={uuid()}>
+            <div className="penaltyCards">
                 <p>{this.props.reason}</p>
             {
                 this.props.cards.map((card) => {
