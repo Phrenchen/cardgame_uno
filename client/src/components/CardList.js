@@ -22,18 +22,10 @@ class CardList extends Component{
         if(!containerDiv){
             return;
         }
-
-        // position container
         containerDiv.style.position = "absolute";
         containerDiv.style.zIndex =this.props.positionInRow;
         containerDiv.style.left = 3 + "vmin";
         containerDiv.style.bottom = 3 + "vmin"
-
-        // position children (the cards)
-
-
-
-        
     }
     //_--------------------
     componentDidMount(){
