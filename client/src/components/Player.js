@@ -31,7 +31,6 @@ class Player extends Component{
 
         return (
             <div>
-                {player.cards.length}
                 <img 
                     className={this.getClassName()} 
                     src={MatchHelper.getPlayerByID(this.props.match.players, 

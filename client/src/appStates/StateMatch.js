@@ -56,14 +56,11 @@ class StateMatch extends Component{
 
     //-----------------------------------------------------------------
     getPlayedCardList(){
-        if(!this.hasPenalties()){
-            return <PlayedCardStack 
+        return <PlayedCardStack 
             playedCards= {this.props.match.playedCards} 
             matchID= {this.props.match.id}
             selectedColor={this.props.match.selectedColor}
         />;
-        }
-        return null;
     }
     getLeftIndicator(){
         return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorLeft");

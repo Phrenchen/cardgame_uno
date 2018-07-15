@@ -9,6 +9,19 @@ import MatchHelper from "../shared/MatchHelper";
 
 class PenaltyList extends Component{
 
+    componentDidMount(){
+        let container = document.getElementsByClassName("penaltyList")[0];
+        if(!container){
+            return;
+        }
+        let width = container.offsetWidth * .5 * -1;
+        let height = container.offsetHeight * .5 * -1;
+        console.log(width + "/" + height);
+        container.style.setProperty("--containerOffsetX", width);
+        container.style.setProperty("--containerOffsetY", height);
+    }
+
+
     createPenaltySet(penaltySet){
         console.log(this.props.match.id);
         return (
@@ -26,7 +39,7 @@ class PenaltyList extends Component{
 
     render(){
         return (
-            <div className="penaltyList">
+            <div className="penaltyList centered">
                 <h2>PENALTY CARDS</h2>
                 <h4>{MatchHelper.getActivePlayer(this.props.match).name}</h4>
                 {

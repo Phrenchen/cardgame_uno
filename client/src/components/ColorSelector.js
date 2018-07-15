@@ -8,10 +8,21 @@ import EffectColor from "../shared/EffectColor";
  * grid 
  */
 class ColorSelector extends Component{
+    componentDidMount(){
+        let container = document.getElementsByClassName("colorselector_grid")[0];
+        if(!container){
+            return;
+        }
+        let width = container.offsetWidth * .5 * -1;
+        let height = container.offsetHeight * .5 * -1;
+        console.log(width + "/" + height);
+        container.style.setProperty("--containerOffsetX", width);
+        container.style.setProperty("--containerOffsetY", height);
+    }
 
     render(){
         return (
-            <div className="colorselector_grid">
+            <div className="colorselector_grid centered">
                 <h3 className="colorSelectorTitle">Select a color</h3>
                 
                 <button 
