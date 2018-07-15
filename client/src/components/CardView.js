@@ -4,7 +4,7 @@ import uuid from "uuid";
 import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
 import MatchHelper from "../shared/MatchHelper";
-
+const PlayCardValidator = require("../../../client/src/shared/PlayCardValidator");
 
 class CardView extends Component {
     
@@ -13,7 +13,7 @@ class CardView extends Component {
     };
 
     // helper. MOVE somewhere clever (this rhymes wtf!?)
-    setColor(effects){
+    setColor = (effects) =>{
         let containerDiv = document.getElementById(this.state.id);
         let color = "white";
         let backgroundColor = "black";
@@ -25,11 +25,9 @@ class CardView extends Component {
                 color = "black";
             }
         });
+        
         containerDiv.style.backgroundColor = backgroundColor;
         containerDiv.style.color = color;
-    }
-    componentDidMount(){
-        this.setColor(this.props.card.effects);
     }
 
     getContent(){
@@ -50,6 +48,10 @@ class CardView extends Component {
                 </h3>
             );
         }
+    }
+
+    componentDidMount(){
+        this.setColor(this.props.card.effects);
     }
 
     render(){

@@ -6,7 +6,7 @@ import PenaltyList from '../components/PenaltyList';
 import {acceptPenalties} from "../actions/MatchActions"
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
-import CardList from '../components/CardList';
+import HandCards from '../components/HandCards';
 import {showColorSelector} from "../actions/MatchActions";
 import { playCard } from "../actions/MatchActions";
 import ColorSelector from '../components/ColorSelector';
@@ -93,6 +93,7 @@ class StateMatch extends Component{
         colorIndicator.style.backgroundColor = this.props.match.selectedColor.split("_")[1];
     }
 
+
     componentDidUpdate(){
         this.colorizeIndicator(this.state.leftIndicatorID);
         this.colorizeIndicator(this.state.rightIndicatorID);
@@ -106,26 +107,27 @@ class StateMatch extends Component{
     
     render(){
         return (
-            <div className="match_grid" key={uuid()}>
-                <PlayerList className="playerPanel"/>
-                
-                <CardList 
-                    matchID={this.props.match.id}
-                    cards={MatchHelper.getActivePlayer(this.props.match).cards} 
-                    owner={this.props.match.activePlayerID}
-                    topCard={MatchHelper.getTopCard(this.props.match)}
-                    onColorSelection={this.onShowColorSelector}
-                    selectedColor={this.props.match.selectedColor}
-                />
-                {this.getPlayedCardList()}
-                
+            <div className="maximized">
+                <div className="match_grid" key={uuid()}>
+                    <PlayerList className="playerPanel"/>
+                    {this.getPlayedCardList()}
+                    <HandCards 
+                        matchID={this.props.match.id}
+                        cards={MatchHelper.getActivePlayer(this.props.match).cards} 
+                        owner={this.props.match.activePlayerID}
+                        topCard={MatchHelper.getTopCard(this.props.match)}
+                        onColorSelection={this.onShowColorSelector}
+                        selectedColor={this.props.match.selectedColor}
+                        />
+                </div>
                 {this.displayPenaltyList()}                
                 {this.displayColorSelector()}       
-                
-                {this.getLeftIndicator()}
-                {this.getRightIndicator()}
             </div>
         );
+        /*
+        {this.getLeftIndicator()}
+        {this.getRightIndicator()}
+        */
     }
 } 
 

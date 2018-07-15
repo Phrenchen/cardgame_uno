@@ -15,6 +15,20 @@ const calculateScores = (match) =>{
 }
 module.exports.calculateScores = calculateScores;
 
+const getCardByID = (cards, id) =>{
+    let card;
+    for(let i=0; cards.length; i++){
+        card = cards[i];
+        if(card.id === id){
+            return card;
+        }
+    }
+    console.log("no card found in: " + cards.length);
+    return null;
+}
+module.exports.getCardByID = getCardByID;
+
+
 const getWinner = (match) => {
     let result = null;
 

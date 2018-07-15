@@ -38,7 +38,7 @@ class AppStateMachine extends Component{
 
         if(renderFunction){
             return (
-                <div>
+                <div className="maximized">
                     { renderFunction() }
                 </div>
             );

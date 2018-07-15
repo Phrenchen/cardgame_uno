@@ -8,12 +8,26 @@
     --dialog_background: rgba(126, 126, 126, 0.521);
 
     --playedCardCount: 0;
+    --handCardCount: 0;
+    --cardOpacity: 1;
+}
+
+
+#root{
+    width: 100%;
+    height: 100%;
 }
 
 html, body{
     width: 100%;
     height: 100%;
 }
+
+.maximized{
+    width: 100%;
+    height: 100%;
+}
+
 
 /* currently unused */
 .emptyLeft{
@@ -27,27 +41,15 @@ html, body{
 
 /* MATCH GRID */
 .match_grid{
-    display: grid;
     width: 100%;
     height: 100%;
 
-    grid-template-areas: 
-        "players players players"
-        "effectIndicatorLeft penalties effectIndicatorRight"
-        "colorSelector colorSelector colorSelector"
-        "emptyLeft playedCards emptyRight"
-        "handCards handCards handCards";
-    
-    grid-template-rows: auto auto auto 1fr auto;
-
-        /*
-    grid-template-columns: 1fr 1fr 1fr;
-    */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 /* PLAYERS */
 .playerPanel{
-    grid-area: players;
     margin: 0;
     padding: 0;
     border: 0;
@@ -62,57 +64,28 @@ html, body{
 }
 
 
-/* effect indicator left */
-.effectIndicatorLeft{
-    grid-area: effectIndicatorLeft;
-    
-    min-width: 10vmin;
-    min-height: 10vmin;
 
-    border: 3px dashed black;
-    
-    align-items: center;
-    justify-items: center;
-    justify-self: center;
-    align-self: center;
-}
-
-/* effect indicator right */
-.effectIndicatorRight{
-    grid-area: effectIndicatorRight;
-    
-    min-width: 10vmin;
-    min-height: 10vmin;
-    
-    border: 3px dashed black;
-
-    align-items: center;
-    justify-items: center;
-    justify-self: center;
-    align-self: center;
-}
 
 
 /* PLAYED CARDS */
 .playedCards{
-    grid-area: playedCards;
     background-color: var(--dialog_background);
 
+    
     display: grid;
-    grid-template-columns: repeat(var(--playedCardCount), 1f);
+    grid-template-columns: repeat(var(--playedCardCount), 1fr);
+    
 }
 
 /* HAND CARDS */
 .handCards{
-    grid-area: handCards;
-
-   
+    display: grid;
+    grid-template-columns: repeat(var(--handCardCount), 1fr);
 }
 
 /* PENALTIES */
 .penaltyList{
-    grid-area: penalties;
-
+    position: absolute;
     border: 1px solid black;
     background-color: var(--dialog_background);
 
@@ -128,14 +101,44 @@ html, body{
 
 /* COLOR SELECTION */
 .colorselector_grid{
-    grid-area: colorSelector;
-
+    position: absolute;
     /*position: absolute;*/
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     
 }
+
+/*-----------------------------------------*/
+/* effect indicator left */
+.effectIndicatorLeft{
+    min-width: 10vmin;
+    min-height: 10vmin;
+
+    border: 3px dashed black;
+    
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+    align-self: center;
+}
+
+/* effect indicator right */
+.effectIndicatorRight{
+    min-width: 10vmin;
+    min-height: 10vmin;
+    
+    border: 3px dashed black;
+
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+    align-self: center;
+}
+/*-----------------------------------------*/
+
+
+
 
 .colorSelectorTitle{
     grid-column: 1 / 3;
@@ -197,13 +200,14 @@ html, body{
 
 /* card */
 .card{
+    opacity: var(--cardOpacity);
     overflow: hidden;
     position: relative;
     
     border: 3px solid black;
     margin:0;
     padding: 0;
-
+    
     background:  var(--card_black);
     user-select: none;
     

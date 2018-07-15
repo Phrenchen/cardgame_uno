@@ -10,6 +10,7 @@ import MatchHelper from "../shared/MatchHelper";
 class PenaltyList extends Component{
 
     createPenaltySet(penaltySet){
+        console.log(this.props.match.id);
         return (
             <PenaltyView
                 key={uuid()}
@@ -17,7 +18,7 @@ class PenaltyList extends Component{
                 cards={penaltySet.cards}
                 penaltyID={penaltySet.id}
                 activePlayerID={this.props.match.activePlayerID}
-                matchID={this.props.match.matchID}
+                matchID={this.props.match.id}
                 selectedColor={this.props.match.selectedColor}
             />
         );
