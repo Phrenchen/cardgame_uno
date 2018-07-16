@@ -19,6 +19,7 @@ class PenaltyView extends Component{
                         owner={this.props.activePlayerID}
                         card={card}
                         selectedColor={this.props.selectedColor}
+                        isPlayable={false}
                         />
                 })
             }

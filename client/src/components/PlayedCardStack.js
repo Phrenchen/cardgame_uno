@@ -54,6 +54,7 @@ class PlayedCardStack extends Component{
                 positionInRow={index}
                 card={card}
                 selectedColor={this.props.selectedColor}
+                isPlayable={false}
             />
         );
     }

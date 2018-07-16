@@ -65,6 +65,8 @@ class HandCards extends Component{
 
     render(){
         let id;
+        let isValid;
+        // TODO
         //this.sortCards(this.props.cards);
 
         return (
@@ -80,21 +82,20 @@ class HandCards extends Component{
                                 cardID: card.id
                             });
 
-                            let isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
-                            if(true){       // DISPLAY EVERY CARD. HIGHLIGHT VALIDS!! TODOOOOOoooOOOooOoOOOOo
-                                return <div 
-                                    id={id}
-                                    key={uuid()}>
-                                    <CardView
-                                        key={card.id}
-                                        onColorSelection={this.props.onColorSelection}
-                                        matchID={this.props.matchID}
-                                        owner={this.props.owner}
-                                        card={card}
-                                        selectedColor={this.props.selectedColor}
-                                        />
-                                </div>
-                            }
+                            isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
+                            return <div 
+                                id={id}
+                                key={uuid()}>
+                                <CardView
+                                    key={card.id}
+                                    onColorSelection={this.props.onColorSelection}
+                                    matchID={this.props.matchID}
+                                    owner={this.props.owner}
+                                    card={card}
+                                    selectedColor={this.props.selectedColor}
+                                    isPlayable={isValid}
+                                    />
+                            </div>
                         })
                     }
                 </div>
