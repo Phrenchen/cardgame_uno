@@ -26,7 +26,11 @@ class PenaltyList extends Component{
 
     render(){
         return (
-            <div className="penaltyList centered">
+            <div className="penaltyList centered"
+                onClick={() => {
+                    this.props.onAccept(this.props.match.activePlayerID);
+                }}
+            >
                 <h2>PENALTY CARDS</h2>
                 <h4>{MatchHelper.getActivePlayer(this.props.match).name}</h4>
                 {
