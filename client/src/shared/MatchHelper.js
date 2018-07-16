@@ -1,6 +1,7 @@
 const MathHelper = require("./MathHelper");
 const PlayCardValidator = require("./PlayCardValidator");
 const EffectSpecial = require("./EffectSpecial");
+const EffectColor = require("./EffectColor");
 
 const calculateScores = (match) =>{
     match.players.map((player) =>{
@@ -86,6 +87,25 @@ const playerHasPlayableCards = (match) => {
     return result;
 };
 module.exports.playerHasPlayableCards = playerHasPlayableCards;
+
+const getColor = (card) =>{
+    let effect;
+    
+    for(let i=0; i<card.effects.length; i++){
+        effect = card.effects[i];
+
+        switch(effect.effectType){
+            case EffectColor.RED:
+            case EffectColor.GREEN:
+            case EffectColor.BLUE:
+            case EffectColor.YELLOW:
+                let effectType = effect.effectType;
+                return effectType.split("_")[1];    // color_[name]
+        }
+    }
+    return "black;"
+}
+module.exports.getColor = getColor;
 
 const getTopCard = (match) =>{
     return match.playedCards[match.playedCards.length-1];

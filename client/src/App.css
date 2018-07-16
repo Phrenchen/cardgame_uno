@@ -73,6 +73,14 @@ html, body{
 
 
 /* PLAYED CARDS */
+.center_grid{
+    border: 1px dashed pink;
+
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    
+}
+
 .playedCards{
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
@@ -125,7 +133,8 @@ html, body{
 /* effect indicator left */
 .effectIndicatorLeft{
     min-width: 10vmin;
-    min-height: 10vmin;
+    min-height: 100%;
+   
 
     border: 3px dashed black;
     
@@ -138,7 +147,7 @@ html, body{
 /* effect indicator right */
 .effectIndicatorRight{
     min-width: 10vmin;
-    min-height: 10vmin;
+    min-height: 100%;
     
     border: 3px dashed black;
 

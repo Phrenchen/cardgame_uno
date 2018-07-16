@@ -56,12 +56,18 @@ class StateMatch extends Component{
 
     //-----------------------------------------------------------------
     getPlayedCardList(){
-        return <PlayedCardStack 
-            playedCards= {this.props.match.playedCards} 
-            matchID= {this.props.match.id}
-            selectedColor={this.props.match.selectedColor}
-        />;
+        return <div className="center_grid">
+            {this.getLeftIndicator()}
+            <PlayedCardStack 
+                playedCards= {this.props.match.playedCards} 
+                matchID= {this.props.match.id}
+                selectedColor={this.props.match.selectedColor}
+            />
+            {this.getRightIndicator()}  
+
+        </div>
     }
+
     getLeftIndicator(){
         return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorLeft");
     }
@@ -71,14 +77,10 @@ class StateMatch extends Component{
     }
 
     getIndicator(pID, pClassName){
-        if(MatchHelper.isColorChanger(this.props.match.playedCards[this.props.match.playedCards.length-1])){
             return (
                 <div className={pClassName} id={pID}>
-                    
                 </div>
             );
-        }
-        return null;
     }
     
     colorizeIndicator(id){
@@ -86,8 +88,17 @@ class StateMatch extends Component{
         if(!colorIndicator){
             return;
         }
-        let color = this.props.match.selectedColor.split("_")[1];
-        colorIndicator.style.backgroundColor = this.props.match.selectedColor.split("_")[1];
+        let color;
+        if(this.props.match.selectedColor != ""){
+            color = this.props.match.selectedColor.split("_")[1];
+        }
+        else{
+            // top card color
+            let topCard = MatchHelper.getTopCard(this.props.match);
+            color = MatchHelper.getColor(topCard);
+        }
+
+        colorIndicator.style.backgroundColor = color;
     }
 
 
@@ -138,10 +149,7 @@ class StateMatch extends Component{
                 {this.displayColorSelector()}       
             </div>
         );
-        /*
-        {this.getLeftIndicator()}
-        {this.getRightIndicator()}
-        */
+        
     }
 } 
 
