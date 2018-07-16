@@ -78,8 +78,8 @@ html, body{
     
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
+    
     justify-items: center;
-    justify-self: center;
 }
 
 /* HAND CARDS */

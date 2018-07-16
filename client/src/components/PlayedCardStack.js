@@ -7,7 +7,7 @@ import MatchHelper from "../shared/MatchHelper";
 class PlayedCardStack extends Component{
 
     state = {
-        cardCountToRender: 3
+        cardCountToRender: 1
     }
 
     componentDidMount(){
@@ -36,7 +36,7 @@ class PlayedCardStack extends Component{
                     {
                         this.props.playedCards.map((card) =>{
                             if(counter < this.state.cardCountToRender){                       // only render last 10 played cards
-                                return this.createCard(this.props.playedCards[index++], counter++);
+                                return this.createCard(this.props.playedCards[index++], ++counter);
                             }
                             else{
                                 return null;
