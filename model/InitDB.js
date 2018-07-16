@@ -5,7 +5,6 @@ const Player = require("./Player");
 const EffectValue = require("./EffectValue");
 const EffectColor = require("./../client/src/shared/EffectColor");
 const EffectSpecial = require("./../client/src/shared/EffectSpecial");
-const PlayCardValidator = require("./../client/src/shared/PlayCardValidator");
 
 var cards = [];
 var players = [];
