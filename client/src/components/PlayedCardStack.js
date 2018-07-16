@@ -30,17 +30,20 @@ class PlayedCardStack extends Component{
         }
 
         return (
-            <div className="playedCards">
-                {
-                    this.props.playedCards.map((card) =>{
-                        if(counter < this.state.cardCountToRender){                       // only render last 10 played cards
-                            return this.createCard(this.props.playedCards[index++], counter++);
-                        }
-                        else{
-                            return null;
-                        }
-                    })
-                }
+            <div>
+                played cards
+                <div className="playedCards">
+                    {
+                        this.props.playedCards.map((card) =>{
+                            if(counter < this.state.cardCountToRender){                       // only render last 10 played cards
+                                return this.createCard(this.props.playedCards[index++], counter++);
+                            }
+                            else{
+                                return null;
+                            }
+                        })
+                    }
+                </div>
             </div>
         );  
     }

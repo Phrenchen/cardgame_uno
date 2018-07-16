@@ -5,15 +5,31 @@ import uuid from "uuid";
 
 class PenaltyView extends Component{
 
-    
+    state = {
+        id: uuid()
+    };
+
+    componentDidMount(){
+        let penaltyCardDiv = document.getElementById(this.state.id);
+        
+        if(!penaltyCardDiv){
+            return;
+        }
+
+        // set css column variables for PlayedCards
+        penaltyCardDiv.style.setProperty("--penaltyCardCount", this.props.cards.length);
+    }
 
     render(){
         return (
-            <div className="penaltyCards">
+            <div>
                 <p>{this.props.reason}</p>
-            {
-                this.props.cards.map((card) => {
-                    return <CardView
+                <div
+                    id={this.state.id} 
+                    className="penaltyCards">
+                {
+                    this.props.cards.map((card) => {
+                        return <CardView
                         key={uuid()}
                         matchID={this.props.matchID}
                         owner={this.props.activePlayerID}
@@ -21,8 +37,9 @@ class PenaltyView extends Component{
                         selectedColor={this.props.selectedColor}
                         isPlayable={false}
                         />
-                })
-            }
+                    })
+                }
+                </div>
             </div>
         )
     }

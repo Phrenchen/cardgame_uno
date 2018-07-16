@@ -22,7 +22,6 @@ class HandCards extends Component{
 
         // set css column variables for PlayedCards
         handcardDiv.style.setProperty("--handCardCount", this.props.cards.length);
-
     }
 
     
