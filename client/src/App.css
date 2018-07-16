@@ -86,6 +86,9 @@ html, body{
 .handCards{
     display: grid;
     grid-template-columns: repeat(var(--handCardCount), 1fr);
+
+    justify-items: center;
+    align-items: center;
 }
 
 /* PENALTIES */
@@ -177,33 +180,34 @@ html, body{
 /* player */
 .playerIconSmall{
     margin: 0px;
-    
-    max-width: 300px;       /* asset size*/
-    max-height: 300px;
+          
+    /* asset size= 300px x 300px*/
+    /*max-width: 300px; 
+    max-height: 300px;*/
     width: 10vmin;
 }
 
 .playerIconSmallActive{
     margin: 0;
     
-    max-width: 300px;
-    max-height: 300px;
+    /*max-width: 300px; 
+    max-height: 300px;*/
     width: 19vmin;
 
 }
 
 
 .player_win{
-    max-width: 300px;
-    max-height: 300px;
+    /*max-width: 300px; 
+    max-height: 300px;*/
     width: 18vmin;
 }
 
 .player_lose{
     margin: 5px;
     
-    max-width: 300px;
-    max-height: 300px;
+    /*max-width: 300px; 
+    max-height: 300px;*/
     width: 8vmin;
 }
 
@@ -220,8 +224,8 @@ html, body{
     background:  var(--card_black);
     user-select: none;
     
-    min-width: 30px;
-    min-height: 30px;
+    /*min-width: 30px;
+    min-height: 30px;*/
     width: 10vmin;
     height: 10vmin;
 
