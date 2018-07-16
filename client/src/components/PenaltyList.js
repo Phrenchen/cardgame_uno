@@ -38,11 +38,7 @@ class PenaltyList extends Component{
                         return this.createPenaltySet(penaltySet);
                     })
                 }
-                <Button
-                    onClick={() => {
-                        this.props.onAccept(this.props.match.activePlayerID);
-                    }}
-                >OK</Button>
+                <Button>OK</Button>
             </div>
         );
     }
