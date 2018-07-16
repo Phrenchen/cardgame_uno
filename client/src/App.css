@@ -10,8 +10,8 @@
     --playedCardCount: 0;
     --handCardCount: 0;
     --cardOpacity: 1;
-    --containerOffsetX: 100px;
-    --containerOffsetY: 100px;
+    --containerOffsetX: 0px;
+    --containerOffsetY: 0px;
 }
 
 
@@ -31,11 +31,12 @@ html, body{
 }
 
 .centered {
-    position: fixed;
-    top: 25%;
-    left: 25%;
-    margin-top: var(--containerOffsetX);
-    margin-left: var(--containerOffsetY);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    margin-left: var(--containerOffsetX);
+    margin-top: var(--containerOffsetY);
   }
 
 /* currently unused */
@@ -68,22 +69,15 @@ html, body{
     align-items: center;
     justify-items: center;
     justify-self: center;
-
-
 }
-
-
-
 
 
 /* PLAYED CARDS */
 .playedCards{
     background-color: var(--dialog_background);
-
     
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
-    
 }
 
 /* HAND CARDS */
@@ -96,7 +90,6 @@ html, body{
 .penaltyList{
     border: 1px solid black;
     background-color: var(--dialog_background);
-    border: 1px solid black;
     text-align: center;
 }
 
@@ -109,7 +102,6 @@ html, body{
 
 /* COLOR SELECTION */
 .colorselector_grid{
-    position: absolute;
     background-color: var(--dialog_background);
     border: 1px solid black;
 

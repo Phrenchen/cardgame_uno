@@ -94,6 +94,23 @@ class StateMatch extends Component{
     componentDidUpdate(){
         this.colorizeIndicator(this.state.leftIndicatorID);
         this.colorizeIndicator(this.state.rightIndicatorID);
+
+        // position "centered" elements
+        let centeredDivs = document.getElementsByClassName("centered");
+        let centered;
+        let offsetX;
+        let offsetY;
+
+        for(let i=0; i<centeredDivs.length; i++){
+            centered = centeredDivs[i];
+            offsetX = centered.offsetWidth * .5 * -1;
+            offsetY = centered.offsetHeight * .5 * -1;
+            offsetX += "px";
+            offsetY += "px";
+            
+            centered.style.setProperty("--containerOffsetX", offsetX);
+            centered.style.setProperty("--containerOffsetY", offsetY);
+        }
     }
 
     componentDidMount(){
