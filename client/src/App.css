@@ -5,7 +5,7 @@
     --card_blue: #263AB1;
     --card_yellow: #FFEE27;
     --card_black: #000000;
-    --dialog_background: rgba(126, 126, 126, 0.521);
+    --dialog_background: rgba(126, 126, 126, 1);
 
     --playedCardCount: 0;
     --handCardCount: 0;
@@ -74,12 +74,12 @@ html, body{
 
 /* PLAYED CARDS */
 .playedCards{
-    background-color: var(--dialog_background);
-    
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
     
     justify-items: center;
+    align-items: center;
+    height: auto;
 }
 
 /* HAND CARDS */

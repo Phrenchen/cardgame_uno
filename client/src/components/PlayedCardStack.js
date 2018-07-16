@@ -30,8 +30,6 @@ class PlayedCardStack extends Component{
         }
 
         return (
-            <div>
-                played cards
                 <div className="playedCards">
                     {
                         this.props.playedCards.map((card) =>{
@@ -44,7 +42,6 @@ class PlayedCardStack extends Component{
                         })
                     }
                 </div>
-            </div>
         );  
     }
 
