@@ -34,9 +34,6 @@ class HandCards extends Component{
         let cardElement;
         let isValid;
         
-        console.log("setting card highlight: " + this.props.cards.length);
-        console.log(handcardDiv.children.length);
-
         this.state.cardMap.map((cardMap) =>{
             card = MatchHelper.getCardByID(this.props.cards, cardMap.cardID);
             cardElement = document.getElementById(cardMap.elementID);
@@ -67,6 +64,7 @@ class HandCards extends Component{
         let isValid;
         // TODO
         //this.sortCards(this.props.cards);
+        MatchHelper.sortCards(this.props.cards);
 
         return (
             <div>

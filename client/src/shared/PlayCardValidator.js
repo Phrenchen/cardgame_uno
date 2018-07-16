@@ -1,5 +1,4 @@
 const EffectSpecial = require("./EffectSpecial");
-const EffectColor = require("./EffectColor");
 
 const hasEffect = (card, effectType) =>{
     for(let i=0; i<card.effects.length; i++){
