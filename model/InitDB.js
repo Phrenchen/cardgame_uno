@@ -94,12 +94,6 @@ function addPlayersToDB(){
 
     players.push( new Player({
         id: uuid(),
-        name: "Her Majesty II",
-        imageUrl: "/images/her_majesty.png"
-    }));
-
-    players.push( new Player({
-        id: uuid(),
         name: "Bat Cat",
         imageUrl: "/images/batcat.png"
     }));
