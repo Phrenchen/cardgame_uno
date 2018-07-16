@@ -5,6 +5,7 @@ const Player = require("./Player");
 const EffectValue = require("./EffectValue");
 const EffectColor = require("./../client/src/shared/EffectColor");
 const EffectSpecial = require("./../client/src/shared/EffectSpecial");
+const PlayCardValidator = require("./../client/src/shared/PlayCardValidator");
 
 var cards = [];
 var players = [];
@@ -177,16 +178,45 @@ function getEffectByType(effects, effectType){
     return result;
 }
 
+
+function calculateSortOrder(effects){
+    let sortOrder = -1;
+    // 1. colors: black, red, green, blue, yellow
+    let colorOrders = {
+        [EffectColor.BLACK]: 5,
+        [EffectColor.RED]: 4,
+        [EffectColor.GREEN]: 3,
+        [EffectColor.BLUE]: 2,
+        [EffectColor.YELLOW]: 1,
+    };
+
+    for(let i=0; i<effects.length; i++){
+        if(colorOrders[effects[i].effectType] ){
+            sortOrder = colorOrders[effects[i].effectType];
+            break;
+        }
+    }
+    if(sortOrder === -1){           // cards with "no" color are black
+        sortOrder = colorOrders[EffectColor.BLACK];
+    }
+    return sortOrder;
+}
+
 createCard = (pName, pEffects, score, amount = 1, imageUrl = null) =>{
     let cards = [];
+    let card;
+    let sortOrder;
 
     for(let i=0; i<amount; i++){
-        let card = new Card({
+        sortOrder = calculateSortOrder(pEffects);
+
+        card = new Card({
             name: pName,
             id: uuid(),
             effects: pEffects,
             score: score,
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            sortOrder: sortOrder
         });
        cards.push(card);
     }

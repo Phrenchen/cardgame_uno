@@ -23,6 +23,10 @@ const CardSchema = new Schema({
     imageUrl:{
         type:String,
         required:true
+    },
+    sortOrder: {
+        type:Number,
+        required: true
     }
 });
 module.exports = Card = mongoose.model("card", CardSchema); 
