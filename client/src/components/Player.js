@@ -49,7 +49,6 @@ class Player extends Component{
 
 Player.propTypes = {
     id:PropTypes.string.isRequired,
-    positionInRow:PropTypes.number.isRequired,
     match:PropTypes.object.isRequired
 };
 
