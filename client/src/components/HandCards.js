@@ -46,7 +46,7 @@ class HandCards extends Component{
                     
                 }
                 else{
-                    opacityValue = .5;
+                    opacityValue = .35;
                 }
                 
                 
