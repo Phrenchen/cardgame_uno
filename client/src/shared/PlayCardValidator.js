@@ -17,19 +17,15 @@ const validateCard = (playCard, topCard, selectedColor = null) =>{
         return false;
     }
 
-    // check special cards
     if(isJoker(playCard)){
         return true;
     }
+
     if(isJoker(topCard)){
         if(selectedColor){
             if(hasEffect(playCard, selectedColor)){
                 return true;        // play card color matches color selected by previous player
-                                    // can another special card be played on top of another one?
             }
-        }
-        else{
-            return hasSameEffect(playCard, topCard);
         }
     }
     return hasSameEffect(playCard, topCard, selectedColor);
@@ -40,7 +36,7 @@ const isJoker = (card) => {
     return hasEffect(card, EffectSpecial.CHANGE_COLOR) ||
             hasEffect(card, EffectSpecial.TAKE_4);
 }
-module.exports.hasSpecialEffect = isJoker;
+module.exports.isJoker = isJoker;
 
 // helper
 const hasSameEffect = (playCard, topCard, selectedColor) =>{

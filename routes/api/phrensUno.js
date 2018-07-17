@@ -254,21 +254,18 @@ const playCard = (req, res) =>{
 //------------------------------------------------------------------------
 
 // private
-const setNextPlayer = (match, playCard, ignoreSkip) =>{
+const setNextPlayer = (match, playCard, ignoreTopCardEffects) =>{
+    let isSkipping = false;
+
+    if(!ignoreTopCardEffects){
     // set cursor direction
-    match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, 
-        EffectSpecial.CHANGE_DIRECTION) ? 
+        match.movingPlayerCursorForward = PlayCardValidator.hasEffect(playCard, EffectSpecial.CHANGE_DIRECTION) ? 
             !match.movingPlayerCursorForward : 
             match.movingPlayerCursorForward;
 
-    // set next player
-    
-    let isSkipping = PlayCardValidator.hasEffect(playCard, 
-                                 EffectSpecial.SKIP);
-
-    if(ignoreSkip){
-        isSkipping = false;
+        isSkipping = PlayCardValidator.hasEffect(playCard, EffectSpecial.SKIP);
     }
+
     match.activePlayerID = MatchHelper.getNextPlayerID(match.players, 
         match.activePlayerID, 
         match.movingPlayerCursorForward, 
@@ -359,7 +356,7 @@ function pickFirstCard(cards){
         randomIndex = MathHelper.getRandomInt(0, cards.length - 1);
         card = cards[randomIndex];
 
-        if(!PlayCardValidator.hasSpecialEffect(card)){
+        if(!PlayCardValidator.isJoker(card)){
             firstCard = cards.splice(randomIndex, 1)[0];
         }
     }
