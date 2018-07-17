@@ -21,6 +21,10 @@ const PlayerSchema = new Schema({
     matchScore: {
         type: Number,
         default: 0
+    },
+    isHumanPlayer: {
+        type:Boolean,
+        default: false
     }
     //TODO: totalScore, if multiple a game consists of multiple matches 
 });

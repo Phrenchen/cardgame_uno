@@ -12,6 +12,7 @@ class PlayerList extends Component{
             <Player
                 key={uuid()}
                 id={player.id}
+                isHumanPlayer={player.isHumanPlayer}
             />
         );
     }

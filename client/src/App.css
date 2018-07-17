@@ -187,6 +187,21 @@ html, body{
 }
 
 /* player */
+
+.playerContainer{
+    position: relative;
+    float: left;
+}
+
+.overlayImage{
+    position: absolute;
+    z-index: 12;
+}
+
+.playerPortrait{
+    z-index: 13;
+}
+
 .playerIconSmall{
     margin: 0px;
           

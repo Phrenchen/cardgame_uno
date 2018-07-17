@@ -22,34 +22,47 @@ class Player extends Component{
     //-------------------
     getClassName(){
         return this.props.id === this.props.match.activePlayerID ? 
-            "playerIconSmallActive" :
-            "playerIconSmall"
+            "playerIconSmallActive playerPortrait" :
+            "playerIconSmall playerPortrait"
+    }
+
+    getPlayerMarkerClassName(){
+        return this.props.id === this.props.match.activePlayerID ? 
+            "playerIconSmallActive overlayImage" :
+            "playerIconSmall overlayImage"
+        
+        
+    }
+
+    getImageSource(){
+        console.log(this.props.isHumanPlayer);
+        console.log("-");
+        let imageUrlParts = MatchHelper.getPlayerByID(this.props.match.players, this.props.id).imageUrl.split(".");
+        console.log(imageUrlParts);
+        let imageUrl = imageUrlParts[0] + (this.props.isHumanPlayer ? "_human" : "") + "." + imageUrlParts[1];
+        console.log("imageUrl: " + imageUrl);
+        return imageUrl;
     }
 
     render(){
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
 
         return (
-            <div>
+            <div className="playerContainer">
                 <img 
                     className={this.getClassName()} 
-                    src={MatchHelper.getPlayerByID(this.props.match.players, 
-                                                    this.props.id).imageUrl
-                        } 
+                    src={this.getImageSource()} 
                 />
+                {}
             </div>
         );
-        /*
-                <CardBody>
-                    <CardTitle>{this.getPlayerName()}</CardTitle>
-                </CardBody>
-        */
     }
 }
 
 Player.propTypes = {
     id:PropTypes.string.isRequired,
-    match:PropTypes.object.isRequired
+    match:PropTypes.object.isRequired,
+    isHumanPlayer:PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
