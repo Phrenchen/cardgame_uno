@@ -30,17 +30,11 @@ class Player extends Component{
         return this.props.id === this.props.match.activePlayerID ? 
             "playerIconSmallActive overlayImage" :
             "playerIconSmall overlayImage"
-        
-        
     }
 
     getImageSource(){
-        console.log(this.props.isHumanPlayer);
-        console.log("-");
         let imageUrlParts = MatchHelper.getPlayerByID(this.props.match.players, this.props.id).imageUrl.split(".");
-        console.log(imageUrlParts);
         let imageUrl = imageUrlParts[0] + (this.props.isHumanPlayer ? "_human" : "") + "." + imageUrlParts[1];
-        console.log("imageUrl: " + imageUrl);
         return imageUrl;
     }
 
