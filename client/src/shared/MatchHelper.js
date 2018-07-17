@@ -76,9 +76,9 @@ const playerHasPlayableCards = (match) => {
     let topCard = getTopCard(match);
 
     match.penalties.map((pSet) =>{
-        allCandidates.concat(pSet.cards);
+        allCandidates = allCandidates.concat(pSet.cards);
     });
-
+    
     allCandidates.map((card) =>{
         if(PlayCardValidator.validateCard(card, topCard, match.selectedColor)){
             result = true;
