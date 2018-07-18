@@ -1,14 +1,21 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import PlayCardValidator from "../shared/PlayCardValidator";
 import MatchHelper from "../shared/MatchHelper";
+import MathHelper from "../shared/MathHelper";
+import EffectColor from "../shared/EffectColor";
 import {connect} from "react-redux";
-import uuid from "uuid";
+import { playCard } from "../actions/MatchActions";
 
 /**
  * positions itself on a circle around screen center
  */
 class Player extends Component{
     
+    state = {
+        autoPlayCardDelayID: -1
+    }
+
     getPlayerName = () =>{
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
         let name = player.name;
@@ -38,6 +45,40 @@ class Player extends Component{
         return imageUrl;
     }
 
+    playRandomCard(){
+        // select card from active player
+        let validCard = MatchHelper.getRandomValidCardFromActivePlayer(this.props.match);
+
+        if(validCard){
+            let selectedColor = PlayCardValidator.isJoker(validCard) ? this.getRandomColor() : "";
+            this.props.playCard(this.props.match.id, this.props.match.activePlayerID, validCard.id, selectedColor);
+        }
+        else{
+            console.log("no card to auto-play");
+        }
+    }
+
+    getRandomColor(){
+        let colors = [EffectColor.RED, EffectColor.GREEN, EffectColor.BLUE, EffectColor.YELLOW];
+        let randomID = MathHelper.getRandomInt(0, colors.length-1);
+        return colors[randomID];
+    }
+
+    componentDidMount(){
+        if(this.props.match.penalties.length > 0){
+            console.log("waiting to accept penalties before autoplaying card");
+            return;
+        }
+        let isActive = MatchHelper.getActivePlayer(this.props.match).id === this.props.id;
+
+        if(isActive && !this.props.isHumanPlayer){
+            console.log("auto selecting card to play");
+            this.state.autoPlayCardDelayID = setTimeout(()=>{
+                this.playRandomCard();
+            }, 1000);
+        }
+    }
+
     render(){
         const player = MatchHelper.getPlayerByID(this.props.match.players, this.props.id);
 
@@ -64,4 +105,4 @@ const mapStateToProps = (state) => {
         match: state.match
     }
 };
-export default connect(mapStateToProps)(Player);
+export default connect(mapStateToProps, {playCard})(Player);

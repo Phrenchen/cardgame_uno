@@ -36,6 +36,7 @@ class PenaltyView extends Component{
                         card={card}
                         selectedColor={this.props.selectedColor}
                         isPlayable={false}
+                        isHumanPlayer={false}
                         />
                     })
                 }

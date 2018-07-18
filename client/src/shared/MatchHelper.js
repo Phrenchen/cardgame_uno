@@ -29,6 +29,21 @@ const sortCards = (cards =>{
 });
 module.exports.sortCards = sortCards;
 
+const getRandomValidCardFromActivePlayer = (match) =>{
+    // active player
+    let player = getActivePlayer(match);
+    let topCard = getTopCard(match);
+    // cards
+    let validCards = player.cards.filter((card) =>{
+        return PlayCardValidator.validateCard(card, topCard, match.selectedColor);
+    });
+
+    let randomID = MathHelper.getRandomInt(0, validCards.length-1);
+    return validCards[randomID];
+}
+module.exports.getRandomValidCardFromActivePlayer = getRandomValidCardFromActivePlayer;
+
+
 const getCardByID = (cards, id) =>{
     let card;
     for(let i=0; cards.length; i++){

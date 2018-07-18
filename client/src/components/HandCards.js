@@ -96,6 +96,7 @@ class HandCards extends Component{
                                     card={card}
                                     selectedColor={this.props.selectedColor}
                                     isPlayable={isValid}
+                                    isHumanPlayer={this.props.isHumanPlayer}
                                     />
                             </div>
                         })
@@ -111,6 +112,7 @@ HandCards.propTypes = {
     owner: PropTypes.string.isRequired,
     cards: PropTypes.array.isRequired,
     topCard: PropTypes.object.isRequired,
+    isHumanPlayer:PropTypes.bool.isRequired,
     onColorSelection: PropTypes.func,
     selectedColor: PropTypes.string
 };

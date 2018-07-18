@@ -57,16 +57,18 @@ class CardView extends Component {
     render(){
         return (
             <div className="card" id={this.state.id} onClick={() =>{
-                if(this.props.isPlayable){
-                    if(MatchHelper.isColorChanger(this.props.card)){
-                        if(this.props.onColorSelection){
-                            this.props.onColorSelection(this.props.card.id);
+                //if(this.props.isHumanPlayer){
+                    if(this.props.isPlayable){
+                        if(MatchHelper.isColorChanger(this.props.card)){
+                            if(this.props.onColorSelection){
+                                this.props.onColorSelection(this.props.card.id);
+                            }
+                        }
+                        else{
+                            this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id, this.props.selectedColor);
                         }
                     }
-                    else{
-                        this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id, this.props.selectedColor);
-                    }
-                }
+                //}
             }} >
                 {
                     this.getContent()
