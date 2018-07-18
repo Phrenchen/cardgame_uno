@@ -8,10 +8,11 @@
     --dialog_background: rgba(126, 126, 126, 1);
 
     --playedCardCount: 0;
-    --handCardCount: 0;
     --cardOpacity: 1;
     --containerOffsetX: 0px;
     --containerOffsetY: 0px;
+    
+    --handCardColumns: 0;
     --penaltyCardCount: 0; 
 }
 
@@ -81,6 +82,10 @@ html, body{
     
 }
 
+.textCentered{
+    text-align: center;
+}
+
 .playedCards{
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
@@ -93,10 +98,14 @@ html, body{
 /* HAND CARDS */
 .handCards{
     display: grid;
-    grid-template-columns: repeat(var(--handCardCount), 1fr);
+    grid-template-columns: repeat(var(--handCardColumns), 1fr);
+    grid-auto-rows: repeat(var(--handCardRows), 1fr);
 
     justify-items: center;
     align-items: center;
+
+    max-width: 100%;
+    text-align: center;
 }
 
 /* PENALTIES */
@@ -132,11 +141,9 @@ html, body{
 /*-----------------------------------------*/
 /* effect indicator left */
 .effectIndicatorLeft{
-    min-width: 10vmin;
+    min-width: 5vmin;
     min-height: 100%;
-   
-
-    border: 3px dashed black;
+    border: 1px solid black;
     
     align-items: center;
     justify-items: center;
@@ -146,10 +153,9 @@ html, body{
 
 /* effect indicator right */
 .effectIndicatorRight{
-    min-width: 10vmin;
+    min-width: 5vmin;
     min-height: 100%;
-    
-    border: 3px dashed black;
+    border: 1px solid black;
 
     align-items: center;
     justify-items: center;
@@ -241,7 +247,7 @@ html, body{
     overflow: hidden;
     position: relative;
     
-    border: 3px solid black;
+    border: 1px solid black;
     margin:0;
     padding: 0;
     
