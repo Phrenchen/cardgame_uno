@@ -34,6 +34,7 @@ class StateMatch extends Component{
                     // trigger action to server
                     this.props.acceptPenalties(this.props.match.id);
                 }}
+                isHumanPlayer={MatchHelper.getActivePlayer(this.props.match).isHumanPlayer}
             />
         }
         return null;

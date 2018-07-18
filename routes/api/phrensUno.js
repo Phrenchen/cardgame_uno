@@ -51,7 +51,7 @@ const startMatch = (req, res, message = "") =>{
     let humanPlayerPosition = MathHelper.getRandomInt(0, playerCount-1);
     let player;
 
-    humanPlayerPosition = 0;        // DEBUGGING
+    //humanPlayerPosition = 0;        // DEBUGGING
     //console.log("humanPlayerPosition: " + humanPlayerPosition);
 
     for(let i=0; i<playerCount; i++){

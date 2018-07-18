@@ -9,6 +9,9 @@ import MatchHelper from "../shared/MatchHelper";
 
 class PenaltyList extends Component{
 
+    state = {
+        autoAcceptDelayID: -1
+    }
 
     createPenaltySet(penaltySet){
         return (
@@ -23,12 +26,22 @@ class PenaltyList extends Component{
             />
         );
     }
+    
+    componentDidMount(){
+        if(!this.props.isHumanPlayer){
+            this.state.autoAcceptDelayID = setTimeout(() =>{
+                this.props.onAccept(this.props.match.activePlayerID);
+            }, 1000);
+        }
+    }
 
     render(){
         return (
             <div className="penaltyList centered"
                 onClick={() => {
-                    this.props.onAccept(this.props.match.activePlayerID);
+                    if(this.props.isHumanPlayer){
+                        this.props.onAccept(this.props.match.activePlayerID);
+                    }
                 }}
             >
                 <h2>PENALTY CARDS</h2>
@@ -54,6 +67,7 @@ const mapStateToProps = (state) =>{
 
 PenaltyList.propTypes = {
     onAccept: PropTypes.func.isRequired,
+    isHumanPlayer: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps)(PenaltyList);
