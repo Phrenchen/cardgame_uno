@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import uuid from "uuid";
 import { connect } from "react-redux";
 import MatchHelper from "../shared/MatchHelper";
+import MathHelper from "../shared/MathHelper";
 
 
 class PenaltyList extends Component{
@@ -28,10 +29,11 @@ class PenaltyList extends Component{
     }
     
     componentDidMount(){
+        let delay = MathHelper.getRandomInt(1000, 2000);     // delay range : 0.5s - 1.5s
         if(!this.props.isHumanPlayer){
             this.state.autoAcceptDelayID = setTimeout(() =>{
                 this.props.onAccept(this.props.match.activePlayerID);
-            }, 1000);
+            }, delay);
         }
     }
 
