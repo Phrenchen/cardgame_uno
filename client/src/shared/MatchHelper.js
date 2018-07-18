@@ -71,20 +71,22 @@ module.exports.getValidCardTo = getValidCardTo;
 
 
 const playerHasPlayableCards = (match) => {
-    let result = false;
     let allCandidates = getActivePlayer(match).cards;
     let topCard = getTopCard(match);
+    let card;
 
     match.penalties.map((pSet) =>{
         allCandidates = allCandidates.concat(pSet.cards);
     });
-    
-    allCandidates.map((card) =>{
+
+    for(let i=0; i<allCandidates.length; i++){
+        card = allCandidates[i];
+
         if(PlayCardValidator.validateCard(card, topCard, match.selectedColor)){
-            result = true;
+            return true;
         }
-    });
-    return result;
+    }
+    return false;
 };
 module.exports.playerHasPlayableCards = playerHasPlayableCards;
 
