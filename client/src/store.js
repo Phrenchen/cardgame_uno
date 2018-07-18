@@ -10,7 +10,9 @@ const store = createStore(roodReducer,
         applyMiddleware(...middleware)
         
         // enable for debugging. will fail in all browsers without debugging extension
-        //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()      
+        
+        // this does not work with the F5 VCS debugger
+        //,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()      
     ));
 
 export default store;

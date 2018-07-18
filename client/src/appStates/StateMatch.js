@@ -6,6 +6,7 @@ import PenaltyList from '../components/PenaltyList';
 import {acceptPenalties} from "../actions/MatchActions"
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
+import PlayCardValidator from "../shared/PlayCardValidator";
 import HandCards from '../components/HandCards';
 import {showColorSelector} from "../actions/MatchActions";
 import { playCard } from "../actions/MatchActions";
@@ -88,16 +89,16 @@ class StateMatch extends Component{
         if(!colorIndicator){
             return;
         }
+        
         let color;
-        if(this.props.match.selectedColor != ""){
+        let topCard = MatchHelper.getTopCard(this.props.match);
+        
+        if( PlayCardValidator.isJoker(topCard) ){
             color = this.props.match.selectedColor.split("_")[1];
         }
         else{
-            // top card color
-            let topCard = MatchHelper.getTopCard(this.props.match);
             color = MatchHelper.getColor(topCard);
         }
-
         colorIndicator.style.backgroundColor = color;
     }
 

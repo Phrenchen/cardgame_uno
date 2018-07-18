@@ -55,8 +55,10 @@ const hasSameEffect = (playCard, topCard, selectedColor) =>{
             }
         }
     }
-    if(hasEffect(playCard, selectedColor)){
-        return true;
+    if(isJoker(topCard)){
+        if(hasEffect(playCard, selectedColor)){
+            return true;
+        }
     }
     return false;
 }
