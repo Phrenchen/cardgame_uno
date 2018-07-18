@@ -50,7 +50,9 @@ const startMatch = (req, res, message = "") =>{
     let randomPlayerIDs = MathHelper.getNRandomInts(0, allPlayers.length - 1, playerCount);
     let humanPlayerPosition = MathHelper.getRandomInt(0, playerCount-1);
     let player;
-    console.log("humanPlayerPosition: " + humanPlayerPosition);
+
+    humanPlayerPosition = 0;        // DEBUGGING
+    //console.log("humanPlayerPosition: " + humanPlayerPosition);
 
     for(let i=0; i<playerCount; i++){
         player = allPlayers[randomPlayerIDs[i]];

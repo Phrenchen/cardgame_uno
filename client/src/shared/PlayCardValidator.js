@@ -14,6 +14,7 @@ const validateCard = (playCard, topCard, selectedColor = null) =>{
     // early out with invalid params
     if(!playCard || !topCard){
         console.log("validateCard: need 2 cards to compare");
+        throw new Error("need 2 cards to validate");
         return false;
     }
 
