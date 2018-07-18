@@ -1,13 +1,17 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import CardView from "./CardView";
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
+import PlayCardValidator from "../shared/PlayCardValidator";
 
 class PlayedCardStack extends Component{
 
     state = {
-        cardCountToRender: 1
+        cardCountToRender: 1,
+        topIndicatorID: uuid(),
+        bottomIndicatorID: uuid()
     }
 
     componentDidMount(){
@@ -20,27 +24,65 @@ class PlayedCardStack extends Component{
                             this.props.playedCards.length :
                             this.state.cardCountToRender;
         handcardDiv.style.setProperty("--playedCardCount", columnCount);
+
+        this.colorizeIndicator(this.state.topIndicatorID);
+        this.colorizeIndicator(this.state.bottomIndicatorID);
     }
 
+    colorizeIndicator(id){
+        let colorIndicator = document.getElementById(id);
+        if(!colorIndicator){
+            console.log("woooo:(")
+            return;
+        }
+        let color;
+        let topCard = MatchHelper.getTopCard(this.props.match);
+        
+        if( PlayCardValidator.isJoker(topCard) ){
+            color = this.props.match.selectedColor.split("_")[1];
+        }
+        else{
+            color = MatchHelper.getColor(topCard);
+        }
+        colorIndicator.style.backgroundColor = color;
+    }
+
+
+    getTopIndicator(){
+        return this.getIndicator(this.state.topIndicatorID, "effectIndicatorVertical effectIndicatorTop");
+    }
+
+    getBottomIndicator(){
+        return this.getIndicator(this.state.bottomIndicatorID, "effectIndicatorVertical effectIndicatorBottom");
+    }
+
+    getIndicator(pID, pClassName){
+        return (
+            <div className={pClassName} id={pID}>
+            </div>
+        );
+    }
     render(){
         let counter = 0;
-        let index = this.props.playedCards.length - this.state.cardCountToRender;
+        let index = this.props.match.playedCards.length - this.state.cardCountToRender;
         if(index < 0){
             index = 0;
         }
 
         return (
                 <div className="playedCards">
+                    {this.getTopIndicator()}
                     {
-                        this.props.playedCards.map((card) =>{
+                        this.props.match.playedCards.map((card) =>{
                             if(counter < this.state.cardCountToRender){                       // only render last 10 played cards
-                                return this.createCard(this.props.playedCards[index++], ++counter);
+                                return this.createCard(this.props.match.playedCards[index++], ++counter);
                             }
                             else{
                                 return null;
                             }
                         })
                     }
+                    {this.getBottomIndicator()}
                 </div>
         );  
     }
@@ -61,9 +103,14 @@ class PlayedCardStack extends Component{
 }
 
 PlayedCardStack.propTypes = {
-    matchID: PropTypes.string.isRequired,
-    playedCards: PropTypes.array.isRequired,
-    selectedColor: PropTypes.string.isRequired
+    match:PropTypes.object.isRequired
 };
 
-export default PlayedCardStack;
+
+
+const mapStateToProps = (state) =>{
+    return {
+        match: state.match
+    }
+}
+export default connect(mapStateToProps)(PlayedCardStack);

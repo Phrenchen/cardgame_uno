@@ -72,9 +72,9 @@ class HandCards extends Component{
         MatchHelper.sortCards(this.props.cards);
 
         return (
-            <div className="textCentered">
+            <div className="handCards">
                 pick a card
-                <div className="handCards">
+                <div className="handCardContainer">
                     {
                         this.props.cards.map((card) => {
                             id = uuid();

@@ -75,14 +75,11 @@ html, body{
 
 /* PLAYED CARDS */
 .center_grid{
-    border: 1px dashed pink;
-
     display: grid;
     grid-template-columns: min-content 1fr min-content;
-    
 }
 
-.textCentered{
+.handCards{
     text-align: center;
 }
 
@@ -96,7 +93,7 @@ html, body{
 }
 
 /* HAND CARDS */
-.handCards{
+.handCardContainer{
     display: grid;
     grid-template-columns: repeat(var(--handCardColumns), 1fr);
     grid-auto-rows: repeat(var(--handCardRows), 1fr);
@@ -140,10 +137,10 @@ html, body{
 
 /*-----------------------------------------*/
 /* effect indicator left */
-.effectIndicatorLeft{
-    min-width: 5vmin;
+.effectIndicatorHorizontal{
+    min-width: 2vmin;
     min-height: 100%;
-    border: 1px solid black;
+    border: 0;
     
     align-items: center;
     justify-items: center;
@@ -152,18 +149,18 @@ html, body{
 }
 
 /* effect indicator right */
-.effectIndicatorRight{
-    min-width: 5vmin;
-    min-height: 100%;
-    border: 1px solid black;
-
-    align-items: center;
-    justify-items: center;
-    justify-self: center;
-    align-self: center;
+.effectIndicatorVertical{
+    min-width: 100%;
+    min-height: 2vmin;
+    border: 0;
 }
 /*-----------------------------------------*/
-
+.effectIndicatorTop{
+    align-self: start;
+}
+.effectIndicatorBottom{
+    align-self: end;
+}
 
 
 

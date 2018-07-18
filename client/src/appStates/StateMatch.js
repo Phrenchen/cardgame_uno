@@ -70,11 +70,11 @@ class StateMatch extends Component{
     }
 
     getLeftIndicator(){
-        return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorLeft");
+        return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorHorizontal");
     }
 
     getRightIndicator(){
-        return this.getIndicator(this.state.rightIndicatorID, "effectIndicatorRight");
+        return this.getIndicator(this.state.rightIndicatorID, "effectIndicatorHorizontal");
     }
 
     getIndicator(pID, pClassName){
@@ -84,6 +84,8 @@ class StateMatch extends Component{
             );
     }
     
+    // i was cheating badly by just copy & pasting this & related stuff to PlayedCardStack.
+    // DAMNIT. sorry, future me. too lazy for now -.-
     colorizeIndicator(id){
         let colorIndicator = document.getElementById(id);
         if(!colorIndicator){
