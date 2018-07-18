@@ -143,6 +143,7 @@ class StateMatch extends Component{
                         matchID={this.props.match.id}
                         cards={MatchHelper.getActivePlayer(this.props.match).cards} 
                         owner={this.props.match.activePlayerID}
+                        isHumanPlayer={MatchHelper.getActivePlayer(this.props.match).isHumanPlayer}
                         topCard={MatchHelper.getTopCard(this.props.match)}
                         onColorSelection={this.onShowColorSelector}
                         selectedColor={this.props.match.selectedColor}
