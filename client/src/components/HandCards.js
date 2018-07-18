@@ -20,8 +20,13 @@ class HandCards extends Component{
         }
         this.highlightCards(handcardDiv);
 
-        // set css column variables for PlayedCards
-        handcardDiv.style.setProperty("--handCardCount", this.props.cards.length);
+        let cardCount = this.props.cards.length;
+        let maxCardsPerRow = 10;
+        let handCardColumns = cardCount < maxCardsPerRow ? cardCount : maxCardsPerRow;
+        let handCardRows = Math.ceil(cardCount / maxCardsPerRow);
+        
+        handcardDiv.style.setProperty("--handCardColumns", handCardColumns);
+        handcardDiv.style.setProperty("--handCardRows", handCardRows);
     }
 
     
@@ -67,7 +72,7 @@ class HandCards extends Component{
         MatchHelper.sortCards(this.props.cards);
 
         return (
-            <div>
+            <div className="textCentered">
                 pick a card
                 <div className="handCards">
                     {
