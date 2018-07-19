@@ -16,20 +16,21 @@ class StateGameOver extends Component{
     }
 
     createPlayerResults = (match, player) =>{
+        let imageUrlParts = MatchHelper.getPlayerByID(this.props.match.players, player.id).imageUrl.split(".");
+        let imageUrl = imageUrlParts[0] + (player.isHumanPlayer ? "_human" : "") + "." + imageUrlParts[1];
+
         if(match.activePlayerID === player.id){
-            //<p key={uuid()}>winner is {player.name}!</p>
             return (
                 <div key={uuid()}>
                     <img 
                         className={"player_win"} 
-                        src={MatchHelper.getPlayerByID(this.props.match.players, player.id).imageUrl} 
+                        src={imageUrl} 
                     />
                     {player.name} won the match!
                 </div>
             );
         }
         else{
-            //            <p key={uuid()}>{player.name} has scored {player.matchScore}</p>
             return (
                 <div key={uuid()}>
                     <img 
