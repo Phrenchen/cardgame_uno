@@ -70,6 +70,23 @@ class StateMatch extends Component{
         </div>
     }
 
+    getHandCards(){
+        let isHuman = MatchHelper.getActivePlayer(this.props.match).isHumanPlayer;
+        if(!isHuman){
+            return null;
+        }
+
+        return <HandCards 
+            matchID={this.props.match.id}
+            cards={MatchHelper.getActivePlayer(this.props.match).cards} 
+            owner={this.props.match.activePlayerID}
+            isHumanPlayer={isHuman}
+            topCard={MatchHelper.getTopCard(this.props.match)}
+            onColorSelection={this.onShowColorSelector}
+            selectedColor={this.props.match.selectedColor}
+            />;
+    }
+
     getLeftIndicator(){
         return this.getIndicator(this.state.leftIndicatorID, "effectIndicatorHorizontal");
     }
@@ -140,15 +157,7 @@ class StateMatch extends Component{
                 <div className="match_grid" key={uuid()}>
                     <PlayerList className="playerPanel"/>
                     {this.getPlayedCardList()}
-                    <HandCards 
-                        matchID={this.props.match.id}
-                        cards={MatchHelper.getActivePlayer(this.props.match).cards} 
-                        owner={this.props.match.activePlayerID}
-                        isHumanPlayer={MatchHelper.getActivePlayer(this.props.match).isHumanPlayer}
-                        topCard={MatchHelper.getTopCard(this.props.match)}
-                        onColorSelection={this.onShowColorSelector}
-                        selectedColor={this.props.match.selectedColor}
-                        />
+                    {this.getHandCards()}
                 </div>
                 {this.displayPenaltyList()}                
                 {this.displayColorSelector()}       
