@@ -234,12 +234,10 @@ const playCard = (req, res) =>{
 
         setNextPlayer(match, playCard, false);
 
-        // REMOVING CARDS FROM STACK
-        // PENALTY CARDS
+        match.selectedColor = selectedColor ? selectedColor : "";
+        
         applyPenaltyTakeX(match, playCard, match.penalties);
         applyPenaltyCheckNoValidCard(match);
-
-        match.selectedColor = selectedColor ? selectedColor : "";
         
         saveMatchAndReturnToClient(match, res);  // *** SAVE MATCH ***
     }
@@ -277,6 +275,7 @@ const setNextPlayer = (match, playCard, ignoreTopCardEffects) =>{
 
 // create penalties
 const applyPenaltyCheckNoValidCard = (match) =>{
+    console.log(" *** applyPenaltyCheckNoValidCard ***");
     if(!MatchHelper.playerHasPlayableCards(match)){
         match.penalties.push( applyNoValidCardPenalty(match) );
     }
