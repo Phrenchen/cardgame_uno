@@ -27,7 +27,6 @@ class StateMatch extends Component{
     }
 
     displayPenaltyList = () =>{
-        
         if(this.hasPenalties()){
             return <PenaltyList className="penaltyList"
                 onAccept={() =>{
@@ -73,7 +72,7 @@ class StateMatch extends Component{
     getHandCards(){
         let isHuman = MatchHelper.getActivePlayer(this.props.match).isHumanPlayer;
         if(!isHuman){
-            return null;
+           return null;      // hide non human player handcards
         }
 
         return <HandCards 
