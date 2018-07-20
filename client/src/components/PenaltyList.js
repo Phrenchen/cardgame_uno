@@ -29,15 +29,14 @@ class PenaltyList extends Component{
     }
     
     checkAutoAcceptingPenalties(){
-        let delay = MathHelper.getRandomInt(1000, 2000);     // delay range : 0.5s - 1.5s
+        let delay = MathHelper.getRandomInt(300, 700);     // delay range : 0.5s - 1.5s
         if(!this.props.isHumanPlayer){
-            this.props.onAccept(this.props.match.activePlayerID);
+            //this.props.onAccept(this.props.match.activePlayerID);
             
-            /*
             this.state.autoAcceptDelayID = setTimeout(() =>{
                 this.props.onAccept(this.props.match.activePlayerID);
             }, delay);
-            */
+            
         }
     }
 
@@ -57,7 +56,6 @@ class PenaltyList extends Component{
     }
 
     render(){
-        console.log("rendering penalty list");
         return (
             <div className="penaltyList centered"
                 onClick={() => {

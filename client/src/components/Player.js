@@ -72,15 +72,14 @@ class Player extends Component{
         }
 
         if(isActive && !this.props.isHumanPlayer){
-            let delay = MathHelper.getRandomInt(1000, 2000);     // delay range : 0.5s - 1.5s
-            console.log("auto selecting card to play");
-            this.playRandomCard();
+            let delay = MathHelper.getRandomInt(800, 1400);     // delay range : 0.5s - 1.5s
+            //this.playRandomCard();
 
-            /*
+            
             this.state.autoPlayCardDelayID = setTimeout(()=>{
                 this.playRandomCard();
             }, delay);
-            */
+            
         }
     }
 
