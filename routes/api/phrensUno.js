@@ -358,6 +358,11 @@ function pickFirstCard(cards){
     while(!firstCard){
         randomIndex = MathHelper.getRandomInt(0, cards.length - 1);
         card = cards[randomIndex];
+        
+        if(!card){
+            console.log("first card candidates contain null? CHECK THIS!");
+            continue;
+        }
 
         if(!PlayCardValidator.isJoker(card)){
             firstCard = cards.splice(randomIndex, 1)[0];
