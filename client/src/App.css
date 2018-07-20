@@ -83,6 +83,10 @@ html, body{
     text-align: center;
 }
 
+.gameOver{
+    text-align: center;
+}
+
 .playedCards{
     display: grid;
     grid-template-columns: repeat(var(--playedCardCount), 1fr);
