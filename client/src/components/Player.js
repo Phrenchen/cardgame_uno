@@ -72,7 +72,7 @@ class Player extends Component{
         }
 
         if(isActive && !this.props.isHumanPlayer){
-            let delay = MathHelper.getRandomInt(800, 1400);     // delay range : 0.5s - 1.5s
+            let delay = 1000;       // delay 1 second
             //this.playRandomCard();
 
             

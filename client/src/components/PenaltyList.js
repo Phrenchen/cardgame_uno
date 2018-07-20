@@ -29,7 +29,7 @@ class PenaltyList extends Component{
     }
     
     checkAutoAcceptingPenalties(){
-        let delay = MathHelper.getRandomInt(300, 700);     // delay range : 0.5s - 1.5s
+        let delay = 1000;       // delay 1 second
         if(!this.props.isHumanPlayer){
             //this.props.onAccept(this.props.match.activePlayerID);
             
