@@ -42,7 +42,7 @@ class HandCards extends Component{
         this.state.cardMap.map((cardMap) =>{
             card = MatchHelper.getCardByID(this.props.cards, cardMap.cardID);
             cardElement = document.getElementById(cardMap.elementID);
-
+            
             if(card && cardElement){
                 isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
 
@@ -67,8 +67,7 @@ class HandCards extends Component{
     render(){
         let id;
         let isValid;
-        // TODO
-        //this.sortCards(this.props.cards);
+        
         MatchHelper.sortCards(this.props.cards);
 
         return (

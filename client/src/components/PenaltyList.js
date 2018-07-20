@@ -28,16 +28,36 @@ class PenaltyList extends Component{
         );
     }
     
-    componentDidMount(){
+    checkAutoAcceptingPenalties(){
         let delay = MathHelper.getRandomInt(1000, 2000);     // delay range : 0.5s - 1.5s
         if(!this.props.isHumanPlayer){
+            this.props.onAccept(this.props.match.activePlayerID);
+            
+            /*
             this.state.autoAcceptDelayID = setTimeout(() =>{
                 this.props.onAccept(this.props.match.activePlayerID);
             }, delay);
+            */
         }
     }
 
+    /* need this if 2 penalty dialogs follow each other: 
+    1. player gets a penalty
+    2. has no playable card
+    3. switch to next player who receives a no-valid-card penalty
+
+    */
+    componentDidUpdate(){
+        this.checkAutoAcceptingPenalties();
+    }
+    
+    // only executed from non-visible to visible state 
+    componentDidMount(){
+        this.checkAutoAcceptingPenalties();
+    }
+
     render(){
+        console.log("rendering penalty list");
         return (
             <div className="penaltyList centered"
                 onClick={() => {

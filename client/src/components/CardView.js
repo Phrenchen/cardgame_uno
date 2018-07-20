@@ -4,7 +4,6 @@ import uuid from "uuid";
 import { playCard } from "../actions/MatchActions";
 import {connect} from "react-redux";
 import MatchHelper from "../shared/MatchHelper";
-const PlayCardValidator = require("../../../client/src/shared/PlayCardValidator");
 
 class CardView extends Component {
     
@@ -57,7 +56,7 @@ class CardView extends Component {
     render(){
         return (
             <div className="card" id={this.state.id} onClick={() =>{
-                //if(this.props.isHumanPlayer){
+                if(this.props.isHumanPlayer){
                     if(this.props.isPlayable){
                         if(MatchHelper.isColorChanger(this.props.card)){
                             if(this.props.onColorSelection){
@@ -68,7 +67,7 @@ class CardView extends Component {
                             this.props.playCard(this.props.matchID, this.props.owner, this.props.card.id, this.props.selectedColor);
                         }
                     }
-                //}
+                }
             }} >
                 {
                     this.getContent()

@@ -65,18 +65,22 @@ class Player extends Component{
     }
 
     componentDidMount(){
+        let isActive = MatchHelper.getActivePlayer(this.props.match).id === this.props.id;
+        
         if(this.props.match.penalties.length > 0){
-            console.log("waiting to accept penalties before autoplaying card");
             return;
         }
-        let isActive = MatchHelper.getActivePlayer(this.props.match).id === this.props.id;
 
         if(isActive && !this.props.isHumanPlayer){
             let delay = MathHelper.getRandomInt(1000, 2000);     // delay range : 0.5s - 1.5s
             console.log("auto selecting card to play");
+            this.playRandomCard();
+
+            /*
             this.state.autoPlayCardDelayID = setTimeout(()=>{
                 this.playRandomCard();
             }, delay);
+            */
         }
     }
 
