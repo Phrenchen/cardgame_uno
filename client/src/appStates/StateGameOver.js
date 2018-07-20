@@ -63,7 +63,7 @@ class StateGameOver extends Component{
         this.sortPlayersByMatchScore(this.props.match.players);
 
         return (
-            <div key={uuid()}>
+            <div className="gameOver">
                 <h3>
                     GAME OVER!
                 </h3>
