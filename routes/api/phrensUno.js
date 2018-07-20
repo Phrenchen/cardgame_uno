@@ -275,7 +275,6 @@ const setNextPlayer = (match, playCard, ignoreTopCardEffects) =>{
 
 // create penalties
 const applyPenaltyCheckNoValidCard = (match) =>{
-    console.log(" *** applyPenaltyCheckNoValidCard ***");
     if(!MatchHelper.playerHasPlayableCards(match)){
         match.penalties.push( applyNoValidCardPenalty(match) );
     }
