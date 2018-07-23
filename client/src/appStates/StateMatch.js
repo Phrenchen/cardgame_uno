@@ -70,8 +70,28 @@ class StateMatch extends Component{
     }
 
     getHandCards(){
-        let isHuman = MatchHelper.getActivePlayer(this.props.match).isHumanPlayer;
-        if(!isHuman){
+        // we always show the human player´s cards
+        // we assume there is only 1 human player
+        // if more, we need to check if and which one is active
+        
+        let showHandCards = false;
+        let activePlayerIsHuman = false;
+
+        let humans = MatchHelper.getHumanPlayers(this.props.match);
+        let onlyHuman = humans[0];
+        if(!onlyHuman){
+            // no human player
+            // display all bots handcards?
+            showHandCards = true;
+        }
+        else{
+            // we have at least 1 human player
+            activePlayerIsHuman = MatchHelper.getActivePlayer(this.props.match).isHumanPlayer;
+            showHandCards = activePlayerIsHuman;        // only show humans handcards
+        }
+
+        // only display human cards
+        if(!showHandCards){
            return null;      // hide non human player handcards
         }
 
@@ -79,7 +99,7 @@ class StateMatch extends Component{
             matchID={this.props.match.id}
             cards={MatchHelper.getActivePlayer(this.props.match).cards} 
             owner={this.props.match.activePlayerID}
-            isHumanPlayer={isHuman}
+            isHumanPlayer={activePlayerIsHuman}
             topCard={MatchHelper.getTopCard(this.props.match)}
             onColorSelection={this.onShowColorSelector}
             selectedColor={this.props.match.selectedColor}

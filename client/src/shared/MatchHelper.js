@@ -13,8 +13,7 @@ const calculateScores = (match) =>{
 
         player.matchScore = score;
     });
-};
-module.exports.calculateScores = calculateScores;
+}; module.exports.calculateScores = calculateScores;
 
 const sortCards = (cards =>{
     cards.sort((a,b) =>{
@@ -26,8 +25,11 @@ const sortCards = (cards =>{
         }
         return 0;
     });
-});
-module.exports.sortCards = sortCards;
+}); module.exports.sortCards = sortCards;
+
+const getHumanPlayers = (match) =>{
+    return match.players.filter((player) => player.isHumanPlayer);
+}; module.exports.getHumanPlayers = getHumanPlayers;
 
 const getRandomValidCardFromActivePlayer = (match) =>{
     // active player
@@ -40,8 +42,7 @@ const getRandomValidCardFromActivePlayer = (match) =>{
 
     let randomID = MathHelper.getRandomInt(0, validCards.length-1);
     return validCards[randomID];
-}
-module.exports.getRandomValidCardFromActivePlayer = getRandomValidCardFromActivePlayer;
+}; module.exports.getRandomValidCardFromActivePlayer = getRandomValidCardFromActivePlayer;
 
 
 const getCardByID = (cards, id) =>{
@@ -54,8 +55,7 @@ const getCardByID = (cards, id) =>{
     }
     console.log("no card found in: " + cards.length);
     return null;
-};
-module.exports.getCardByID = getCardByID;
+}; module.exports.getCardByID = getCardByID;
 
 
 const getWinner = (match) => {
@@ -67,8 +67,7 @@ const getWinner = (match) => {
         }
     });
     return result;
-};
-module.exports.getWinner = getWinner;
+}; module.exports.getWinner = getWinner;
 
 //------------------------------------------------------
 const getValidCardTo = (cards, topCard) =>{
@@ -81,8 +80,7 @@ const getValidCardTo = (cards, topCard) =>{
             return cards.splice(i, 1)[0];
         }
     }
-};
-module.exports.getValidCardTo = getValidCardTo;
+}; module.exports.getValidCardTo = getValidCardTo;
 
 
 const playerHasPlayableCards = (match) => {
@@ -102,8 +100,7 @@ const playerHasPlayableCards = (match) => {
         }
     }
     return false;
-};
-module.exports.playerHasPlayableCards = playerHasPlayableCards;
+}; module.exports.playerHasPlayableCards = playerHasPlayableCards;
 
 const getColor = (card) =>{
     let effect;
@@ -121,18 +118,15 @@ const getColor = (card) =>{
         }
     }
     return "black;"
-}
-module.exports.getColor = getColor;
+}; module.exports.getColor = getColor;
 
 const getTopCard = (match) =>{
     return match.playedCards[match.playedCards.length-1];
-};
-module.exports.getTopCard = getTopCard;
+}; module.exports.getTopCard = getTopCard;
 
 const getActivePlayer = (match) => {
     return getPlayerByID(match.players, match.activePlayerID);
-};
-module.exports.getActivePlayer = getActivePlayer;
+}; module.exports.getActivePlayer = getActivePlayer;
 
 const getPlayerByID = (players, playerID) =>{
     for(let i=0; i<players.length; i++){
@@ -141,14 +135,12 @@ const getPlayerByID = (players, playerID) =>{
         }
     }
     return null;
-};
-module.exports.getPlayerByID = getPlayerByID;
+}; module.exports.getPlayerByID = getPlayerByID;
 
 const extractRandomCard = (cards) =>{
     let randomIndex = MathHelper.getRandomInt(0, cards.length-1);
     return cards.splice(randomIndex, 1)[0];
-};
-module.exports.extractRandomCard = extractRandomCard;
+}; module.exports.extractRandomCard = extractRandomCard;
 
 const getNextPlayerID = (players, currentPlayerID, playerPointerIsMovingForward, isSkipping) => {
     // forwards:  0, 1, 2, 3, 4, 0, 1
@@ -178,8 +170,7 @@ const getNextPlayerID = (players, currentPlayerID, playerPointerIsMovingForward,
 
     //console.log("next player index: " + nextPlayerIndex);
     return players[nextPlayerIndex].id;
-};
-module.exports.getNextPlayerID = getNextPlayerID;
+}; module.exports.getNextPlayerID = getNextPlayerID;
 
 const extractCard = (cards, cardID = "-1") =>{
     let card;
@@ -197,22 +188,18 @@ const extractCard = (cards, cardID = "-1") =>{
         }
     }
     return null;
-};
-module.exports.extractCard = extractCard;
+}; module.exports.extractCard = extractCard;
 
 const canSupplyStackCards = (match, requiredCardCount) =>{
     return match.cards.length >= requiredCardCount;
-};
-module.exports.canSupplyStackCards = canSupplyStackCards;
+}; module.exports.canSupplyStackCards = canSupplyStackCards;
 
 const recyclePlayedCards = (match) =>{
     // last card in match.playedCards stays in stack
     match.cards = match.playedCards.splice(0, match.playedCards.length - 2);
-};
-module.exports.recyclePlayedCards = recyclePlayedCards;
+}; module.exports.recyclePlayedCards = recyclePlayedCards;
 
 const isColorChanger = (card) =>{
     return PlayCardValidator.hasEffect(card, EffectSpecial.CHANGE_COLOR) ||
         PlayCardValidator.hasEffect(card, EffectSpecial.TAKE_4);
-};
-module.exports.isColorChanger = isColorChanger;
+}; module.exports.isColorChanger = isColorChanger;
