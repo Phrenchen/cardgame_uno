@@ -24,7 +24,7 @@ function initDB(){
     Effect.find()
         .then( effects => {
                 if(effects.length === 0){
-                    // add effects, cards will be created after effects have been stored
+                    console.log("adding effects");
                     addEffectsToDB(); 
                 }
             })
@@ -33,6 +33,7 @@ function initDB(){
     Player.find()
         .then((players) =>{
             if(players.length === 0){
+                console.log("adding players");
                 addPlayersToDB();
             }
         })
@@ -106,6 +107,7 @@ function addPlayersToDB(){
 
 // CARDS
 function addCardsToDB() {
+    console.log("adding cards");
     // get all effects from db 
     Effect.find()
         .then((effects) =>{
@@ -151,7 +153,9 @@ function addCardsToDB() {
             cards = cards.concat( createCard("+4, change color", [getEffectByType(effects, EffectSpecial.TAKE_4), getEffectByType(effects, EffectSpecial.CHANGE_COLOR)], selectColorTake4Score, 4, "images/take4.png") );
             
             Card.insertMany(cards, (err, result) => {
-                //console.log("inserted cards: " + cards.length);
+                if(err){
+                    console.log("failed inserting cards: " + err);
+                }
             })
         })
 
@@ -196,7 +200,7 @@ function calculateSortOrder(effects){
 }
 
 createCard = (pName, pEffects, score, amount = 1, imageUrl = null) =>{
-    let cards = [];
+    let newCards = [];
     let card;
     let sortOrder;
 
@@ -211,16 +215,14 @@ createCard = (pName, pEffects, score, amount = 1, imageUrl = null) =>{
             imageUrl: imageUrl,
             sortOrder: sortOrder
         });
-       cards.push(card);
+       newCards.push(card);
     }
     //console.log("created " + cards.length + " cards");
-    return cards;
+    return newCards;
 }
 
 //------------------------------------------------------
 // EFFECTS
-let effectInProgressCounter = 0;
-
 addEffectsToDB = () => {
     let effects = [];
     // color
@@ -243,14 +245,12 @@ addEffectsToDB = () => {
     effects.push( createEffect(EffectSpecial.CHANGE_DIRECTION) );
 
     Effect.insertMany(effects, (err, result) =>{
-        //console.log("saved effects, adding cards, now");
+        console.log("saved effects: " + result.length);
         addCardsToDB();
     });
 }
 
 createEffect = (eType) => {
-    effectInProgressCounter++;
-
     let effect = new Effect({
         name: eType,
         id: uuid(),
