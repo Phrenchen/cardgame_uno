@@ -24,6 +24,7 @@
     "mongoose": "^5.1.7",
     "nodemon": "^1.17.5",
     "object-keys": "^1.0.12",
+    "react-loading-animation": "^1.4.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},

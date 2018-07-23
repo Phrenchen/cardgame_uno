@@ -4,7 +4,7 @@ import uuid from "uuid";
 import CardView from "./CardView";
 import MatchHelper from "../shared/MatchHelper";
 
-const PlayCardValidator = require("../../../client/src/shared/PlayCardValidator");
+import PlayCardValidator from "../shared/PlayCardValidator";
 
 class HandCards extends Component{
     
@@ -66,6 +66,7 @@ class HandCards extends Component{
         return this.props.isHumanPlayer ? "Pick a card!" : "wait for next turn...";
     }
 
+    
     render(){
         let id;
         let isValid;
@@ -75,6 +76,7 @@ class HandCards extends Component{
         return (
             <div className="handCards">
                 {this.getTitle()}
+
                 <div className="handCardContainer">
                     {
                         this.props.cards.map((card) => {

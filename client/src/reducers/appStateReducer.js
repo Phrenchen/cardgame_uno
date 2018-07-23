@@ -2,7 +2,8 @@ import { STATE_START } from "../appStates/AppState";
 import { SET_APP_STATE } from "./../actions/types";
 import AppState from "../appStates/AppState";
 let initialState = {
-    current: STATE_START
+    current: STATE_START,
+    isWaitingForServer: false
 }
 
 function appState(state = initialState, action){

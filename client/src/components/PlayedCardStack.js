@@ -5,6 +5,7 @@ import CardView from "./CardView";
 import uuid from "uuid";
 import MatchHelper from "../shared/MatchHelper";
 import PlayCardValidator from "../shared/PlayCardValidator";
+import LoadingIcon from '../components/LoadingIcon';
 
 class PlayedCardStack extends Component{
 
@@ -82,6 +83,8 @@ class PlayedCardStack extends Component{
                             }
                         })
                     }
+                    
+                    <LoadingIcon />
                     {this.getBottomIndicator()}
                 </div>
         );  

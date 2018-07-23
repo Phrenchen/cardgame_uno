@@ -5,7 +5,6 @@ import { Button } from "reactstrap";
 import uuid from "uuid";
 import { connect } from "react-redux";
 import MatchHelper from "../shared/MatchHelper";
-import MathHelper from "../shared/MathHelper";
 
 
 class PenaltyList extends Component{
