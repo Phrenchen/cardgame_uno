@@ -46,7 +46,7 @@ class HandCards extends Component{
             if(card && cardElement){
                 isValid = PlayCardValidator.validateCard(card, this.props.topCard, this.props.selectedColor);
 
-                if(isValid){
+                if(isValid && this.props.isHumanPlayer){
                     opacityValue = 1;
                     
                 }
@@ -62,7 +62,9 @@ class HandCards extends Component{
 
     }
 
-    
+    getTitle(){
+        return this.props.isHumanPlayer ? "Pick a card!" : "wait for next turn...";
+    }
 
     render(){
         let id;
@@ -72,7 +74,7 @@ class HandCards extends Component{
 
         return (
             <div className="handCards">
-                pick a card
+                {this.getTitle()}
                 <div className="handCardContainer">
                     {
                         this.props.cards.map((card) => {

@@ -31,6 +31,15 @@ const getHumanPlayers = (match) =>{
     return match.players.filter((player) => player.isHumanPlayer);
 }; module.exports.getHumanPlayers = getHumanPlayers;
 
+const hasHumanPlayers = (match) =>{
+    return getHumanPlayers(match).length > 0;
+}; module.exports.hasHumanPlayers = hasHumanPlayers;
+
+const activePlayerIsHuman = (match) =>{
+    return getActivePlayer(match).isHumanPlayer;
+}; module.exports.activePlayerIsHuman = activePlayerIsHuman;
+
+
 const getRandomValidCardFromActivePlayer = (match) =>{
     // active player
     let player = getActivePlayer(match);

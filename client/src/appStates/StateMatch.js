@@ -59,45 +59,30 @@ class StateMatch extends Component{
     getPlayedCardList(){
         return <div className="center_grid">
             {this.getLeftIndicator()}
-            <PlayedCardStack 
-                playedCards= {this.props.match.playedCards} 
-                matchID= {this.props.match.id}
-                selectedColor={this.props.match.selectedColor}
-            />
+            <PlayedCardStack />
             {this.getRightIndicator()}  
 
         </div>
     }
 
     getHandCards(){
-        // we always show the human player´s cards
-        // we assume there is only 1 human player
-        // if more, we need to check if and which one is active
-        
-        let showHandCards = false;
         let activePlayerIsHuman = false;
-
-        let humans = MatchHelper.getHumanPlayers(this.props.match);
-        let onlyHuman = humans[0];
-        if(!onlyHuman){
+        let cards;
+        
+        if(!MatchHelper.hasHumanPlayers(this.props.match)){
             // no human player
             // display all bots handcards?
-            showHandCards = true;
+            cards = MatchHelper.getActivePlayer(this.props.match).cards;
         }
         else{
             // we have at least 1 human player
             activePlayerIsHuman = MatchHelper.getActivePlayer(this.props.match).isHumanPlayer;
-            showHandCards = activePlayerIsHuman;        // only show humans handcards
+            cards = MatchHelper.getHumanPlayers(this.props.match)[0].cards;     // we assume there is only 1 human player
         }
-
-        // only display human cards
-        if(!showHandCards){
-           return null;      // hide non human player handcards
-        }
-
+        
         return <HandCards 
             matchID={this.props.match.id}
-            cards={MatchHelper.getActivePlayer(this.props.match).cards} 
+            cards={cards} 
             owner={this.props.match.activePlayerID}
             isHumanPlayer={activePlayerIsHuman}
             topCard={MatchHelper.getTopCard(this.props.match)}

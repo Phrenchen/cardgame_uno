@@ -20,8 +20,8 @@ class PlayedCardStack extends Component{
             return;
         }
         // set css column variables for PlayedCards
-        let columnCount = this.props.playedCards.length < this.state.cardCountToRender ?
-                            this.props.playedCards.length :
+        let columnCount = this.props.match.playedCards.length < this.state.cardCountToRender ?
+                            this.props.match.playedCards.length :
                             this.state.cardCountToRender;
         handcardDiv.style.setProperty("--playedCardCount", columnCount);
 
@@ -91,11 +91,11 @@ class PlayedCardStack extends Component{
         return (
             <CardView
                 key={uuid()}
-                matchID={this.props.matchID}
+                matchID={this.props.match.id}
                 owner={"-1"}      // has been played. no matter who played it
                 positionInRow={index}
                 card={card}
-                selectedColor={this.props.selectedColor}
+                selectedColor={this.props.match.selectedColor}
                 isPlayable={false}
                 isHumanPlayer={false}
             />
