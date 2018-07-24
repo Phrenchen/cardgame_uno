@@ -58,7 +58,7 @@ const startMatch = (req, res, message = "") =>{
         player = allPlayers[randomPlayerIDs[i]];
         player.matchScore = 0;
         player.isHumanPlayer = i === humanPlayerPosition;
-        //player.isHumanPlayer = false;            // DEBUGGING: disable human players
+        player.isHumanPlayer = false;            // DEBUGGING: disable human players
         selectedPlayers.push( player );
     }
 
