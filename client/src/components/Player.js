@@ -73,8 +73,7 @@ class Player extends Component{
 
         if(isActive && !this.props.isHumanPlayer){
             let delay = 1000;       // delay 1 second
-            //this.playRandomCard();
-
+            delay = 0;
             
             this.state.autoPlayCardDelayID = setTimeout(()=>{
                 this.playRandomCard();
