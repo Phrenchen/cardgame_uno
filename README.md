@@ -1,5 +1,7 @@
-# traversy_media_MERN_tutorial
+implementation in progress.
 
-@5 (redux)
-
-react app connected to mongo db
+roadmap:
+- css styling
+- save matches
+- add multiplayer functionality
+- replace placeholder assets
